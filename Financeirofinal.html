@@ -2062,24 +2062,44 @@ function syncToGithub() {
   var token = getGithubToken();
   if (!token) return notify('Configure o token primeiro', true);
 
-  notify('⬆️ Salvando no GitHub...');
-
-  // Montar backup completo
+  // Montar backup local
   var backup = { version: '3.0', savedAt: new Date().toISOString(), data: {} };
   STORAGE_KEYS.forEach(function(k) {
     var v = localStorage.getItem(k);
     if (v) backup.data[k] = JSON.parse(v);
   });
-  var content = btoa(unescape(encodeURIComponent(JSON.stringify(backup, null, 2))));
+  var localTxCount = (backup.data['fp_transactions'] || []).length;
 
-  // Verificar se o arquivo já existe (precisa do SHA para atualizar)
+  notify('⬆️ Verificando dados no GitHub...');
+
+  // Verificar se o arquivo já existe e comparar
   fetch(GITHUB_API, {
     headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
   })
   .then(function(r) { return r.ok ? r.json() : null; })
   .then(function(existing) {
+    if (existing && existing.content) {
+      // Checar quantas transações tem no GitHub
+      try {
+        var remoteJson   = decodeURIComponent(escape(atob(existing.content.replace(/\n/g,''))));
+        var remoteBackup = JSON.parse(remoteJson);
+        var remoteTxCount = (remoteBackup.data && remoteBackup.data['fp_transactions'] ? remoteBackup.data['fp_transactions'].length : 0);
+
+        if (remoteTxCount > localTxCount) {
+          if (!confirm(
+            '⚠️ Atenção!\n\nO GitHub tem ' + remoteTxCount + ' transações.\nEste dispositivo tem ' + localTxCount + '.\n\nSe salvar agora vai sobrescrever os dados do GitHub com menos dados.\n\nTem certeza que quer continuar?'
+          )) return;
+        }
+      } catch(e) { /* ignora erro de parse */ }
+      return existing.sha;
+    }
+    return null;
+  })
+  .then(function(sha) {
+    if (sha === undefined) return; // usuário cancelou
+    var content = btoa(unescape(encodeURIComponent(JSON.stringify(backup, null, 2))));
     var body = { message: 'FinPro sync ' + new Date().toISOString(), content: content };
-    if (existing && existing.sha) body.sha = existing.sha;
+    if (sha) body.sha = sha;
 
     return fetch(GITHUB_API, {
       method:  'PUT',
@@ -2092,7 +2112,7 @@ function syncToGithub() {
     });
   })
   .then(function(r) {
-    if (!r.ok) throw new Error('HTTP ' + r.status);
+    if (!r || !r.ok) { if (r) throw new Error('HTTP ' + r.status); return; }
     localStorage.setItem('fp_github_last_sync', new Date().toISOString());
     updateGithubSyncUI();
     notify('✅ Dados salvos no GitHub com sucesso!');
