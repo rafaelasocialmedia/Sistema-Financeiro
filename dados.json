@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-05-20T23:52:31.123Z",
+  "savedAt": "2026-05-20T23:55:50.820Z",
   "data": {
     "fp_cats": [
       {
@@ -204,7 +204,16 @@
         "emoji": "🏷️",
         "type": "expense",
         "isDefault": false,
-        "subcategories": []
+        "subcategories": [
+          {
+            "id": "id_1779321227332_1wudj",
+            "name": "Jantar"
+          },
+          {
+            "id": "id_1779321243353_4dpta",
+            "name": "Crunchirol"
+          }
+        ]
       },
       {
         "id": "id_1779315300760_zprtc",
@@ -232,6 +241,23 @@
           {
             "id": "id_1779315337366_op7vi",
             "name": "Ajuda"
+          }
+        ]
+      },
+      {
+        "id": "id_1779321218237_4maqe",
+        "name": "Mercado",
+        "emoji": "🏷️",
+        "type": "expense",
+        "isDefault": false,
+        "subcategories": [
+          {
+            "id": "id_1779321334533_gxeru",
+            "name": "Panificadora"
+          },
+          {
+            "id": "id_1779321343942_a6hgw",
+            "name": "Mercado"
           }
         ]
       }
