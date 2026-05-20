@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-05-20T21:49:21.561Z",
+  "savedAt": "2026-05-20T21:56:26.239Z",
   "data": {
     "fp_cats": [
       {
@@ -9,7 +9,16 @@
         "emoji": "💼",
         "type": "income",
         "isDefault": true,
-        "subcategories": []
+        "subcategories": [
+          {
+            "id": "id_1779314165329_d4quh",
+            "name": "Okeo"
+          },
+          {
+            "id": "id_1779314168333_o3dtd",
+            "name": "Finance"
+          }
+        ]
       },
       {
         "id": "dc2",
@@ -17,7 +26,16 @@
         "emoji": "💻",
         "type": "income",
         "isDefault": true,
-        "subcategories": []
+        "subcategories": [
+          {
+            "id": "id_1779314153821_5eb3y",
+            "name": "JustDancingGame"
+          },
+          {
+            "id": "id_1779314159969_9vi17",
+            "name": "Insight"
+          }
+        ]
       },
       {
         "id": "dc3",
@@ -66,6 +84,10 @@
           {
             "id": "s4",
             "name": "Aluguel"
+          },
+          {
+            "id": "id_1779314125399_7hqsv",
+            "name": "Condominio"
           }
         ]
       },
@@ -133,7 +155,12 @@
         "emoji": "📚",
         "type": "expense",
         "isDefault": true,
-        "subcategories": []
+        "subcategories": [
+          {
+            "id": "id_1779314178749_vsx02",
+            "name": "Ingles"
+          }
+        ]
       },
       {
         "id": "dc12",
