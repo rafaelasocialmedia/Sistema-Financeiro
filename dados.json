@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-05-20T22:15:01.808Z",
+  "savedAt": "2026-05-20T23:52:31.123Z",
   "data": {
     "fp_cats": [
       {
@@ -212,7 +212,28 @@
         "emoji": "🏷️",
         "type": "expense",
         "isDefault": false,
-        "subcategories": []
+        "subcategories": [
+          {
+            "id": "id_1779315311414_9kdxh",
+            "name": "Transsporte"
+          },
+          {
+            "id": "id_1779315315853_0rxq6",
+            "name": "mensalidade"
+          },
+          {
+            "id": "id_1779315321607_3gw92",
+            "name": "Comida"
+          },
+          {
+            "id": "id_1779315332996_5gckz",
+            "name": "Artigos religiosos"
+          },
+          {
+            "id": "id_1779315337366_op7vi",
+            "name": "Ajuda"
+          }
+        ]
       }
     ],
     "fp_transactions": [
@@ -288,6 +309,18 @@
         "purchaseId": 1779315255346
       },
       {
+        "id": 1779315389093,
+        "type": "expense",
+        "amount": 10.3,
+        "cat": "Espiritualidade",
+        "subcat": "Transsporte",
+        "desc": "Terreiro (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779315389092
+      },
+      {
         "id": 1779312247447,
         "type": "income",
         "amount": 2500,
@@ -295,6 +328,17 @@
         "subcat": "",
         "desc": "Rafa",
         "date": "2026-06-01",
+        "payment": "dinheiro",
+        "paymentAccount": ""
+      },
+      {
+        "id": 1779315423446,
+        "type": "expense",
+        "amount": 800,
+        "cat": "Moradia",
+        "subcat": "Aluguel",
+        "desc": "800,00",
+        "date": "2026-05-15",
         "payment": "dinheiro",
         "paymentAccount": ""
       }
@@ -354,6 +398,17 @@
         "total": 8.1,
         "parcelas": 1,
         "installmentVal": 8.1
+      },
+      {
+        "id": 1779315389092,
+        "card": "inter",
+        "date": "2026-05-16",
+        "desc": "Terreiro",
+        "cat": "Espiritualidade",
+        "subcat": "Transsporte",
+        "total": 10.3,
+        "parcelas": 1,
+        "installmentVal": 10.3
       }
     ],
     "fp_invest_boxes": [
