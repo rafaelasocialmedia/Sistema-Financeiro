@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-05-20T21:57:14.905Z",
+  "savedAt": "2026-05-20T22:15:01.808Z",
   "data": {
     "fp_cats": [
       {
@@ -130,6 +130,10 @@
           {
             "id": "s10",
             "name": "Condomínio"
+          },
+          {
+            "id": "id_1779314730508_u930d",
+            "name": "IPTU"
           }
         ]
       },
@@ -201,9 +205,88 @@
         "type": "expense",
         "isDefault": false,
         "subcategories": []
+      },
+      {
+        "id": "id_1779315300760_zprtc",
+        "name": "Espiritualidade",
+        "emoji": "🏷️",
+        "type": "expense",
+        "isDefault": false,
+        "subcategories": []
       }
     ],
     "fp_transactions": [
+      {
+        "id": 1779314903945,
+        "type": "expense",
+        "amount": 685.64,
+        "cat": "Terreno",
+        "subcat": "IPTU",
+        "desc": "IPTU (🏦 Inter)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779314903944
+      },
+      {
+        "id": 1779314766282,
+        "type": "expense",
+        "amount": 685.64,
+        "cat": "Terreno",
+        "subcat": "IPTU",
+        "desc": "",
+        "date": "2026-06-10",
+        "payment": "pix",
+        "paymentAccount": "inter"
+      },
+      {
+        "id": 1779315175202,
+        "type": "expense",
+        "amount": 250,
+        "cat": "Educação",
+        "subcat": "Ingles",
+        "desc": "Matricula(rafa) (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779315175201
+      },
+      {
+        "id": 1779315199562,
+        "type": "expense",
+        "amount": 250,
+        "cat": "Educação",
+        "subcat": "Ingles",
+        "desc": "Matricula(Kelvin) (💜 Nubank)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1779315199561
+      },
+      {
+        "id": 1779315244087,
+        "type": "expense",
+        "amount": 9.2,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "Matricula da aula (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779315244086
+      },
+      {
+        "id": 1779315255347,
+        "type": "expense",
+        "amount": 8.1,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "Matricula da aula (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779315255346
+      },
       {
         "id": 1779312247447,
         "type": "income",
@@ -214,6 +297,63 @@
         "date": "2026-06-01",
         "payment": "dinheiro",
         "paymentAccount": ""
+      }
+    ],
+    "fp_car_purchases": [
+      {
+        "id": 1779314903944,
+        "card": "inter",
+        "date": "2026-06-10",
+        "desc": "IPTU",
+        "cat": "Terreno",
+        "subcat": "IPTU",
+        "total": 685.64,
+        "parcelas": 1,
+        "installmentVal": 685.64
+      },
+      {
+        "id": 1779315175201,
+        "card": "inter",
+        "date": "2026-05-18",
+        "desc": "Matricula(rafa)",
+        "cat": "Educação",
+        "subcat": "Ingles",
+        "total": 250,
+        "parcelas": 1,
+        "installmentVal": 250
+      },
+      {
+        "id": 1779315199561,
+        "card": "nubank",
+        "date": "2026-05-18",
+        "desc": "Matricula(Kelvin)",
+        "cat": "Educação",
+        "subcat": "Ingles",
+        "total": 250,
+        "parcelas": 1,
+        "installmentVal": 250
+      },
+      {
+        "id": 1779315244086,
+        "card": "inter",
+        "date": "2026-05-18",
+        "desc": "Matricula da aula",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 9.2,
+        "parcelas": 1,
+        "installmentVal": 9.2
+      },
+      {
+        "id": 1779315255346,
+        "card": "inter",
+        "date": "2026-05-18",
+        "desc": "Matricula da aula",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 8.1,
+        "parcelas": 1,
+        "installmentVal": 8.1
       }
     ],
     "fp_invest_boxes": [
@@ -240,6 +380,68 @@
         "color": "gold",
         "goal": 5000,
         "notes": "CDB Nubank liquidez diária — 100% CDI (~13,15% a.a.)"
+      }
+    ],
+    "fp_subscriptions": [
+      {
+        "id": 1779314520057,
+        "name": "Okeo",
+        "emoji": "💚",
+        "type": "income",
+        "value": 2500,
+        "day": 10,
+        "cat": "Salário",
+        "subcat": "Okeo",
+        "card": "dinheiro",
+        "confirmedMonths": []
+      },
+      {
+        "id": 1779314562920,
+        "name": "FInance(Unity)",
+        "emoji": "💚",
+        "type": "income",
+        "value": 5000,
+        "day": 10,
+        "cat": "Salário",
+        "subcat": "Finance",
+        "card": "dinheiro",
+        "confirmedMonths": []
+      },
+      {
+        "id": 1779314597041,
+        "name": "Netflix",
+        "emoji": "💚",
+        "type": "income",
+        "value": 2500,
+        "day": 10,
+        "cat": "Freelance",
+        "subcat": "JustDancingGame",
+        "card": "dinheiro",
+        "confirmedMonths": []
+      },
+      {
+        "id": 1779314617671,
+        "name": "Freela(VFX)",
+        "emoji": "💚",
+        "type": "income",
+        "value": 750,
+        "day": 10,
+        "cat": "Salário",
+        "subcat": "",
+        "card": "dinheiro",
+        "confirmedMonths": []
+      },
+      {
+        "id": 1779314824784,
+        "name": "Parcela do terreno",
+        "emoji": "🔄",
+        "type": "expense",
+        "value": 1.16482,
+        "day": 10,
+        "cat": "Terreno",
+        "subcat": "",
+        "card": "pix",
+        "confirmedMonths": []
       }
     ]
   }
