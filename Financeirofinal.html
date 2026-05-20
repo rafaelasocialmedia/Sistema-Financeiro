@@ -1632,8 +1632,39 @@
     <!-- ═══════════ CATEGORIAS ═══════════ -->
     <div class="page" id="page-categories">
       <div class="page-header">
-        <div class="page-title">Categorias</div>
-        <div class="page-subtitle">Gerencie categorias e subcategorias</div>
+        <div class="page-title">Categorias & Config</div>
+        <div class="page-subtitle">Gerencie categorias, sync e backup</div>
+      </div>
+
+      <!-- SYNC GITHUB -->
+      <div class="panel" id="github-sync-panel" style="border-color:var(--blue);margin-bottom:18px">
+        <div class="panel-title" style="color:var(--blue)">☁️ Sync com GitHub</div>
+        <div id="github-sync-status" style="margin-bottom:14px;padding:10px 14px;border-radius:var(--radius-sm);font-size:13px;background:var(--surface)">
+          🔴 Não configurado
+        </div>
+        <div id="github-token-form">
+          <div class="form-grid">
+            <div class="form-group full">
+              <label>Personal Access Token</label>
+              <input type="password" id="github-token-input" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
+              <div style="font-size:11px;color:var(--text-muted);margin-top:4px">
+                O token fica salvo só neste dispositivo (localStorage). Nunca sai daqui.
+                <a href="https://github.com/settings/tokens" target="_blank" style="color:var(--blue)">Gerar token →</a>
+              </div>
+            </div>
+            <div class="form-group full" style="flex-direction:row;gap:8px">
+              <button class="btn btn-primary" style="flex:1" onclick="saveGithubToken()">💾 Salvar Token</button>
+              <button class="btn btn-ghost" onclick="clearGithubToken()">🗑️ Remover</button>
+            </div>
+          </div>
+        </div>
+        <div id="github-sync-actions" style="display:none;margin-top:4px">
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-primary" style="flex:1" onclick="syncToGithub()">⬆️ Salvar no GitHub</button>
+            <button class="btn btn-ghost" style="flex:1" onclick="syncFromGithub()">⬇️ Carregar do GitHub</button>
+          </div>
+          <div style="margin-top:8px;font-size:12px;color:var(--text-muted)" id="github-last-sync"></div>
+        </div>
       </div>
       <div class="two-col">
         <div class="panel">
@@ -1895,7 +1926,7 @@ function refreshPage(page) {
   if (page === 'cartoes')      { populateCarCatSelect(); renderCartoes(); }
   if (page === 'invest')       renderInvest();
   if (page === 'atelie')       renderAtelie();
-  if (page === 'categories')   renderCatsPage();
+  if (page === 'categories')   { renderCatsPage(); updateGithubSyncUI(); }
 }
 
 function updateMonthLabels() {
@@ -1907,8 +1938,132 @@ function updateMonthLabels() {
 }
 
 // ══════════════════════════════════════════════════════════════
-// SELECT POPULATION
+// SYNC COM GITHUB
 // ══════════════════════════════════════════════════════════════
+var GITHUB_OWNER = 'rafaelasocialmedia';
+var GITHUB_REPO  = 'Sistema-Financeiro';
+var GITHUB_FILE  = 'dados.json';
+var GITHUB_API   = 'https://api.github.com/repos/'+GITHUB_OWNER+'/'+GITHUB_REPO+'/contents/'+GITHUB_FILE;
+
+function getGithubToken() {
+  return localStorage.getItem('fp_github_token') || '';
+}
+
+function saveGithubToken() {
+  var token = document.getElementById('github-token-input').value.trim();
+  if (!token) return notify('Informe o token', true);
+  localStorage.setItem('fp_github_token', token);
+  document.getElementById('github-token-input').value = '';
+  notify('✓ Token salvo com segurança!');
+  updateGithubSyncUI();
+}
+
+function clearGithubToken() {
+  if (!confirm('Remover token de sync? O app continuará funcionando normalmente.')) return;
+  localStorage.removeItem('fp_github_token');
+  localStorage.removeItem('fp_github_last_sync');
+  updateGithubSyncUI();
+  notify('Token removido.');
+}
+
+function updateGithubSyncUI() {
+  var token     = getGithubToken();
+  var statusEl  = document.getElementById('github-sync-status');
+  var actionsEl = document.getElementById('github-sync-actions');
+  var lastEl    = document.getElementById('github-last-sync');
+  var formEl    = document.getElementById('github-token-form');
+  if (!statusEl) return;
+
+  if (token) {
+    statusEl.innerHTML  = '🟢 Conectado ao GitHub · <strong>'+GITHUB_OWNER+'/'+GITHUB_REPO+'</strong>';
+    statusEl.style.color = 'var(--accent)';
+    if (actionsEl) actionsEl.style.display = 'block';
+    if (formEl)    formEl.style.display    = 'none';
+    var last = localStorage.getItem('fp_github_last_sync');
+    if (lastEl && last) lastEl.textContent = 'Último sync: ' + new Date(last).toLocaleString('pt-BR');
+  } else {
+    statusEl.innerHTML  = '🔴 Não configurado — adicione seu token para ativar o sync';
+    statusEl.style.color = 'var(--text-muted)';
+    if (actionsEl) actionsEl.style.display = 'none';
+    if (formEl)    formEl.style.display    = 'block';
+  }
+}
+
+function syncToGithub() {
+  var token = getGithubToken();
+  if (!token) return notify('Configure o token primeiro', true);
+
+  notify('⬆️ Salvando no GitHub...');
+
+  // Montar backup completo
+  var backup = { version: '3.0', savedAt: new Date().toISOString(), data: {} };
+  STORAGE_KEYS.forEach(function(k) {
+    var v = localStorage.getItem(k);
+    if (v) backup.data[k] = JSON.parse(v);
+  });
+  var content = btoa(unescape(encodeURIComponent(JSON.stringify(backup, null, 2))));
+
+  // Verificar se o arquivo já existe (precisa do SHA para atualizar)
+  fetch(GITHUB_API, {
+    headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
+  })
+  .then(function(r) { return r.ok ? r.json() : null; })
+  .then(function(existing) {
+    var body = { message: 'FinPro sync ' + new Date().toISOString(), content: content };
+    if (existing && existing.sha) body.sha = existing.sha;
+
+    return fetch(GITHUB_API, {
+      method:  'PUT',
+      headers: {
+        'Authorization': 'token ' + token,
+        'Accept':        'application/vnd.github.v3+json',
+        'Content-Type':  'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+  })
+  .then(function(r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    localStorage.setItem('fp_github_last_sync', new Date().toISOString());
+    updateGithubSyncUI();
+    notify('✅ Dados salvos no GitHub com sucesso!');
+  })
+  .catch(function(err) {
+    notify('❌ Erro ao salvar: ' + err.message, true);
+  });
+}
+
+function syncFromGithub() {
+  var token = getGithubToken();
+  if (!token) return notify('Configure o token primeiro', true);
+  if (!confirm('Carregar dados do GitHub? Os dados locais serão substituídos.')) return;
+
+  notify('⬇️ Carregando do GitHub...');
+
+  fetch(GITHUB_API, {
+    headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
+  })
+  .then(function(r) {
+    if (!r.ok) throw new Error('Arquivo não encontrado. Faça um sync de envio primeiro.');
+    return r.json();
+  })
+  .then(function(data) {
+    var json    = decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
+    var backup  = JSON.parse(json);
+    if (!backup.data) throw new Error('Formato inválido');
+
+    Object.keys(backup.data).forEach(function(k) {
+      localStorage.setItem(k, JSON.stringify(backup.data[k]));
+    });
+    localStorage.setItem('fp_github_last_sync', new Date().toISOString());
+    updateGithubSyncUI();
+    notify('✅ Dados carregados! Recarregando...');
+    setTimeout(function() { location.reload(); }, 1500);
+  })
+  .catch(function(err) {
+    notify('❌ Erro ao carregar: ' + err.message, true);
+  });
+}
 function populateTxCatSelect() {
   var typeVal = document.getElementById('tx-type') ? document.getElementById('tx-type').value : 'income';
   var cats    = getCatsByType(typeVal);
@@ -5032,6 +5187,7 @@ function quickPayTerreno() {
   renderCartoes();
   renderSubscriptions();
   setPayMode('dinheiro');
+  updateGithubSyncUI();
 
   // Registrar Service Worker (PWA)
   if ('serviceWorker' in navigator) {
