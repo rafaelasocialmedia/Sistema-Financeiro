@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-05-20T21:25:02.638Z",
+  "savedAt": "2026-05-20T21:49:03.381Z",
   "data": {
     "fp_cats": [
       {
@@ -179,17 +179,6 @@
         "date": "2026-06-01",
         "payment": "dinheiro",
         "paymentAccount": ""
-      },
-      {
-        "id": 1779312275660,
-        "type": "income",
-        "amount": 2500,
-        "cat": "Salário",
-        "subcat": "",
-        "desc": "rafa",
-        "date": "2026-05-20",
-        "payment": "pix",
-        "paymentAccount": "inter"
       }
     ],
     "fp_invest_boxes": [
