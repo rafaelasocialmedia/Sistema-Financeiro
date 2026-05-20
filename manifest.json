@@ -1,0 +1,24 @@
+{
+  "name": "FinPro — Sistema Financeiro",
+  "short_name": "FinPro",
+  "description": "Sistema Financeiro Pessoal",
+  "start_url": "./Financeirofinal.html",
+  "display": "standalone",
+  "background_color": "#050d1a",
+  "theme_color": "#2dff8f",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
