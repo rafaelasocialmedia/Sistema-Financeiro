@@ -1,0 +1,198 @@
+{
+  "version": "3.0",
+  "savedAt": "2026-05-20T21:07:49.453Z",
+  "data": {
+    "fp_cats": [
+      {
+        "id": "dc1",
+        "name": "Salário",
+        "emoji": "💼",
+        "type": "income",
+        "isDefault": true,
+        "subcategories": []
+      },
+      {
+        "id": "dc2",
+        "name": "Freelance",
+        "emoji": "💻",
+        "type": "income",
+        "isDefault": true,
+        "subcategories": []
+      },
+      {
+        "id": "dc3",
+        "name": "Investimentos",
+        "emoji": "📈",
+        "type": "income",
+        "isDefault": true,
+        "subcategories": []
+      },
+      {
+        "id": "dc4",
+        "name": "Outros (receita)",
+        "emoji": "💰",
+        "type": "income",
+        "isDefault": true,
+        "subcategories": []
+      },
+      {
+        "id": "dc5",
+        "name": "Alimentação",
+        "emoji": "🍔",
+        "type": "expense",
+        "isDefault": true,
+        "subcategories": [
+          {
+            "id": "s1",
+            "name": "Mercado"
+          },
+          {
+            "id": "s2",
+            "name": "Restaurante"
+          },
+          {
+            "id": "s3",
+            "name": "Delivery"
+          }
+        ]
+      },
+      {
+        "id": "dc6",
+        "name": "Moradia",
+        "emoji": "🏠",
+        "type": "expense",
+        "isDefault": true,
+        "subcategories": [
+          {
+            "id": "s4",
+            "name": "Aluguel"
+          }
+        ]
+      },
+      {
+        "id": "dc7",
+        "name": "Contas",
+        "emoji": "⚡",
+        "type": "expense",
+        "isDefault": true,
+        "subcategories": [
+          {
+            "id": "s5",
+            "name": "Luz"
+          },
+          {
+            "id": "s6",
+            "name": "Água"
+          },
+          {
+            "id": "s7",
+            "name": "Internet"
+          },
+          {
+            "id": "s8",
+            "name": "Gás"
+          }
+        ]
+      },
+      {
+        "id": "dc8",
+        "name": "Terreno",
+        "emoji": "🌱",
+        "type": "expense",
+        "isDefault": true,
+        "subcategories": [
+          {
+            "id": "s9",
+            "name": "Parcela"
+          },
+          {
+            "id": "s10",
+            "name": "Condomínio"
+          }
+        ]
+      },
+      {
+        "id": "dc9",
+        "name": "Transporte",
+        "emoji": "🚗",
+        "type": "expense",
+        "isDefault": true,
+        "subcategories": []
+      },
+      {
+        "id": "dc10",
+        "name": "Saúde",
+        "emoji": "🏥",
+        "type": "expense",
+        "isDefault": true,
+        "subcategories": []
+      },
+      {
+        "id": "dc11",
+        "name": "Educação",
+        "emoji": "📚",
+        "type": "expense",
+        "isDefault": true,
+        "subcategories": []
+      },
+      {
+        "id": "dc12",
+        "name": "Lazer",
+        "emoji": "🎮",
+        "type": "expense",
+        "isDefault": true,
+        "subcategories": []
+      },
+      {
+        "id": "dc13",
+        "name": "Vestuário",
+        "emoji": "👕",
+        "type": "expense",
+        "isDefault": true,
+        "subcategories": []
+      },
+      {
+        "id": "dc14",
+        "name": "Ateliê",
+        "emoji": "🧵",
+        "type": "both",
+        "isDefault": false,
+        "subcategories": []
+      },
+      {
+        "id": "dc15",
+        "name": "Outros (despesa)",
+        "emoji": "💸",
+        "type": "expense",
+        "isDefault": true,
+        "subcategories": []
+      }
+    ],
+    "fp_invest_boxes": [
+      {
+        "id": "ib1",
+        "name": "Reserva de Emergência",
+        "emoji": "🛡️",
+        "color": "blue",
+        "goal": 42000,
+        "notes": "Meta: 6 meses de gastos fixos (~R$ 7.000/mês)"
+      },
+      {
+        "id": "ib2",
+        "name": "Meta da Casa",
+        "emoji": "🏠",
+        "color": "accent",
+        "goal": 250000,
+        "notes": "Prefixado 13,86% a.a. — vencimento Jan/2029"
+      },
+      {
+        "id": "ib3",
+        "name": "Antecipação Terreno",
+        "emoji": "💰",
+        "color": "gold",
+        "goal": 5000,
+        "notes": "CDB Nubank liquidez diária — 100% CDI (~13,15% a.a.)"
+      }
+    ]
+  }
+}
