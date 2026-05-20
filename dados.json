@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-05-20T21:14:49.055Z",
+  "savedAt": "2026-05-20T21:25:02.638Z",
   "data": {
     "fp_cats": [
       {
@@ -166,6 +166,30 @@
         "type": "expense",
         "isDefault": true,
         "subcategories": []
+      }
+    ],
+    "fp_transactions": [
+      {
+        "id": 1779312247447,
+        "type": "income",
+        "amount": 2500,
+        "cat": "Salário",
+        "subcat": "",
+        "desc": "Rafa",
+        "date": "2026-06-01",
+        "payment": "dinheiro",
+        "paymentAccount": ""
+      },
+      {
+        "id": 1779312275660,
+        "type": "income",
+        "amount": 2500,
+        "cat": "Salário",
+        "subcat": "",
+        "desc": "rafa",
+        "date": "2026-05-20",
+        "payment": "pix",
+        "paymentAccount": "inter"
       }
     ],
     "fp_invest_boxes": [
