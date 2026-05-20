@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-05-20T21:56:26.239Z",
+  "savedAt": "2026-05-20T21:57:13.746Z",
   "data": {
     "fp_cats": [
       {
@@ -192,6 +192,14 @@
         "emoji": "💸",
         "type": "expense",
         "isDefault": true,
+        "subcategories": []
+      },
+      {
+        "id": "id_1779314210608_pzct4",
+        "name": "Entretenimento",
+        "emoji": "🏷️",
+        "type": "expense",
+        "isDefault": false,
         "subcategories": []
       }
     ],
