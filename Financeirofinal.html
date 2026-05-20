@@ -397,6 +397,33 @@
         <div class="card"><div class="card-label">Despesas</div><div class="card-value neg" id="d-expense">R$ 0,00</div><div class="card-change" id="d-expense-n">0 lançamentos</div></div>
         <div class="card"><div class="card-label">Parcelas do Mês</div><div class="card-value gold" id="d-debt">R$ 0,00</div><div class="card-change" id="d-debt-n">0 dívidas ativas</div></div>
       </div>
+
+      <!-- Estimativa do mês -->
+      <div class="panel" id="dash-estimativa" style="margin-bottom:18px;border-color:var(--blue)">
+        <div class="panel-title" style="color:var(--blue)">📊 Estimativa do Mês</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+          <div>
+            <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">💚 Confirmado</div>
+            <div style="font-family:var(--font-num);font-size:18px;font-weight:700;color:var(--accent)" id="est-confirmed">R$ 0,00</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:3px">receitas lançadas</div>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">⏳ A confirmar</div>
+            <div style="font-family:var(--font-num);font-size:18px;font-weight:700;color:var(--gold)" id="est-pending">R$ 0,00</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:3px">recorrentes pendentes</div>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">🔴 Saídas fixas</div>
+            <div style="font-family:var(--font-num);font-size:18px;font-weight:700;color:var(--red)" id="est-expenses">R$ 0,00</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:3px">despesas + recorrentes</div>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">✨ Estimativa</div>
+            <div style="font-family:var(--font-num);font-size:18px;font-weight:700" id="est-result">R$ 0,00</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:3px">se tudo confirmar</div>
+          </div>
+        </div>
+      </div>
       <!-- Dollar summary row -->
       <div style="display:grid;grid-template-columns:1fr 3fr;gap:14px;margin-bottom:24px">
         <div class="card" id="dash-dollar-card" style="cursor:pointer" onclick="navigate('dollar')">
@@ -583,32 +610,52 @@
       <div class="panel" id="subs-panel">
         <div class="panel-title">
           🔄 Assinaturas &amp; Recorrentes
-          <button class="btn btn-ghost btn-sm" onclick="toggleAddSubForm()">+ Nova</button>
+          <div style="display:flex;gap:6px;align-items:center">
+            <button class="btn btn-ghost btn-sm" onclick="toggleAddSubForm()">+ Nova</button>
+          </div>
         </div>
+
+        <!-- Toggle receita/despesa -->
+        <div style="display:flex;gap:4px;margin-bottom:16px;background:var(--surface);padding:4px;border-radius:var(--radius-sm);border:1px solid var(--border)">
+          <div id="subs-tab-expense" style="flex:1;text-align:center;padding:7px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;cursor:pointer;background:var(--red);color:#fff;transition:all .2s" onclick="setSubsTab('expense')">🔴 Despesas</div>
+          <div id="subs-tab-income"  style="flex:1;text-align:center;padding:7px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;cursor:pointer;color:var(--text-muted);transition:all .2s" onclick="setSubsTab('income')">💚 Receitas</div>
+        </div>
+
         <!-- Formulário de nova assinatura (oculto por padrão) -->
         <div id="add-sub-form" style="display:none;margin-bottom:16px;padding:16px;background:var(--surface);border-radius:var(--radius-sm);border:1px solid var(--border)">
           <div class="form-grid">
             <div class="form-group">
               <label>Nome</label>
-              <input type="text" id="sub-name" placeholder="Ex: Google One, Plano de Saúde...">
+              <input type="text" id="sub-name" placeholder="Ex: Google One, Salário...">
             </div>
             <div class="form-group">
               <label>Emoji / Ícone</label>
               <input type="text" id="sub-emoji" placeholder="☁️" maxlength="4" style="font-size:20px;text-align:center">
             </div>
             <div class="form-group">
+              <label>Tipo</label>
+              <select id="sub-type" onchange="onSubTypeChange()">
+                <option value="expense">🔴 Despesa</option>
+                <option value="income">💚 Receita</option>
+              </select>
+            </div>
+            <div class="form-group">
               <label>Valor (R$)</label>
               <input type="number" id="sub-value" placeholder="0,00" step="0.01" min="0">
             </div>
             <div class="form-group">
-              <label>Dia de vencimento</label>
+              <label>Dia do mês</label>
               <input type="number" id="sub-day" placeholder="10" min="1" max="31">
             </div>
             <div class="form-group">
               <label>Categoria</label>
-              <select id="sub-cat"></select>
+              <select id="sub-cat" onchange="onSubCatChange()"></select>
             </div>
-            <div class="form-group">
+            <div class="form-group" id="sub-subcat-group" style="display:none">
+              <label>Subcategoria</label>
+              <select id="sub-subcat"></select>
+            </div>
+            <div class="form-group" id="sub-card-group">
               <label>Cartão / Forma</label>
               <select id="sub-card">
                 <option value="dinheiro">💵 Dinheiro</option>
@@ -620,14 +667,15 @@
               </select>
             </div>
             <div class="form-group full" style="flex-direction:row;gap:8px">
-              <button class="btn btn-primary" style="flex:1" onclick="saveSubscription()">Salvar Assinatura</button>
+              <button class="btn btn-primary" style="flex:1" onclick="saveSubscription()">Salvar</button>
               <button class="btn btn-ghost" onclick="toggleAddSubForm()">Cancelar</button>
             </div>
           </div>
         </div>
-        <!-- Lista de assinaturas -->
+
+        <!-- Lista -->
         <div id="subs-list" style="display:flex;flex-direction:column;gap:8px"></div>
-        <div id="subs-empty" style="display:none;text-align:center;padding:24px;color:var(--text-muted);font-size:13px">Nenhuma assinatura cadastrada ainda</div>
+        <div id="subs-empty" style="display:none;text-align:center;padding:24px;color:var(--text-muted);font-size:13px">Nenhum item cadastrado ainda</div>
       </div>
 
       <!-- ═══ 💳 CARTÕES — visualização integrada ═══ -->
@@ -2548,37 +2596,83 @@ function saveEditCar() {
 function loadSubscriptions()       { return loadKey('subscriptions', []); }
 function saveSubscriptions(subs)   { saveKey('subscriptions', subs); }
 
+var currentSubsTab = 'expense';
+
+function setSubsTab(tab) {
+  currentSubsTab = tab;
+  var expBtn = document.getElementById('subs-tab-expense');
+  var incBtn = document.getElementById('subs-tab-income');
+  if (expBtn) {
+    expBtn.style.background = tab === 'expense' ? 'var(--red)' : 'transparent';
+    expBtn.style.color      = tab === 'expense' ? '#fff' : 'var(--text-muted)';
+  }
+  if (incBtn) {
+    incBtn.style.background = tab === 'income' ? 'var(--accent)' : 'transparent';
+    incBtn.style.color      = tab === 'income' ? '#050d1a' : 'var(--text-muted)';
+  }
+  renderSubscriptions();
+}
+
+function onSubTypeChange() {
+  var type   = document.getElementById('sub-type').value;
+  var catSel = document.getElementById('sub-cat');
+  var cardGrp = document.getElementById('sub-card-group');
+  if (catSel) {
+    var cats = getCats().filter(function(c){ return c.type === type || c.type === 'both'; });
+    catSel.innerHTML = cats.map(function(c){
+      return '<option value="'+escHtml(c.name)+'">'+c.emoji+' '+escHtml(c.name)+'</option>';
+    }).join('');
+    onSubCatChange();
+  }
+  if (cardGrp) cardGrp.style.display = type === 'income' ? 'none' : '';
+}
+
+function onSubCatChange() {
+  var catName  = document.getElementById('sub-cat') ? document.getElementById('sub-cat').value : '';
+  var group    = document.getElementById('sub-subcat-group');
+  var sel      = document.getElementById('sub-subcat');
+  if (!group || !sel) return;
+  var catObj   = getCatByName(catName);
+  var subs     = catObj ? catObj.subcategories : [];
+  if (subs.length > 0) {
+    sel.innerHTML = '<option value="">— Geral —</option>' + subs.map(function(s){
+      return '<option value="'+escHtml(s.name)+'">'+escHtml(s.name)+'</option>';
+    }).join('');
+    group.style.display = '';
+  } else {
+    group.style.display = 'none';
+  }
+}
+
 function toggleAddSubForm() {
   var form = document.getElementById('add-sub-form');
   if (!form) return;
   var isHidden = form.style.display === 'none';
   form.style.display = isHidden ? 'block' : 'none';
   if (isHidden) {
-    // Popular categorias no select de assinaturas
-    var catSel = document.getElementById('sub-cat');
-    if (catSel) {
-      var cats = getCats().filter(function(c){ return c.type === 'expense' || c.type === 'both'; });
-      catSel.innerHTML = cats.map(function(c){
-        return '<option value="'+escHtml(c.name)+'">'+c.emoji+' '+escHtml(c.name)+'</option>';
-      }).join('');
-    }
+    var typeEl = document.getElementById('sub-type');
+    if (typeEl) typeEl.value = currentSubsTab;
+    onSubTypeChange();
   }
 }
 
 function saveSubscription() {
-  var name  = document.getElementById('sub-name').value.trim();
-  var emoji = document.getElementById('sub-emoji').value.trim() || '🔄';
-  var value = parseFloat(document.getElementById('sub-value').value);
-  var day   = parseInt(document.getElementById('sub-day').value);
-  var cat   = document.getElementById('sub-cat').value;
-  var card  = document.getElementById('sub-card').value;
+  var name   = document.getElementById('sub-name').value.trim();
+  var emoji  = document.getElementById('sub-emoji').value.trim() || (currentSubsTab === 'income' ? '💚' : '🔄');
+  var type   = document.getElementById('sub-type').value;
+  var value  = parseFloat(document.getElementById('sub-value').value);
+  var day    = parseInt(document.getElementById('sub-day').value);
+  var cat    = document.getElementById('sub-cat').value;
+  var subcatEl = document.getElementById('sub-subcat');
+  var subcat = (subcatEl && document.getElementById('sub-subcat-group').style.display !== 'none') ? subcatEl.value : '';
+  var card   = type === 'income' ? 'dinheiro' : document.getElementById('sub-card').value;
 
-  if (!name)          return notify('Informe o nome da assinatura', true);
-  if (!value||value<=0) return notify('Informe o valor', true);
+  if (!name)             return notify('Informe o nome', true);
+  if (!value || value<=0) return notify('Informe o valor', true);
   if (!day||day<1||day>31) return notify('Informe um dia válido (1-31)', true);
 
   var subs = loadSubscriptions();
-  subs.push({ id: Date.now(), name: name, emoji: emoji, value: value, day: day, cat: cat, card: card, confirmedMonths: [] });
+  subs.push({ id: Date.now(), name: name, emoji: emoji, type: type, value: value, day: day, cat: cat, subcat: subcat, card: card, confirmedMonths: [] });
   saveSubscriptions(subs);
 
   document.getElementById('sub-name').value  = '';
@@ -2586,7 +2680,7 @@ function saveSubscription() {
   document.getElementById('sub-value').value = '';
   document.getElementById('sub-day').value   = '';
   toggleAddSubForm();
-  notify('✓ Assinatura "'+name+'" cadastrada!');
+  notify('✓ "'+name+'" cadastrado!');
   renderSubscriptions();
 }
 
@@ -2600,37 +2694,38 @@ function confirmSubscription(subId) {
   sub.confirmedMonths.push(mk);
   saveSubscriptions(subs);
 
-  // Lançar como transação automaticamente
   var today   = new Date();
   var dateStr = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(sub.day).padStart(2,'0');
   var txs     = loadKey('transactions');
-  var isCard  = sub.card !== 'dinheiro' && sub.card !== 'pix';
-  if (isCard && CARDS[sub.card]) {
-    // Lançar como compra de cartão (1x)
-    var cardInfo   = CARDS[sub.card];
-    var purchaseId = Date.now();
-    var purchases  = loadPurchases();
-    purchases.push({ id: purchaseId, card: sub.card, date: dateStr, desc: sub.emoji+' '+sub.name, cat: sub.cat, subcat: '', total: sub.value, parcelas: 1, installmentVal: sub.value });
-    savePurchases(purchases);
-    var vencDay = String(cardInfo.venc).padStart(2,'0');
-    var mStr    = String(today.getMonth()+1).padStart(2,'0');
-    txs.push({ id: purchaseId+1, type:'expense', amount:sub.value, cat:sub.cat, subcat:'', desc:sub.emoji+' '+sub.name+' ('+cardInfo.icon+' '+cardInfo.name+')', date:today.getFullYear()+'-'+mStr+'-'+vencDay, source:'cartao', card:sub.card, purchaseId:purchaseId });
+
+  if (sub.type === 'income') {
+    txs.push({ id: Date.now(), type: 'income', amount: sub.value, cat: sub.cat, subcat: sub.subcat||'', desc: sub.emoji+' '+sub.name, date: dateStr, payment: 'dinheiro' });
   } else {
-    txs.push({ id: Date.now(), type:'expense', amount:sub.value, cat:sub.cat, subcat:'', desc:sub.emoji+' '+sub.name, date:dateStr, payment:sub.card });
+    var isCard = sub.card !== 'dinheiro' && sub.card !== 'pix' && CARDS[sub.card];
+    if (isCard) {
+      var cardInfo   = CARDS[sub.card];
+      var purchaseId = Date.now();
+      var purchases  = loadPurchases();
+      purchases.push({ id: purchaseId, card: sub.card, date: dateStr, desc: sub.emoji+' '+sub.name, cat: sub.cat, subcat: sub.subcat||'', total: sub.value, parcelas: 1, installmentVal: sub.value });
+      savePurchases(purchases);
+      var mStr = String(today.getMonth()+1).padStart(2,'0');
+      txs.push({ id: purchaseId+1, type:'expense', amount:sub.value, cat:sub.cat, subcat:sub.subcat||'', desc:sub.emoji+' '+sub.name+' ('+cardInfo.icon+' '+cardInfo.name+')', date:today.getFullYear()+'-'+mStr+'-'+String(cardInfo.venc).padStart(2,'0'), source:'cartao', card:sub.card, purchaseId:purchaseId });
+    } else {
+      txs.push({ id: Date.now(), type:'expense', amount:sub.value, cat:sub.cat, subcat:sub.subcat||'', desc:sub.emoji+' '+sub.name, date:dateStr, payment:sub.card });
+    }
   }
   txs.sort(function(a,b){ return b.date.localeCompare(a.date); });
   saveKey('transactions', txs);
 
-  notify('✓ '+sub.name+' confirmada e lançada!');
+  notify('✓ '+sub.name+' confirmado e lançado!');
   renderSubscriptions();
   renderTxTable();
   renderDashboard();
 }
 
 function deleteSubscription(subId) {
-  if (!confirm('Remover esta assinatura? Os lançamentos anteriores não serão afetados.')) return;
-  saveSubscriptions(loadSubscriptions().filter(function(s){ return s.id !== subId; }));
-  notify('Assinatura removida.');
+  saveSubscriptions(loadSubscriptions().filter(function(s){ return s.id != subId; }));
+  notify('Removido.');
   renderSubscriptions();
 }
 
@@ -2639,8 +2734,10 @@ function renderSubscriptions() {
   var emptyEl = document.getElementById('subs-empty');
   if (!listEl) return;
 
-  var subs = loadSubscriptions();
-  var mk   = curMonthKey();
+  var allSubs  = loadSubscriptions();
+  var subs     = allSubs.filter(function(s){ return (s.type || 'expense') === currentSubsTab; });
+  var mk       = curMonthKey();
+  var isIncome = currentSubsTab === 'income';
 
   if (!subs.length) {
     listEl.innerHTML  = '';
@@ -2649,30 +2746,38 @@ function renderSubscriptions() {
   }
   if (emptyEl) emptyEl.style.display = 'none';
 
-  var totalMes = subs.reduce(function(s,sub){ return s+sub.value; }, 0);
+  var total = subs.reduce(function(s,sub){ return s+sub.value; }, 0);
+  var confirmed = subs.filter(function(s){ return s.confirmedMonths.indexOf(mk) !== -1; }).length;
+
   listEl.innerHTML = subs.map(function(sub){
-    var confirmed = sub.confirmedMonths.indexOf(mk) !== -1;
-    var cardLabel = '';
-    if (sub.card === 'dinheiro') cardLabel = '💵';
-    else if (sub.card === 'pix') cardLabel = '📱';
-    else if (CARDS[sub.card])   cardLabel = CARDS[sub.card].icon + ' ' + CARDS[sub.card].name;
-    var confirmBtn = confirmed
-      ? '<button class="sub-confirm-btn confirmed" disabled>✓ Confirmado</button>'
-      : '<button class="sub-confirm-btn pending" onclick="confirmSubscription('+sub.id+')">Confirmar débito</button>';
-    return '<div class="sub-card">'
+    var isConfirmed = sub.confirmedMonths.indexOf(mk) !== -1;
+    var cardLabel   = '';
+    if (!sub.type || sub.type === 'expense') {
+      if (sub.card === 'dinheiro') cardLabel = '💵';
+      else if (sub.card === 'pix') cardLabel = '📱';
+      else if (CARDS[sub.card])   cardLabel  = CARDS[sub.card].icon + ' ' + CARDS[sub.card].name;
+    }
+    var confirmBtn = isConfirmed
+      ? '<button class="sub-confirm-btn confirmed" disabled>✓ '+(isIncome?'Recebido':'Confirmado')+'</button>'
+      : '<button class="sub-confirm-btn pending" onclick="confirmSubscription('+sub.id+')">'+(isIncome?'✓ Confirmar recebimento':'✓ Confirmar débito')+'</button>';
+    var color = isIncome ? 'var(--accent)' : 'var(--red)';
+    return '<div class="sub-card" style="'+(isConfirmed?'opacity:.6':'')+';">'
       +'<div class="sub-card-left">'
         +'<div class="sub-card-icon">'+sub.emoji+'</div>'
         +'<div><div class="sub-card-name">'+escHtml(sub.name)+'</div>'
-        +'<div class="sub-card-info">Vence dia '+sub.day+' · '+cardLabel+' · '+escHtml(sub.cat||'')+'</div></div>'
+        +'<div class="sub-card-info">Dia '+sub.day+(sub.subcat?' · '+escHtml(sub.subcat):'')+(cardLabel?' · '+cardLabel:'')+(sub.cat?' · '+escHtml(sub.cat):'')+'</div></div>'
       +'</div>'
       +'<div class="sub-card-right">'
-        +'<div class="sub-card-value">'+fmt(sub.value)+'</div>'
+        +'<div class="sub-card-value" style="color:'+color+'">'+fmt(sub.value)+'</div>'
         +confirmBtn
-        +'<button class="btn btn-danger btn-sm" onclick="deleteSubscription('+sub.id+')" title="Remover assinatura">✕</button>'
+        +'<button class="btn btn-danger btn-sm" onclick="deleteSubscription('+sub.id+')" title="Remover">✕</button>'
       +'</div>'
     +'</div>';
   }).join('')
-  + '<div style="padding:12px 0 0;font-size:12px;color:var(--text-muted);text-align:right">Total mensal: <strong style="color:var(--gold)">'+fmt(totalMes)+'</strong></div>';
+  + '<div style="padding:12px 0 0;font-size:12px;color:var(--text-muted);display:flex;justify-content:space-between">'
+    +'<span>'+confirmed+'/'+subs.length+' confirmados este mês</span>'
+    +'<span>Total mensal: <strong style="color:'+(isIncome?'var(--accent)':'var(--gold)')+'">'+fmt(total)+'</strong></span>'
+  +'</div>';
 }
 
 function deleteTx(id) {
@@ -2887,6 +2992,7 @@ function renderDashboard() {
   document.getElementById('d-debt-n').textContent    = debts.filter(function(d){return (d.installments-d.paid)>0;}).length + ' dívidas ativas';
 
   renderDashDollarCard();
+  renderEstimativa();
   renderTerrenoAlert();
   populateQlCatSelect();
   renderDashIntegrated();
@@ -3639,6 +3745,41 @@ function renderDollarLineChart(entries) {
 }
 
 // Dashboard dollar summary card (called from renderDashboard)
+function renderEstimativa() {
+  var mk   = curMonthKey();
+  var subs = loadSubscriptions();
+  var txs  = getMonthTx(currentYear, currentMonth);
+
+  // Receitas já confirmadas no mês
+  var confirmed = txs.filter(function(t){ return t.type === 'income'; })
+                     .reduce(function(s,t){ return s + t.amount; }, 0);
+
+  // Receitas recorrentes ainda não confirmadas
+  var pending = subs.filter(function(s){
+    return (s.type || 'expense') === 'income' && s.confirmedMonths.indexOf(mk) === -1;
+  }).reduce(function(s,sub){ return s + sub.value; }, 0);
+
+  // Despesas do mês (lançadas) + despesas recorrentes pendentes
+  var expenses = txs.filter(function(t){ return t.type === 'expense'; })
+                    .reduce(function(s,t){ return s + t.amount; }, 0);
+  var pendingExp = subs.filter(function(s){
+    return (s.type || 'expense') === 'expense' && s.confirmedMonths.indexOf(mk) === -1;
+  }).reduce(function(s,sub){ return s + sub.value; }, 0);
+  var totalExp = expenses + pendingExp;
+
+  // Estimativa = confirmado + a confirmar - total saídas
+  var result = confirmed + pending - totalExp;
+
+  var elConf = document.getElementById('est-confirmed'); if (elConf) elConf.textContent = fmt(confirmed);
+  var elPend = document.getElementById('est-pending');   if (elPend) elPend.textContent = fmt(pending);
+  var elExp  = document.getElementById('est-expenses');  if (elExp)  elExp.textContent  = fmt(totalExp);
+  var elRes  = document.getElementById('est-result');
+  if (elRes) {
+    elRes.textContent = fmt(result);
+    elRes.style.color = result >= 0 ? 'var(--accent)' : 'var(--red)';
+  }
+}
+
 function renderDashDollarCard() {
   var el = document.getElementById('dash-dollar-card');
   if (!el) return;
