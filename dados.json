@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-05-21T00:13:19.449Z",
+  "savedAt": "2026-05-21T02:00:39.853Z",
   "data": {
     "fp_cats": [
       {
@@ -1027,6 +1027,30 @@
         "cat": "Contas",
         "subcat": "Luz",
         "card": "inter",
+        "confirmedMonths": []
+      },
+      {
+        "id": 1779322500367,
+        "name": "Condominio",
+        "emoji": "🔄",
+        "type": "expense",
+        "value": 59.1,
+        "day": 10,
+        "cat": "Terreno",
+        "subcat": "Condomínio",
+        "card": "inter",
+        "confirmedMonths": []
+      },
+      {
+        "id": 1779322531233,
+        "name": "InsightZ",
+        "emoji": "💚",
+        "type": "income",
+        "value": 150,
+        "day": 10,
+        "cat": "Freelance",
+        "subcat": "",
+        "card": "dinheiro",
         "confirmedMonths": []
       }
     ]
