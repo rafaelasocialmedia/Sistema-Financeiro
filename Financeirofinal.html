@@ -545,7 +545,7 @@
         <div class="sub-tab" onclick="navigate('extra')">💼 Renda Extra</div>
       </div>
 
-      <div class="panel">
+      <div class="panel" id="tx-form-panel">
         <div class="panel-title">Nova Transação</div>
 
         <!-- Modo de pagamento -->
@@ -1902,7 +1902,56 @@
   </div>
 </div>
 
-<!-- Modal: Editar Compra Cartão -->
+<!-- Modal: Editar Assinatura -->
+<div class="modal-overlay" id="edit-sub-modal" style="display:none" onclick="if(event.target===this)closeEditSubModal()">
+  <div class="modal-box">
+    <div class="modal-title">
+      ✏️ Editar Recorrente
+      <button class="modal-close" onclick="closeEditSubModal()">×</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Nome</label>
+        <input type="text" id="edit-sub-name">
+      </div>
+      <div class="form-group">
+        <label>Emoji</label>
+        <input type="text" id="edit-sub-emoji" maxlength="4" style="font-size:20px;text-align:center">
+      </div>
+      <div class="form-group">
+        <label>Valor (R$)</label>
+        <input type="number" id="edit-sub-value" step="0.01" min="0">
+      </div>
+      <div class="form-group">
+        <label>Dia do mês</label>
+        <input type="number" id="edit-sub-day" min="1" max="31">
+      </div>
+      <div class="form-group">
+        <label>Categoria</label>
+        <select id="edit-sub-cat" onchange="onEditSubCatChange()"></select>
+      </div>
+      <div class="form-group" id="edit-sub-subcat-group" style="display:none">
+        <label>Subcategoria</label>
+        <select id="edit-sub-subcat"></select>
+      </div>
+      <div class="form-group" id="edit-sub-card-group">
+        <label>Cartão / Forma</label>
+        <select id="edit-sub-card">
+          <option value="dinheiro">💵 Dinheiro</option>
+          <option value="pix">📱 Pix</option>
+          <option value="inter">🏦 Inter</option>
+          <option value="nubank">💜 Nubank</option>
+          <option value="bb">🟡 Banco do Brasil</option>
+          <option value="ml">🟢 Mercado Livre</option>
+        </select>
+      </div>
+      <div class="form-group full" style="flex-direction:row;gap:8px">
+        <button class="btn btn-primary" style="flex:1" onclick="saveEditSub()">Salvar</button>
+        <button class="btn btn-ghost" onclick="closeEditSubModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="modal-overlay" id="edit-car-modal" style="display:none" onclick="if(event.target===this)closeEditCarModal()">
   <div class="modal-box">
     <div class="modal-title">
@@ -2376,9 +2425,12 @@ function setPayMode(mode) {
     if (el) el.style.display = isCard ? '' : 'none';
   });
 
-  // Label do botão submit
-  var btn = document.getElementById('tx-submit-btn');
-  if (btn) btn.textContent = isCard ? '+ Lançar Compra no Cartão' : '+ Adicionar Transação';
+  var panel = document.getElementById('tx-form-panel');
+  if (panel) {
+    panel.style.borderColor = mode === 'cartao' ? 'var(--blue)' : mode === 'pix' ? 'var(--blue)' : 'var(--accent)';
+  }
+  var submitBtn = document.getElementById('tx-submit-btn');
+  if (submitBtn) submitBtn.textContent = isCard ? '+ Lançar Compra no Cartão' : '+ Adicionar Transação';
 
   // Preview de parcela
   if (isCard) calcCarPreview();
@@ -2583,6 +2635,90 @@ function openEditCarModal(purchaseId) {
   document.getElementById('edit-car-modal').style.display = 'flex';
 }
 
+var _editSubId = null;
+
+function openEditSubModal(subId) {
+  var subs = loadSubscriptions();
+  var sub  = subs.find(function(s){ return s.id == subId; });
+  if (!sub) return;
+  _editSubId = subId;
+
+  document.getElementById('edit-sub-name').value  = sub.name;
+  document.getElementById('edit-sub-emoji').value = sub.emoji || '';
+  document.getElementById('edit-sub-value').value = sub.value;
+  document.getElementById('edit-sub-day').value   = sub.day;
+
+  var type   = sub.type || 'expense';
+  var catSel = document.getElementById('edit-sub-cat');
+  var cats   = getCats().filter(function(c){ return c.type === type || c.type === 'both'; });
+  catSel.innerHTML = cats.map(function(c){
+    return '<option value="'+escHtml(c.name)+'"'+(c.name===sub.cat?' selected':'')+'>'+c.emoji+' '+escHtml(c.name)+'</option>';
+  }).join('');
+
+  onEditSubCatChange(sub.subcat);
+
+  var cardGrp = document.getElementById('edit-sub-card-group');
+  if (cardGrp) cardGrp.style.display = type === 'income' ? 'none' : '';
+  var cardSel = document.getElementById('edit-sub-card');
+  if (cardSel && sub.card) cardSel.value = sub.card;
+
+  document.getElementById('edit-sub-modal').style.display = 'flex';
+}
+
+function onEditSubCatChange(selectedSubcat) {
+  var catName = document.getElementById('edit-sub-cat').value;
+  var group   = document.getElementById('edit-sub-subcat-group');
+  var sel     = document.getElementById('edit-sub-subcat');
+  if (!group || !sel) return;
+  var catObj  = getCatByName(catName);
+  var subs    = catObj ? catObj.subcategories : [];
+  if (subs.length > 0) {
+    sel.innerHTML = '<option value="">— Geral —</option>' + subs.map(function(s){
+      return '<option value="'+escHtml(s.name)+'"'+(s.name===selectedSubcat?' selected':'')+'>'+escHtml(s.name)+'</option>';
+    }).join('');
+    group.style.display = '';
+  } else {
+    group.style.display = 'none';
+  }
+}
+
+function closeEditSubModal() {
+  document.getElementById('edit-sub-modal').style.display = 'none';
+  _editSubId = null;
+}
+
+function saveEditSub() {
+  if (!_editSubId) return;
+  var subs = loadSubscriptions();
+  var idx  = subs.findIndex(function(s){ return s.id == _editSubId; });
+  if (idx === -1) return;
+
+  var name  = document.getElementById('edit-sub-name').value.trim();
+  var value = parseFloat(document.getElementById('edit-sub-value').value);
+  var day   = parseInt(document.getElementById('edit-sub-day').value);
+  if (!name)             return notify('Informe o nome', true);
+  if (!value || value<=0) return notify('Informe o valor', true);
+  if (!day||day<1||day>31) return notify('Dia inválido', true);
+
+  var subcatEl = document.getElementById('edit-sub-subcat');
+  var subcat   = (subcatEl && document.getElementById('edit-sub-subcat-group').style.display !== 'none') ? subcatEl.value : '';
+
+  subs[idx].name   = name;
+  subs[idx].emoji  = document.getElementById('edit-sub-emoji').value.trim() || subs[idx].emoji;
+  subs[idx].value  = value;
+  subs[idx].day    = day;
+  subs[idx].cat    = document.getElementById('edit-sub-cat').value;
+  subs[idx].subcat = subcat;
+  if (subs[idx].type !== 'income') {
+    subs[idx].card = document.getElementById('edit-sub-card').value;
+  }
+
+  saveSubscriptions(subs);
+  closeEditSubModal();
+  notify('✓ Atualizado!');
+  renderSubscriptions();
+}
+
 function closeEditCarModal() {
   document.getElementById('edit-car-modal').style.display = 'none';
   _editCarId = null;
@@ -2737,7 +2873,7 @@ function confirmSubscription(subId) {
   var txs     = loadKey('transactions');
 
   if (sub.type === 'income') {
-    txs.push({ id: Date.now(), type: 'income', amount: sub.value, cat: sub.cat, subcat: sub.subcat||'', desc: sub.emoji+' '+sub.name, date: dateStr, payment: 'dinheiro' });
+    txs.push({ id: Date.now(), type: 'income', amount: sub.value, cat: sub.cat, subcat: sub.subcat||'', desc: sub.emoji+' '+sub.name, date: dateStr, payment: 'dinheiro', source: 'recorrente' });
   } else {
     var isCard = sub.card !== 'dinheiro' && sub.card !== 'pix' && CARDS[sub.card];
     if (isCard) {
@@ -2747,9 +2883,9 @@ function confirmSubscription(subId) {
       purchases.push({ id: purchaseId, card: sub.card, date: dateStr, desc: sub.emoji+' '+sub.name, cat: sub.cat, subcat: sub.subcat||'', total: sub.value, parcelas: 1, installmentVal: sub.value });
       savePurchases(purchases);
       var mStr = String(today.getMonth()+1).padStart(2,'0');
-      txs.push({ id: purchaseId+1, type:'expense', amount:sub.value, cat:sub.cat, subcat:sub.subcat||'', desc:sub.emoji+' '+sub.name+' ('+cardInfo.icon+' '+cardInfo.name+')', date:today.getFullYear()+'-'+mStr+'-'+String(cardInfo.venc).padStart(2,'0'), source:'cartao', card:sub.card, purchaseId:purchaseId });
+      txs.push({ id: purchaseId+1, type:'expense', amount:sub.value, cat:sub.cat, subcat:sub.subcat||'', desc:sub.emoji+' '+sub.name+' ('+cardInfo.icon+' '+cardInfo.name+')', date:today.getFullYear()+'-'+mStr+'-'+String(cardInfo.venc).padStart(2,'0'), source:'recorrente', card:sub.card, purchaseId:purchaseId });
     } else {
-      txs.push({ id: Date.now(), type:'expense', amount:sub.value, cat:sub.cat, subcat:sub.subcat||'', desc:sub.emoji+' '+sub.name, date:dateStr, payment:sub.card });
+      txs.push({ id: Date.now(), type:'expense', amount:sub.value, cat:sub.cat, subcat:sub.subcat||'', desc:sub.emoji+' '+sub.name, date:dateStr, payment:sub.card, source:'recorrente' });
     }
   }
   txs.sort(function(a,b){ return b.date.localeCompare(a.date); });
@@ -2808,6 +2944,7 @@ function renderSubscriptions() {
       +'<div class="sub-card-right">'
         +'<div class="sub-card-value" style="color:'+color+'">'+fmt(sub.value)+'</div>'
         +confirmBtn
+        +'<button class="btn btn-ghost btn-sm" onclick="openEditSubModal('+sub.id+')" title="Editar">✏️</button>'
         +'<button class="btn btn-danger btn-sm" onclick="deleteSubscription('+sub.id+')" title="Remover">✕</button>'
       +'</div>'
     +'</div>';
@@ -2819,7 +2956,6 @@ function renderSubscriptions() {
 }
 
 function deleteTx(id) {
-  if (!confirm('Remover esta transação?')) return;
   saveKey('transactions', loadKey('transactions').filter(function(t){ return t.id !== id; }));
   notify('Transação removida.');
   renderTxTable();
@@ -2855,24 +2991,44 @@ function renderTxTable() {
       var emoji   = catObj ? catObj.emoji : '🏷️';
       var cls     = t.type === 'income' ? 'amount-pos' : 'amount-neg';
       var sign    = t.type === 'income' ? '+' : '-';
-      var isCard  = t.source === 'cartao';
-      var cardBadge = isCard && CARDS[t.card]
-        ? ' <span style="font-size:10px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:2px 6px;color:var(--text-muted)">'+CARDS[t.card].icon+' '+CARDS[t.card].name+'</span>'
-        : '';
-      var payBadge = '';
-      if (!isCard && t.type === 'expense') {
-        if (t.payment === 'pix')      payBadge = ' <span style="font-size:10px;background:var(--blue-dim);border-radius:10px;padding:2px 6px;color:var(--blue)">📱 Pix '+(t.paymentAccount?({inter:'Inter',nubank:'Nubank',bb:'B.B'}[t.paymentAccount]||''):'')+'</span>';
-        else if (t.payment === 'dinheiro') payBadge = ' <span style="font-size:10px;background:var(--accent-dim);border-radius:10px;padding:2px 6px;color:var(--accent)">💵 Dinheiro</span>';
+      var purchases  = loadPurchases();
+      var isRecurring = t.source === 'recorrente';
+      var isCard      = t.source === 'cartao' && !isRecurring && t.purchaseId && purchases.some(function(p){ return p.id === t.purchaseId; });
+
+      // Badge principal de tipo
+      var typeBadge = '';
+      if (isCard && CARDS[t.card]) {
+        // Verificar se é parcela (parcelas > 1) ou gasto novo (1x)
+        var purchases = loadPurchases();
+        var purchase  = purchases.find(function(p){ return p.id === t.purchaseId; });
+        var isInstall = purchase && purchase.parcelas > 1;
+        typeBadge = isInstall
+          ? ' <span style="font-size:10px;background:var(--gold-dim);border-radius:10px;padding:2px 6px;color:var(--gold)">'+CARDS[t.card].icon+' Parcela</span>'
+          : ' <span style="font-size:10px;background:var(--blue-dim);border-radius:10px;padding:2px 6px;color:var(--blue)">'+CARDS[t.card].icon+' Cartão</span>';
+      } else if (isRecurring) {
+        typeBadge = ' <span style="font-size:10px;background:rgba(162,155,254,.15);border-radius:10px;padding:2px 6px;color:var(--purple)">🔄 Recorrente</span>';
+      } else if (t.payment === 'pix') {
+        typeBadge = ' <span style="font-size:10px;background:var(--blue-dim);border-radius:10px;padding:2px 6px;color:var(--blue)">📱 Pix</span>';
+      } else if (t.payment === 'dinheiro' || !t.payment) {
+        typeBadge = t.type === 'expense' ? ' <span style="font-size:10px;background:var(--accent-dim);border-radius:10px;padding:2px 6px;color:var(--accent)">💵 Dinheiro</span>' : '';
       }
-      var deleteBtn = isCard
-        ? '<span style="font-size:11px;color:var(--text-dim)" title="Remova na aba Cartões">🔒</span>'
-        : '<button class="btn btn-danger btn-sm" onclick="deleteTx('+t.id+')">✕</button>';
+      var deleteBtn = '<button class="btn btn-danger btn-sm" onclick="deleteTx('+t.id+')">✕</button>';
       var editBtn = isCard
         ? '<button class="btn btn-ghost btn-sm" onclick="openEditCarModal('+t.purchaseId+')" title="Editar compra">✏️</button>'
         : '<button class="btn btn-ghost btn-sm" onclick="openEditTxModal('+t.id+')" title="Editar">✏️</button>';
-      return '<tr>'
+
+      // Cor de fundo da linha por tipo
+      var rowBg = '';
+      if (t.type === 'income')       rowBg = 'background:rgba(45,255,143,0.06)';
+      else if (isRecurring)          rowBg = 'background:rgba(162,155,254,0.08)';
+      else if (isCard) {
+        var p2 = loadPurchases().find(function(p){ return p.id === t.purchaseId; });
+        rowBg  = (p2 && p2.parcelas > 1) ? 'background:rgba(255,209,102,0.07)' : 'background:rgba(0,180,216,0.07)';
+      }
+
+      return '<tr style="'+rowBg+'">'
         +'<td>'+fmtDate(t.date)+'</td>'
-        +'<td>'+escHtml(t.desc||'')+cardBadge+payBadge+'</td>'
+        +'<td>'+escHtml(t.desc||'')+typeBadge+'</td>'
         +'<td>'+emoji+' '+escHtml(t.cat||'')+'</td>'
         +'<td style="color:var(--text-muted)">'+escHtml(t.subcat||'—')+'</td>'
         +'<td><span class="badge badge-'+t.type+'">'+(t.type==='income'?'Receita':'Despesa')+'</span></td>'
@@ -2882,14 +3038,35 @@ function renderTxTable() {
     }).join('');
   }
 
-  var inc = filtered.filter(function(t){return t.type==='income';}).reduce(function(s,t){return s+t.amount;},0);
-  var exp = filtered.filter(function(t){return t.type==='expense';}).reduce(function(s,t){return s+t.amount;},0);
+  var inc      = filtered.filter(function(t){return t.type==='income';}).reduce(function(s,t){return s+t.amount;},0);
+  var exp      = filtered.filter(function(t){return t.type==='expense';}).reduce(function(s,t){return s+t.amount;},0);
+  // Fixos = parcelas + recorrentes
+  var purchases = loadPurchases();
+  var fixos    = filtered.filter(function(t){
+    if (t.source === 'recorrente') return true;
+    if (t.source === 'cartao') {
+      var p = purchases.find(function(p){ return p.id === t.purchaseId; });
+      return p && p.parcelas > 1;
+    }
+    return false;
+  }).reduce(function(s,t){return s+t.amount;},0);
+  var novos = exp - fixos;
+
   var totEl = document.getElementById('tx-totals');
   if (totEl) {
     var balColor = inc-exp >= 0 ? 'var(--accent)' : 'var(--red)';
-    totEl.innerHTML = '<span>Receitas: <strong style="color:var(--accent)">'+fmt(inc)+'</strong></span>'
-      +'<span>Despesas: <strong style="color:var(--red)">'+fmt(exp)+'</strong></span>'
-      +'<span>Saldo: <strong style="color:'+balColor+'">'+fmt(inc-exp)+'</strong></span>';
+    totEl.innerHTML = '<span>Receitas: <strong style="color:var(--accent)">+'+fmt(inc)+'</strong></span>'
+      +'<span>Despesas: <strong style="color:var(--red)">-'+fmt(exp)+'</strong></span>'
+      +'<span style="color:var(--gold)">🔄 Fixos/Parcelas: <strong>'+fmt(fixos)+'</strong></span>'
+      +'<span style="color:var(--text-muted)">💵 Gastos novos: <strong>'+fmt(novos)+'</strong></span>'
+      +'<span>Saldo: <strong style="color:'+balColor+'">'+fmt(inc-exp)+'</strong></span>'
+      +'<div style="width:100%;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--text-muted)">'
+        +'<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:rgba(45,255,143,0.2);margin-right:4px"></span>Receita</span>'
+        +'<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:rgba(162,155,254,0.2);margin-right:4px"></span>Recorrente</span>'
+        +'<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:rgba(255,209,102,0.2);margin-right:4px"></span>Parcela</span>'
+        +'<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:rgba(0,180,216,0.2);margin-right:4px"></span>Cartão dia a dia</span>'
+        +'<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--surface);margin-right:4px"></span>Dinheiro/Pix</span>'
+      +'</div>';
   }
 }
 
