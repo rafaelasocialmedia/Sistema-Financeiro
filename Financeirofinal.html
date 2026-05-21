@@ -336,7 +336,7 @@
       <div class="nav-item" onclick="navigate('terreno')"><span class="nav-icon">🏗️</span><span>Terreno</span></div>
       <div class="nav-item" onclick="navigate('categories')"><span class="nav-icon">⚙️</span><span>Config</span></div>
     </div>
-    <div class="sidebar-footer">v3.0 • dados locais</div>
+    <div class="sidebar-footer">v3.1 • dados locais</div>
   </nav>
 
   <main class="main">
@@ -3029,40 +3029,33 @@ function renderTxTable() {
       var emoji   = catObj ? catObj.emoji : '🏷️';
       var cls     = t.type === 'income' ? 'amount-pos' : 'amount-neg';
       var sign    = t.type === 'income' ? '+' : '-';
-      var purchases  = loadPurchases();
+      var purchases   = loadPurchases();
       var isRecurring = t.source === 'recorrente';
-      var isCard      = t.source === 'cartao' && !isRecurring && t.purchaseId && purchases.some(function(p){ return p.id === t.purchaseId; });
+      var isCard      = !isRecurring && (t.source === 'cartao' || (t.card && CARDS[t.card]));
+      var isInstall   = isCard && t.purchaseId && purchases.some(function(p){ return p.id === t.purchaseId && p.parcelas > 1; });
 
-      // Badge principal de tipo
       var typeBadge = '';
-      if (isCard && CARDS[t.card]) {
-        // Verificar se é parcela (parcelas > 1) ou gasto novo (1x)
-        var purchases = loadPurchases();
-        var purchase  = purchases.find(function(p){ return p.id === t.purchaseId; });
-        var isInstall = purchase && purchase.parcelas > 1;
+      if (isRecurring) {
+        typeBadge = ' <span style="font-size:10px;background:rgba(162,155,254,.15);border-radius:10px;padding:2px 6px;color:var(--purple)">🔄 Recorrente</span>';
+      } else if (isCard && t.card && CARDS[t.card]) {
         typeBadge = isInstall
           ? ' <span style="font-size:10px;background:var(--gold-dim);border-radius:10px;padding:2px 6px;color:var(--gold)">'+CARDS[t.card].icon+' Parcela</span>'
           : ' <span style="font-size:10px;background:var(--blue-dim);border-radius:10px;padding:2px 6px;color:var(--blue)">'+CARDS[t.card].icon+' Cartão</span>';
-      } else if (isRecurring) {
-        typeBadge = ' <span style="font-size:10px;background:rgba(162,155,254,.15);border-radius:10px;padding:2px 6px;color:var(--purple)">🔄 Recorrente</span>';
       } else if (t.payment === 'pix') {
         typeBadge = ' <span style="font-size:10px;background:var(--blue-dim);border-radius:10px;padding:2px 6px;color:var(--blue)">📱 Pix</span>';
-      } else if (t.payment === 'dinheiro' || !t.payment) {
-        typeBadge = t.type === 'expense' ? ' <span style="font-size:10px;background:var(--accent-dim);border-radius:10px;padding:2px 6px;color:var(--accent)">💵 Dinheiro</span>' : '';
+      } else if (t.type === 'expense') {
+        typeBadge = ' <span style="font-size:10px;background:var(--accent-dim);border-radius:10px;padding:2px 6px;color:var(--accent)">💵 Dinheiro</span>';
       }
       var deleteBtn = '<button class="btn btn-danger btn-sm" onclick="deleteTx('+t.id+')">✕</button>';
       var editBtn = isCard
         ? '<button class="btn btn-ghost btn-sm" onclick="openEditCarModal('+t.purchaseId+')" title="Editar compra">✏️</button>'
         : '<button class="btn btn-ghost btn-sm" onclick="openEditTxModal('+t.id+')" title="Editar">✏️</button>';
 
-      // Cor de fundo da linha por tipo
       var rowBg = '';
-      if (t.type === 'income')       rowBg = 'background:rgba(45,255,143,0.06)';
-      else if (isRecurring)          rowBg = 'background:rgba(162,155,254,0.08)';
-      else if (isCard) {
-        var p2 = loadPurchases().find(function(p){ return p.id === t.purchaseId; });
-        rowBg  = (p2 && p2.parcelas > 1) ? 'background:rgba(255,209,102,0.07)' : 'background:rgba(0,180,216,0.07)';
-      }
+      if (t.type === 'income') rowBg = 'background:rgba(45,255,143,0.06)';
+      else if (isRecurring)    rowBg = 'background:rgba(162,155,254,0.08)';
+      else if (isInstall)      rowBg = 'background:rgba(255,209,102,0.07)';
+      else if (isCard)         rowBg = 'background:rgba(0,180,216,0.07)';
 
       return '<tr style="'+rowBg+'">'
         +'<td>'+fmtDate(t.date)+'</td>'
@@ -5666,11 +5659,24 @@ function quickPayTerreno() {
   populateFilterCatSelect();
   populateCarCatSelect();
   populateQlCatSelect();
+  // Migrar transações antigas — marcar recorrentes pelo nome das assinaturas
+  (function migrateOldTx() {
+    var subs = loadSubscriptions();
+    if (!subs.length) return;
+    var txs     = loadKey('transactions');
+    var changed = false;
+    txs.forEach(function(t) {
+      if (t.source === 'recorrente') return;
+      var desc = (t.desc || '').toLowerCase();
+      subs.forEach(function(s) {
+        var subName = s.name.toLowerCase();
+        if (desc.indexOf(subName) !== -1) { t.source = 'recorrente'; changed = true; }
+      });
+    });
+    if (changed) saveKey('transactions', txs);
+  })();
+
   renderDashboard();
-  renderCartoes();
-  renderSubscriptions();
-  setPayMode('dinheiro');
-  updateGithubSyncUI();
 
   // Registrar Service Worker (PWA)
   if ('serviceWorker' in navigator) {
