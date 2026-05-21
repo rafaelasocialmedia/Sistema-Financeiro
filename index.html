@@ -3021,10 +3021,38 @@ function renderTxTable() {
   var tbody = document.getElementById('tx-table');
   if (!tbody) return;
 
-  if (!filtered.length) {
+  // Se filtro recorrente ativo, mostrar pendentes do mês no topo
+  var pendentesHtml = '';
+  if (currentTxSourceFilter === 'recorrente') {
+    var mk   = currentYear + '-' + String(currentMonth + 1).padStart(2,'0');
+    var subs = loadSubscriptions();
+    var pendentes = subs.filter(function(s){
+      return s.confirmedMonths.indexOf(mk) === -1;
+    });
+    if (pendentes.length) {
+      pendentesHtml = pendentes.map(function(s){
+        var isIncome = (s.type || 'expense') === 'income';
+        var color    = isIncome ? 'var(--accent)' : 'var(--red)';
+        var sign     = isIncome ? '+' : '-';
+        return '<tr style="background:rgba(162,155,254,0.06);border-left:3px solid rgba(162,155,254,0.4)">'
+          +'<td style="color:var(--text-muted);font-style:italic">dia '+String(s.day).padStart(2,'0')+'/'+String(currentMonth+1).padStart(2,'0')+'</td>'
+          +'<td>'+s.emoji+' '+escHtml(s.name)
+            +' <span style="font-size:10px;background:rgba(162,155,254,.15);border-radius:10px;padding:2px 6px;color:var(--purple)">⏳ Pendente</span>'
+          +'</td>'
+          +'<td style="color:var(--text-muted)">'+escHtml(s.cat||'')+'</td>'
+          +'<td style="color:var(--text-muted)">'+escHtml(s.subcat||'—')+'</td>'
+          +'<td><span class="badge badge-'+(isIncome?'income':'expense')+'">'+(isIncome?'Receita':'Despesa')+'</span></td>'
+          +'<td style="color:'+color+'">'+sign+fmt(s.value)+'</td>'
+          +'<td><button class="sub-confirm-btn pending" style="font-size:11px;padding:4px 10px" onclick="confirmSubscription('+s.id+');renderTxTable()">✓ Confirmar</button></td>'
+          +'</tr>';
+      }).join('');
+    }
+  }
+
+  if (!filtered.length && !pendentesHtml) {
     tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📭</div>Nenhuma transação encontrada</div></td></tr>';
   } else {
-    tbody.innerHTML = filtered.map(function(t){
+    tbody.innerHTML = pendentesHtml + filtered.map(function(t){
       var catObj  = getCatByName(t.cat);
       var emoji   = catObj ? catObj.emoji : '🏷️';
       var cls     = t.type === 'income' ? 'amount-pos' : 'amount-neg';
