@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-05-20T23:55:50.820Z",
+  "savedAt": "2026-05-21T00:13:19.449Z",
   "data": {
     "fp_cats": [
       {
@@ -243,26 +243,81 @@
             "name": "Ajuda"
           }
         ]
-      },
-      {
-        "id": "id_1779321218237_4maqe",
-        "name": "Mercado",
-        "emoji": "🏷️",
-        "type": "expense",
-        "isDefault": false,
-        "subcategories": [
-          {
-            "id": "id_1779321334533_gxeru",
-            "name": "Panificadora"
-          },
-          {
-            "id": "id_1779321343942_a6hgw",
-            "name": "Mercado"
-          }
-        ]
       }
     ],
     "fp_transactions": [
+      {
+        "id": 1779321938032,
+        "type": "expense",
+        "amount": 54.72,
+        "cat": "Ateliê",
+        "subcat": "",
+        "desc": "Tecido(Oxfordine) (🏦 Inter 9/9)",
+        "date": "2027-01-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779321938023
+      },
+      {
+        "id": 1779321938031,
+        "type": "expense",
+        "amount": 54.72,
+        "cat": "Ateliê",
+        "subcat": "",
+        "desc": "Tecido(Oxfordine) (🏦 Inter 8/9)",
+        "date": "2026-12-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779321938023
+      },
+      {
+        "id": 1779321938030,
+        "type": "expense",
+        "amount": 54.72,
+        "cat": "Ateliê",
+        "subcat": "",
+        "desc": "Tecido(Oxfordine) (🏦 Inter 7/9)",
+        "date": "2026-11-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779321938023
+      },
+      {
+        "id": 1779321938029,
+        "type": "expense",
+        "amount": 54.72,
+        "cat": "Ateliê",
+        "subcat": "",
+        "desc": "Tecido(Oxfordine) (🏦 Inter 6/9)",
+        "date": "2026-10-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779321938023
+      },
+      {
+        "id": 1779321938028,
+        "type": "expense",
+        "amount": 54.72,
+        "cat": "Ateliê",
+        "subcat": "",
+        "desc": "Tecido(Oxfordine) (🏦 Inter 5/9)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779321938023
+      },
+      {
+        "id": 1779321938027,
+        "type": "expense",
+        "amount": 54.72,
+        "cat": "Ateliê",
+        "subcat": "",
+        "desc": "Tecido(Oxfordine) (🏦 Inter 4/9)",
+        "date": "2026-08-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779321938023
+      },
       {
         "id": 1779314903945,
         "type": "expense",
@@ -274,6 +329,18 @@
         "source": "cartao",
         "card": "inter",
         "purchaseId": 1779314903944
+      },
+      {
+        "id": 1779321938026,
+        "type": "expense",
+        "amount": 54.72,
+        "cat": "Ateliê",
+        "subcat": "",
+        "desc": "Tecido(Oxfordine) (🏦 Inter 3/9)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779321938023
       },
       {
         "id": 1779314766282,
@@ -347,6 +414,114 @@
         "purchaseId": 1779315389092
       },
       {
+        "id": 1779321476395,
+        "type": "expense",
+        "amount": 14.88,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Doces (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779321476394
+      },
+      {
+        "id": 1779321513445,
+        "type": "expense",
+        "amount": 39.8,
+        "cat": "Alimentação",
+        "subcat": "Restaurante",
+        "desc": "Jantar (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779321513444
+      },
+      {
+        "id": 1779321588319,
+        "type": "expense",
+        "amount": 9.2,
+        "cat": "Espiritualidade",
+        "subcat": "Transsporte",
+        "desc": "terreiro (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779321588318
+      },
+      {
+        "id": 1779321609888,
+        "type": "expense",
+        "amount": 44.11,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Alimentos (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779321609887
+      },
+      {
+        "id": 1779321630377,
+        "type": "expense",
+        "amount": 115.83,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Alimentos (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779321630376
+      },
+      {
+        "id": 1779321769988,
+        "type": "expense",
+        "amount": 57.17,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Alimentação (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779321769987
+      },
+      {
+        "id": 1779321803544,
+        "type": "expense",
+        "amount": 76.88,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Alimentação (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779321803543
+      },
+      {
+        "id": 1779321818974,
+        "type": "expense",
+        "amount": 39.8,
+        "cat": "Alimentação",
+        "subcat": "Restaurante",
+        "desc": "Obelisco (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779321818973
+      },
+      {
+        "id": 1779321938025,
+        "type": "expense",
+        "amount": 54.72,
+        "cat": "Ateliê",
+        "subcat": "",
+        "desc": "Tecido(Oxfordine) (🏦 Inter 2/9)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779321938023
+      },
+      {
         "id": 1779312247447,
         "type": "income",
         "amount": 2500,
@@ -367,6 +542,102 @@
         "date": "2026-05-15",
         "payment": "dinheiro",
         "paymentAccount": ""
+      },
+      {
+        "id": 1779321721893,
+        "type": "expense",
+        "amount": 139.8,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "🔄 Academia(kelvin) (🏦 Inter)",
+        "date": "2026-05-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779321721892
+      },
+      {
+        "id": 1779321722765,
+        "type": "expense",
+        "amount": 139.8,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "🔄 Academia(rafa) (🏦 Inter)",
+        "date": "2026-05-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779321722764
+      },
+      {
+        "id": 1779321938024,
+        "type": "expense",
+        "amount": 54.72,
+        "cat": "Ateliê",
+        "subcat": "",
+        "desc": "Tecido(Oxfordine) (🏦 Inter 1/9)",
+        "date": "2026-05-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779321938023
+      },
+      {
+        "id": 1779322055667,
+        "type": "expense",
+        "amount": 139.8,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "🔄 Academia(rafa) (🏦 Inter)",
+        "date": "2026-05-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779322055666
+      },
+      {
+        "id": 1779322056646,
+        "type": "expense",
+        "amount": 139.8,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "🔄 Academia(kelvin) (🏦 Inter)",
+        "date": "2026-05-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779322056645
+      },
+      {
+        "id": 1779322057760,
+        "type": "expense",
+        "amount": 1164.82,
+        "cat": "Terreno",
+        "subcat": "Parcela",
+        "desc": "🔄 Parcela do terreno (🏦 Inter)",
+        "date": "2026-05-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779322057759
+      },
+      {
+        "id": 1779322058693,
+        "type": "expense",
+        "amount": 99.9,
+        "cat": "Contas",
+        "subcat": "Internet",
+        "desc": "🔄 Internet (🏦 Inter)",
+        "date": "2026-05-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779322058692
+      },
+      {
+        "id": 1779322342891,
+        "type": "expense",
+        "amount": 57,
+        "cat": "Ateliê",
+        "subcat": "",
+        "desc": "Casa favorita (🟡 Banco do Brasil)",
+        "date": "2026-05-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1779322342890
       }
     ],
     "fp_car_purchases": [
@@ -380,6 +651,28 @@
         "total": 685.64,
         "parcelas": 1,
         "installmentVal": 685.64
+      },
+      {
+        "id": 1779321513444,
+        "card": "inter",
+        "date": "2026-05-20",
+        "desc": "Jantar",
+        "cat": "Alimentação",
+        "subcat": "Restaurante",
+        "total": 39.8,
+        "parcelas": 1,
+        "installmentVal": 39.8
+      },
+      {
+        "id": 1779321476394,
+        "card": "inter",
+        "date": "2026-05-20",
+        "desc": "Doces",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 14.88,
+        "parcelas": 1,
+        "installmentVal": 14.88
       },
       {
         "id": 1779315175201,
@@ -435,6 +728,160 @@
         "total": 10.3,
         "parcelas": 1,
         "installmentVal": 10.3
+      },
+      {
+        "id": 1779321588318,
+        "card": "inter",
+        "date": "2026-05-16",
+        "desc": "terreiro",
+        "cat": "Espiritualidade",
+        "subcat": "Transsporte",
+        "total": 9.2,
+        "parcelas": 1,
+        "installmentVal": 9.2
+      },
+      {
+        "id": 1779321609887,
+        "card": "inter",
+        "date": "2026-05-16",
+        "desc": "Alimentos",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 44.11,
+        "parcelas": 1,
+        "installmentVal": 44.11
+      },
+      {
+        "id": 1779321630376,
+        "card": "inter",
+        "date": "2026-05-16",
+        "desc": "Alimentos",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 115.83,
+        "parcelas": 1,
+        "installmentVal": 115.83
+      },
+      {
+        "id": 1779321721892,
+        "card": "inter",
+        "date": "2026-05-10",
+        "desc": "🔄 Academia(kelvin)",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 139.8,
+        "parcelas": 1,
+        "installmentVal": 139.8
+      },
+      {
+        "id": 1779321722764,
+        "card": "inter",
+        "date": "2026-05-10",
+        "desc": "🔄 Academia(rafa)",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 139.8,
+        "parcelas": 1,
+        "installmentVal": 139.8
+      },
+      {
+        "id": 1779322055666,
+        "card": "inter",
+        "date": "2026-05-10",
+        "desc": "🔄 Academia(rafa)",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 139.8,
+        "parcelas": 1,
+        "installmentVal": 139.8
+      },
+      {
+        "id": 1779322056645,
+        "card": "inter",
+        "date": "2026-05-10",
+        "desc": "🔄 Academia(kelvin)",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 139.8,
+        "parcelas": 1,
+        "installmentVal": 139.8
+      },
+      {
+        "id": 1779322057759,
+        "card": "inter",
+        "date": "2026-05-10",
+        "desc": "🔄 Parcela do terreno",
+        "cat": "Terreno",
+        "subcat": "Parcela",
+        "total": 1164.82,
+        "parcelas": 1,
+        "installmentVal": 1164.82
+      },
+      {
+        "id": 1779322058692,
+        "card": "inter",
+        "date": "2026-05-10",
+        "desc": "🔄 Internet",
+        "cat": "Contas",
+        "subcat": "Internet",
+        "total": 99.9,
+        "parcelas": 1,
+        "installmentVal": 99.9
+      },
+      {
+        "id": 1779321769987,
+        "card": "inter",
+        "date": "2026-05-09",
+        "desc": "Alimentação",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 57.17,
+        "parcelas": 1,
+        "installmentVal": 57.17
+      },
+      {
+        "id": 1779321803543,
+        "card": "inter",
+        "date": "2026-05-07",
+        "desc": "Alimentação",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 76.88,
+        "parcelas": 1,
+        "installmentVal": 76.88
+      },
+      {
+        "id": 1779321818973,
+        "card": "inter",
+        "date": "2026-05-07",
+        "desc": "Obelisco",
+        "cat": "Alimentação",
+        "subcat": "Restaurante",
+        "total": 39.8,
+        "parcelas": 1,
+        "installmentVal": 39.8
+      },
+      {
+        "id": 1779321938023,
+        "card": "inter",
+        "date": "2026-04-10",
+        "desc": "Tecido(Oxfordine)",
+        "cat": "Ateliê",
+        "subcat": "",
+        "total": 492.48,
+        "parcelas": 9,
+        "installmentVal": 54.72
+      },
+      {
+        "id": 1779322342890,
+        "card": "bb",
+        "date": "2026-04-04",
+        "desc": "Casa favorita",
+        "cat": "Ateliê",
+        "subcat": "",
+        "total": 57,
+        "parcelas": 1,
+        "installmentVal": 57
       }
     ],
     "fp_invest_boxes": [
@@ -513,15 +960,73 @@
         "confirmedMonths": []
       },
       {
-        "id": 1779314824784,
+        "id": 1779321684128,
+        "name": "Academia(rafa)",
+        "emoji": "🔄",
+        "type": "expense",
+        "value": 139.8,
+        "day": 10,
+        "cat": "Saúde",
+        "subcat": "",
+        "card": "inter",
+        "confirmedMonths": [
+          "2026-06",
+          "2026-05"
+        ]
+      },
+      {
+        "id": 1779321710343,
+        "name": "Academia(kelvin)",
+        "emoji": "🔄",
+        "type": "expense",
+        "value": 139.8,
+        "day": 10,
+        "cat": "Saúde",
+        "subcat": "",
+        "card": "inter",
+        "confirmedMonths": [
+          "2026-06",
+          "2026-05"
+        ]
+      },
+      {
+        "id": 1779322015898,
         "name": "Parcela do terreno",
         "emoji": "🔄",
         "type": "expense",
-        "value": 1.16482,
+        "value": 1164.82,
         "day": 10,
         "cat": "Terreno",
-        "subcat": "",
-        "card": "pix",
+        "subcat": "Parcela",
+        "card": "inter",
+        "confirmedMonths": [
+          "2026-05"
+        ]
+      },
+      {
+        "id": 1779322047640,
+        "name": "Internet",
+        "emoji": "🔄",
+        "type": "expense",
+        "value": 99.9,
+        "day": 10,
+        "cat": "Contas",
+        "subcat": "Internet",
+        "card": "inter",
+        "confirmedMonths": [
+          "2026-05"
+        ]
+      },
+      {
+        "id": 1779322392668,
+        "name": "Luz",
+        "emoji": "🔄",
+        "type": "expense",
+        "value": 270,
+        "day": 15,
+        "cat": "Contas",
+        "subcat": "Luz",
+        "card": "inter",
         "confirmedMonths": []
       }
     ]
