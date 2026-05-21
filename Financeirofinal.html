@@ -278,7 +278,6 @@
 
     /* RESPONSIVE */
     @media(max-width:900px){.cards-grid{grid-template-columns:1fr 1fr;}.two-col{grid-template-columns:1fr;}}
-    @media(max-width:680px){.sidebar{width:58px;}.sidebar .logo-title,.sidebar .logo-sub,.sidebar .nav-item span,.sidebar-footer{display:none;}.nav-item{justify-content:center;padding:14px;}.main{margin-left:58px;padding:16px;}.cards-grid{grid-template-columns:1fr 1fr;}.form-grid{grid-template-columns:1fr;}}
   </style>
 </head>
 <body>
@@ -290,14 +289,16 @@
       <div class="logo-title">$ FINPRO</div>
       <div class="logo-sub">Sistema Financeiro Pessoal</div>
     </div>
-    <div class="nav-item active" onclick="navigate('dashboard')"><span class="nav-icon">📊</span><span>Dashboard</span></div>
-    <div class="nav-item" onclick="navigate('atelie')"><span class="nav-icon">🧵</span><span>Ateliê</span></div>
-    <div class="nav-item" onclick="navigate('dollar')"><span class="nav-icon">💵</span><span>Dólar</span></div>
-    <div class="nav-item" onclick="navigate('invest')"><span class="nav-icon">🏦</span><span>Metas</span></div>
-    <div class="nav-item" id="nav-movimentos" onclick="navigate('movimentos')"><span class="nav-icon">💰</span><span>Movimentos</span></div>
-    <div class="nav-item" onclick="navigate('budget')"><span class="nav-icon">🎯</span><span>Orçamento</span></div>
-    <div class="nav-item" onclick="navigate('terreno')"><span class="nav-icon">🏗️</span><span>Terreno</span></div>
-    <div class="nav-item" onclick="navigate('categories')"><span class="nav-icon">⚙️</span><span>Config</span></div>
+    <div class="nav">
+      <div class="nav-item active" onclick="navigate('dashboard')"><span class="nav-icon">📊</span><span>Dashboard</span></div>
+      <div class="nav-item" onclick="navigate('atelie')"><span class="nav-icon">🧵</span><span>Ateliê</span></div>
+      <div class="nav-item" onclick="navigate('dollar')"><span class="nav-icon">💵</span><span>Dólar</span></div>
+      <div class="nav-item" onclick="navigate('invest')"><span class="nav-icon">🏦</span><span>Metas</span></div>
+      <div class="nav-item" id="nav-movimentos" onclick="navigate('movimentos')"><span class="nav-icon">💰</span><span>Movimentos</span></div>
+      <div class="nav-item" onclick="navigate('budget')"><span class="nav-icon">🎯</span><span>Orçamento</span></div>
+      <div class="nav-item" onclick="navigate('terreno')"><span class="nav-icon">🏗️</span><span>Terreno</span></div>
+      <div class="nav-item" onclick="navigate('categories')"><span class="nav-icon">⚙️</span><span>Config</span></div>
+    </div>
     <div class="sidebar-footer">v3.0 • dados locais</div>
   </nav>
 
@@ -1788,7 +1789,7 @@
           <div class="panel-title">Nova Categoria</div>
           <div class="form-grid">
             <div class="form-group full"><label>Nome</label><input type="text" id="newcat-name" placeholder="Ex: Ateliê, Pet Shop..."></div>
-            <div class="form-group"><label>Emoji</label><input type="text" id="newcat-emoji" placeholder="🏷️" maxlength="2" style="font-size:20px;text-align:center"></div>
+            <div class="form-group"><label>Emoji</label><input type="text" id="newcat-emoji" placeholder="🏷️" maxlength="4" style="font-size:20px;text-align:center"></div>
             <div class="form-group">
               <label>Tipo</label>
               <select id="newcat-type">
