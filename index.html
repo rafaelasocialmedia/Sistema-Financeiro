@@ -285,7 +285,14 @@
     .sub-tab:hover{color:var(--text);background:rgba(255,255,255,.04);}
     .sub-tab.active{background:var(--accent);color:#050d1a;}
 
-    /* PAYMENT MODE TOGGLE */
+    /* HELP BUTTON */
+    .help-btn{background:none;border:1px solid var(--border);border-radius:50%;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-muted);font-size:12px;font-weight:700;transition:all .2s;flex-shrink:0;margin-left:8px;vertical-align:middle;}
+    .help-btn:hover{border-color:var(--blue);color:var(--blue);}
+    .help-panel{background:var(--surface);border:1px solid var(--blue);border-radius:var(--radius);padding:18px 20px;margin-bottom:18px;font-size:13px;line-height:1.7;color:var(--text-muted);}
+    .help-panel strong{color:var(--text);}
+    .help-panel .help-title{font-size:15px;font-weight:700;color:var(--blue);margin-bottom:10px;}
+    .help-panel ul{padding-left:16px;margin:6px 0;}
+    .help-panel li{margin-bottom:4px;}
     .pay-mode-toggle{display:flex;gap:6px;margin-bottom:16px;}
     .pay-mode-btn{flex:1;padding:9px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text-muted);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-align:center;}
     .pay-mode-btn:hover{border-color:var(--text-dim);color:var(--text);}
@@ -345,7 +352,7 @@
     <div class="page active" id="page-dashboard">
       <div class="page-header">
         <div class="page-header-row">
-          <div><div class="page-title">Dashboard</div><div class="page-subtitle">Visão geral das suas finanças</div></div>
+          <div><div class="page-title">Dashboard <button class="help-btn" onclick="toggleHelp('dashboard')">?</button></div><div class="page-subtitle">Visão geral das suas finanças</div></div>
           <div style="display:flex;gap:8px;align-items:center">
             <button class="btn btn-ghost btn-sm" onclick="exportData()" title="Fazer backup">📤 Exportar</button>
             <button class="btn btn-ghost btn-sm" onclick="document.getElementById('import-input').click()" title="Restaurar backup">📥 Importar</button>
@@ -370,7 +377,7 @@
             <select id="ql-type" onchange="onQlTypeChange()">
               <option value="expense">🔴 Despesa</option>
               <option value="income">💚 Receita</option>
-              <option value="terreno">🏗️ Terreno</option>
+              <option value="invest">🏦 Investimento</option>
             </select>
           </div>
           <div class="form-group" id="ql-cat-group" style="flex:1;min-width:130px">
@@ -409,6 +416,11 @@
               <option value="ml">🟢 Mercado Livre</option>
             </select>
           </div>
+          <!-- Qual caixinha? (Investimento) -->
+          <div class="form-group" id="ql-invest-group" style="display:none;flex:1;min-width:130px">
+            <label>Caixinha</label>
+            <select id="ql-invest-box"></select>
+          </div>
           <div class="form-group" style="flex:1;min-width:120px">
             <label>Descrição</label>
             <input type="text" id="ql-desc" placeholder="Ex: Mercado, Salário...">
@@ -425,8 +437,8 @@
             <button class="btn btn-primary" onclick="quickLaunch()">⚡ Lançar</button>
           </div>
         </div>
-        <div id="ql-terreno-info" style="display:none;margin-top:10px;padding:10px 14px;background:var(--surface);border-radius:var(--radius-sm);font-size:13px;color:var(--text-muted)">
-          🏗️ Parcela do terreno: <strong style="color:var(--gold)" id="ql-terreno-val"></strong> — 1 clique registra e lança como despesa.
+        <div id="ql-invest-info" style="display:none;margin-top:10px;padding:10px 14px;background:var(--surface);border-radius:var(--radius-sm);font-size:13px;color:var(--text-muted)">
+          🏦 O aporte será registrado na caixinha selecionada automaticamente.
         </div>
       </div>
       <div class="cards-grid">
@@ -540,6 +552,14 @@
 
     <!-- ═══════════ TRANSAÇÕES ═══════════ -->
     <div class="page" id="page-transactions">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div>
+            <div class="page-title">💰 Movimentos <button class="help-btn" onclick="toggleHelp('transactions')">?</button></div>
+            <div class="page-subtitle">Transações, cartões e recorrentes</div>
+          </div>
+        </div>
+      </div>
       <div class="sub-tabs">
         <div class="sub-tab active" onclick="navigate('transactions')">↕️ Transações</div>
         <div class="sub-tab" onclick="navigate('extra')">💼 Renda Extra</div>
@@ -834,7 +854,7 @@
     <div class="page" id="page-budget">
       <div class="page-header">
         <div class="page-header-row">
-          <div><div class="page-title">Orçamento Mensal</div><div class="page-subtitle">Limites por categoria e subcategoria — veja os gargalos</div></div>
+          <div><div class="page-title">Orçamento Mensal <button class="help-btn" onclick="toggleHelp('budget')">?</button></div><div class="page-subtitle">Limites por categoria e subcategoria — veja os gargalos</div></div>
           <div class="month-selector">
             <div class="month-btn" onclick="changeMonth(-1)">‹</div>
             <div class="current-month" id="budget-month-label"></div>
@@ -917,7 +937,7 @@
       <div class="page-header">
         <div class="page-header-row">
           <div>
-            <div class="page-title">💵 Salário em Dólar</div>
+            <div class="page-title">💵 Salário em Dólar <button class="help-btn" onclick="toggleHelp('dollar')">?</button></div>
             <div class="page-subtitle">Acompanhe o câmbio efetivo mês a mês e veja a média real</div>
           </div>
           <div style="font-size:12px;color:var(--text-muted);text-align:right;font-family:var(--font-num)">
@@ -1084,7 +1104,7 @@
       <div class="page-header">
         <div class="page-header-row">
           <div>
-            <div class="page-title">🏗️ Financiamento do Terreno</div>
+            <div class="page-title">🏗️ Financiamento do Terreno <button class="help-btn" onclick="toggleHelp('terreno')">?</button></div>
             <div class="page-subtitle">Acompanhe o progresso e planeje a quitação</div>
           </div>
           <div id="terreno-reajuste-badge" style="display:none;background:var(--gold-dim);border:1px solid var(--gold);border-radius:var(--radius-sm);padding:8px 14px;font-size:13px;color:var(--gold);font-weight:600">
@@ -1274,7 +1294,7 @@
       <div class="page-header">
         <div class="page-header-row">
           <div>
-            <div class="page-title">💼 Renda Extra</div>
+            <div class="page-title">💼 Renda Extra <button class="help-btn" onclick="toggleHelp('extra')">?</button></div>
             <div class="page-subtitle">Registre ganhos extras e controle o que vai pro investimento</div>
           </div>
           <div class="month-selector">
@@ -1425,7 +1445,7 @@
       <div class="page-header">
         <div class="page-header-row">
           <div>
-            <div class="page-title">🏦 Metas</div>
+            <div class="page-title">🏦 Metas <button class="help-btn" onclick="toggleHelp('invest')">?</button></div>
             <div class="page-subtitle">Suas caixinhas de objetivos financeiros</div>
           </div>
         </div>
@@ -1580,7 +1600,7 @@
       <div class="page-header">
         <div class="page-header-row">
           <div>
-            <div class="page-title">🧵 Ateliê</div>
+            <div class="page-title">🧵 Ateliê <button class="help-btn" onclick="toggleHelp('atelie')">?</button></div>
             <div class="page-subtitle">Vendas, custos e lucro do seu negócio</div>
           </div>
           <div class="month-selector">
@@ -1794,7 +1814,7 @@
     <!-- ═══════════ CATEGORIAS ═══════════ -->
     <div class="page" id="page-categories">
       <div class="page-header">
-        <div class="page-title">Categorias & Config</div>
+        <div class="page-title">Categorias & Config <button class="help-btn" onclick="toggleHelp('config')">?</button></div>
         <div class="page-subtitle">Gerencie categorias, sync e backup</div>
       </div>
 
@@ -2303,6 +2323,117 @@ function syncFromGithub() {
     notify('❌ Erro ao carregar: ' + err.message, true);
   });
 }
+// ══════════════════════════════════════════════════════════════
+// SISTEMA DE AJUDA (botão ?)
+// ══════════════════════════════════════════════════════════════
+var HELP_TEXTS = {
+  dashboard: {
+    title: '📊 Dashboard — Visão Geral',
+    text: '<ul>'
+      +'<li><strong>Lançamento Rápido</strong> — registre qualquer movimentação aqui: despesa, receita ou aporte em meta. É o atalho principal do sistema.</li>'
+      +'<li><strong>Cards de resumo</strong> — mostram o Saldo, Receitas, Despesas e Parcelas do mês atual.</li>'
+      +'<li><strong>Estimativa do Mês</strong> — mostra quanto já confirmou, quanto está pendente (recorrentes não confirmados) e como o mês deve fechar.</li>'
+      +'<li><strong>Visão Real</strong> — separa entradas e saídas com mais detalhe.</li>'
+      +'<li><strong>Seletor de mês</strong> (‹ ›) — navegue entre meses para ver o histórico.</li>'
+      +'</ul>'
+  },
+  transactions: {
+    title: '↕️ Movimentos — Transações e Cartões',
+    text: '<ul>'
+      +'<li><strong>Nova Transação</strong> — use o toggle <em>Dinheiro / Pix / Cartão</em> para indicar como pagou. Quando for Cartão, escolha o cartão e o número de parcelas.</li>'
+      +'<li><strong>Assinaturas & Recorrentes</strong> — cadastre gastos e receitas fixas mensais (academia, salário, Netflix...). Todo mês aparecem para confirmar com um clique.</li>'
+      +'<li><strong>💳 Cartões de Crédito</strong> — veja resumo de faturas, parcelas e vencimentos de cada cartão.</li>'
+      +'<li><strong>Histórico</strong> — filtre por tipo, categoria ou origem. Cores: 🟢 receita, 🟣 recorrente, 🟡 parcela, 🔵 cartão avulso, sem cor = dinheiro/pix.</li>'
+      +'</ul>'
+  },
+  budget: {
+    title: '🎯 Orçamento Mensal',
+    text: '<ul>'
+      +'<li><strong>O que é</strong> — defina um limite de gasto por categoria. O sistema mostra quanto gastou vs o limite.</li>'
+      +'<li><strong>Barra de progresso</strong> — verde = dentro do limite, amarelo = chegando perto, vermelho = estourou.</li>'
+      +'<li><strong>Subcategorias</strong> — defina limites por subcategoria para controle mais detalhado.</li>'
+      +'</ul>'
+  },
+  dollar: {
+    title: '💵 Salário em Dólar',
+    text: '<ul>'
+      +'<li><strong>Para quem recebe em dólar</strong> — registre mês a mês o valor em dólar e a cotação do dia.</li>'
+      +'<li><strong>Câmbio efetivo</strong> — calcula automaticamente o valor real recebido em reais.</li>'
+      +'<li><strong>Média e projeção</strong> — com 3+ meses registrados, calcula a média do câmbio e projeta o próximo recebimento.</li>'
+      +'</ul>'
+  },
+  terreno: {
+    title: '🏗️ Financiamento do Terreno',
+    text: '<ul>'
+      +'<li><strong>Configure uma vez</strong> — informe o valor total, número de parcelas, valor da parcela e dia de vencimento.</li>'
+      +'<li><strong>Acompanhamento</strong> — veja quantas parcelas já foram pagas, quantas faltam e o progresso geral.</li>'
+      +'<li><strong>Alerta no Dashboard</strong> — quando o vencimento estiver próximo, aparece um aviso automático.</li>'
+      +'<li><strong>Aportes extras</strong> — registre pagamentos adicionais para quitar mais rápido.</li>'
+      +'</ul>'
+  },
+  extra: {
+    title: '💼 Renda Extra',
+    text: '<ul>'
+      +'<li><strong>O que registrar aqui</strong> — ganhos fora do salário fixo: freelas, vendas, comissões, bicos.</li>'
+      +'<li><strong>Destino do ganho</strong> — indique se vai para consumo ou para investimento.</li>'
+      +'<li><strong>Dica</strong> — use a Renda Extra para registrar quando retirar dinheiro do Ateliê para uso pessoal.</li>'
+      +'</ul>'
+  },
+  invest: {
+    title: '🏦 Metas & Caixinhas',
+    text: '<ul>'
+      +'<li><strong>Caixinhas</strong> — cada caixinha é um objetivo: viagem, celular novo, reserva de emergência, etc.</li>'
+      +'<li><strong>Aportes</strong> — registre quanto colocou em cada caixinha. O sistema mostra o progresso em relação à meta.</li>'
+      +'<li><strong>Rendimento</strong> — informe a taxa de juros anual estimada para calcular o crescimento do dinheiro.</li>'
+      +'<li><strong>Lançamento Rápido</strong> — no Dashboard, use o tipo "🏦 Investimento" para aportar direto em uma caixinha.</li>'
+      +'<li><strong>Dica</strong> — mantenha sempre uma caixinha de Reserva de Emergência com pelo menos 3 meses de gastos.</li>'
+      +'</ul>'
+  },
+  atelie: {
+    title: '🧵 Ateliê — Controle do Negócio',
+    text: '<ul>'
+      +'<li><strong>Vendas</strong> — registre cada venda com valor, categoria e data. Separa à vista, parcelado e adiantamento.</li>'
+      +'<li><strong>Custos</strong> — registre gastos do negócio: materiais, ferramentas, transporte. Isso reduz o lucro e dá uma visão real do resultado.</li>'
+      +'<li><strong>Lucro</strong> — calculado automaticamente como Vendas − Custos.</li>'
+      +'<li><strong>Adiantamentos</strong> — valores recebidos antes de entregar o produto. Ficam separados até a entrega ser confirmada.</li>'
+      +'<li><strong>Dica</strong> — mantenha o Ateliê separado das finanças pessoais.</li>'
+      +'</ul>'
+  },
+  config: {
+    title: '⚙️ Categorias & Config',
+    text: '<ul>'
+      +'<li><strong>Sync com GitHub</strong> — salve seus dados na nuvem e carregue em qualquer dispositivo. Configure o token uma vez e use Salvar/Carregar.</li>'
+      +'<li><strong>Nova Categoria</strong> — crie categorias com emoji e tipo. Categorias padrão não podem ser removidas mas aceitam subcategorias.</li>'
+      +'<li><strong>Subcategorias</strong> — clique em qualquer categoria para expandir e adicionar subcategorias.</li>'
+      +'<li><strong>Exportar/Importar</strong> — backup dos dados em arquivo JSON. Use para migrar entre dispositivos.</li>'
+      +'</ul>'
+  }
+};
+
+var helpVisible = {};
+
+function toggleHelp(page) {
+  var panelId = 'help-panel-' + page;
+  var panel   = document.getElementById(panelId);
+  if (!panel) {
+    var h = HELP_TEXTS[page];
+    if (!h) return;
+    panel           = document.createElement('div');
+    panel.id        = panelId;
+    panel.className = 'help-panel';
+    panel.innerHTML = '<div class="help-title">'+h.title+'</div>'+h.text;
+    var btn    = document.querySelector('[onclick="toggleHelp(\''+page+'\')"]');
+    if (!btn) return;
+    var header = btn.closest('.page-header') || btn.closest('.panel') || btn.parentElement.parentElement;
+    if (header) header.parentNode.insertBefore(panel, header.nextSibling);
+    helpVisible[page] = true;
+  } else {
+    helpVisible[page] = !helpVisible[page];
+    panel.style.display = helpVisible[page] ? 'block' : 'none';
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
 function populateTxCatSelect() {
   var typeVal = document.getElementById('tx-type') ? document.getElementById('tx-type').value : 'income';
   var cats    = getCatsByType(typeVal);
@@ -5518,16 +5649,18 @@ function onQlTypeChange() {
   var catGroup     = document.getElementById('ql-cat-group');
   var cardGroup    = document.getElementById('ql-card-group');
   var valGroup     = document.getElementById('ql-value-group');
-  var terInfo      = document.getElementById('ql-terreno-info');
+  var investInfo   = document.getElementById('ql-invest-info');
+  var investGroup  = document.getElementById('ql-invest-group');
   var paymentGroup = document.getElementById('ql-payment-group');
   var pixGroup     = document.getElementById('ql-pix-group');
+  var isInvest     = type === 'invest';
 
-  catGroup.style.display     = type === 'terreno' ? 'none' : '';
+  catGroup.style.display     = isInvest ? 'none' : '';
   paymentGroup.style.display = type === 'expense' ? '' : 'none';
   pixGroup.style.display     = 'none';
   cardGroup.style.display    = 'none';
-  terInfo.style.display      = type === 'terreno' ? 'block' : 'none';
-  valGroup.style.display     = type === 'terreno' ? 'none' : '';
+  if (investInfo)  investInfo.style.display  = isInvest ? 'block' : 'none';
+  if (investGroup) investGroup.style.display = isInvest ? '' : 'none';
 
   if (type === 'expense') {
     var payment = document.getElementById('ql-payment').value;
@@ -5535,12 +5668,20 @@ function onQlTypeChange() {
     if (payment === 'credito') cardGroup.style.display = '';
   }
 
-  if (type === 'terreno') {
-    var d  = loadTerreno();
-    var el = document.getElementById('ql-terreno-val');
-    if (el) el.textContent = fmt(d.installment);
+  if (isInvest) {
+    // Popular caixinhas
+    var boxes  = loadKey('invest_boxes');
+    var boxSel = document.getElementById('ql-invest-box');
+    if (boxSel && boxes.length) {
+      boxSel.innerHTML = boxes.map(function(b){
+        return '<option value="'+b.id+'">'+escHtml(b.name)+'</option>';
+      }).join('');
+    } else if (boxSel) {
+      boxSel.innerHTML = '<option value="">Nenhuma caixinha cadastrada</option>';
+    }
   }
-  if (type !== 'cartao') populateQlCatSelect();
+
+  if (!isInvest) populateQlCatSelect();
 }
 
 function quickLaunch() {
@@ -5550,24 +5691,30 @@ function quickLaunch() {
 
   if (!date) return notify('Informe a data', true);
 
-  // Terreno — quick payment
-  if (type === 'terreno') {
-    var d = loadTerreno();
-    if (d.paid >= d.total) return notify('Todas as parcelas já foram pagas!', true);
-    d.paid++;
-    saveTerreno_data(d);
-    // Create transaction
+  // Investimento — aporte na caixinha
+  if (type === 'invest') {
+    var val2    = parseFloat(document.getElementById('ql-value').value);
+    var boxId   = parseInt(document.getElementById('ql-invest-box').value);
+    if (!val2 || val2 <= 0) return notify('Informe o valor do aporte', true);
+    if (!boxId)             return notify('Selecione uma caixinha', true);
+
+    var boxes  = loadKey('invest_boxes');
+    var box    = boxes.find(function(b){ return b.id === boxId; });
+    if (!box)  return notify('Caixinha não encontrada', true);
+
+    var aportes = loadKey('invest_aportes');
+    aportes.push({ id: Date.now(), boxId: boxId, value: val2, rate: box.rate || 0, date: date, notes: desc });
+    saveKey('invest_aportes', aportes);
+
     var txs = loadKey('transactions');
-    txs.push({
-      id: Date.now(), type:'expense', amount: d.installment,
-      cat:'Terreno', subcat:'Parcela',
-      desc:'Parcela terreno '+d.paid+'/'+d.total,
-      date: date, source:'terreno'
-    });
+    txs.push({ id: Date.now()+1, type:'expense', amount: val2, cat:'Investimentos', subcat: box.name, desc:'Aporte: '+box.name+(desc?' — '+desc:''), date: date });
     saveKey('transactions', txs);
-    notify('✓ Parcela '+d.paid+'/'+d.total+' paga e lançada!');
+
+    document.getElementById('ql-value').value = '';
+    document.getElementById('ql-desc').value  = '';
+    notify('✓ Aporte de '+fmt(val2)+' registrado em "'+box.name+'"!');
     renderDashboard();
-    document.getElementById('ql-desc').value = '';
+    renderInvest();
     return;
   }
 
