@@ -285,6 +285,11 @@
     .sub-tab:hover{color:var(--text);background:rgba(255,255,255,.04);}
     .sub-tab.active{background:var(--accent);color:#050d1a;}
 
+    .emoji-grid{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px;}
+    .emoji-grid span{font-size:22px;cursor:pointer;padding:4px;border-radius:6px;transition:background .15s;line-height:1;}
+    .emoji-grid span:hover{background:var(--accent-dim);}
+    .emoji-grid span.selected{background:var(--accent-dim);outline:2px solid var(--accent);}
+
     /* HELP BUTTON */
     .help-btn{background:none;border:1px solid var(--border);border-radius:50%;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-muted);font-size:12px;font-weight:700;transition:all .2s;flex-shrink:0;margin-left:8px;vertical-align:middle;}
     .help-btn:hover{border-color:var(--blue);color:var(--blue);}
@@ -688,7 +693,10 @@
             </div>
             <div class="form-group">
               <label>Emoji / Ícone</label>
-              <input type="text" id="sub-emoji" placeholder="☁️" maxlength="4" style="font-size:20px;text-align:center">
+              <div style="display:flex;align-items:center;gap:8px">
+                <div id="sub-emoji-preview" onclick="openEmojiPicker('sub-emoji-preview', function(e){ window._subEmoji=e; })" style="font-size:28px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer" title="Clique para escolher">☁️</div>
+                <span style="font-size:12px;color:var(--text-muted)">Clique para escolher</span>
+              </div>
             </div>
             <div class="form-group">
               <label>Tipo</label>
@@ -1499,7 +1507,10 @@
             </div>
             <div class="form-group">
               <label>Emoji</label>
-              <input type="text" id="inv-box-emoji" placeholder="🏦" maxlength="2" style="font-size:20px;text-align:center">
+              <div style="display:flex;align-items:center;gap:8px">
+                <div id="inv-box-emoji-preview" onclick="openEmojiPicker('inv-box-emoji-preview', function(e){ window._invBoxEmoji=e; })" style="font-size:28px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer" title="Clique para escolher">🏦</div>
+                <span style="font-size:12px;color:var(--text-muted)">Clique para escolher</span>
+              </div>
             </div>
             <div class="form-group">
               <label>Cor</label>
@@ -1854,7 +1865,13 @@
           <div class="panel-title">Nova Categoria</div>
           <div class="form-grid">
             <div class="form-group full"><label>Nome</label><input type="text" id="newcat-name" placeholder="Ex: Ateliê, Pet Shop..."></div>
-            <div class="form-group"><label>Emoji</label><input type="text" id="newcat-emoji" placeholder="🏷️" maxlength="4" style="font-size:20px;text-align:center"></div>
+            <div class="form-group">
+              <label>Emoji</label>
+              <div style="display:flex;align-items:center;gap:8px">
+                <div id="newcat-emoji-preview" onclick="openEmojiPicker('newcat-emoji-preview', function(e){ window._newcatEmoji=e; })" style="font-size:28px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer" title="Clique para escolher">🏷️</div>
+                <span style="font-size:12px;color:var(--text-muted)">Clique para escolher</span>
+              </div>
+            </div>
             <div class="form-group">
               <label>Tipo</label>
               <select id="newcat-type">
@@ -1883,6 +1900,33 @@
     </div>
 
   </main>
+</div>
+
+<!-- Emoji Picker Global Flutuante -->
+<div id="emoji-picker-overlay" style="display:none;position:fixed;inset:0;z-index:3000" onclick="closeEmojiPicker()"></div>
+<div id="emoji-picker" style="display:none;position:fixed;z-index:3001;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;width:320px;max-height:320px;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.4)">
+  <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;font-weight:600">💰 Finanças</div>
+  <div class="emoji-grid">💰💳💵💶💷💴📈📉🏦💹🪙💎💸🤑🏧</div>
+  <div style="font-size:11px;color:var(--text-muted);margin:8px 0 6px;font-weight:600">🍔 Alimentação</div>
+  <div class="emoji-grid">🍔🍕🍣🥗🍜🥩🍰🧁☕🍺🥤🛒🍱🥘🫕</div>
+  <div style="font-size:11px;color:var(--text-muted);margin:8px 0 6px;font-weight:600">🏠 Casa & Vida</div>
+  <div class="emoji-grid">🏠🏡🛋️💡🔧🪴🧹🧺🛁🪟🚿🏗️🔑🪑🛏️</div>
+  <div style="font-size:11px;color:var(--text-muted);margin:8px 0 6px;font-weight:600">🚗 Transporte</div>
+  <div class="emoji-grid">🚗🚕🚌🏍️✈️🚂🛳️⛽🅿️🗺️🚦🛞🔋🚲🛵</div>
+  <div style="font-size:11px;color:var(--text-muted);margin:8px 0 6px;font-weight:600">❤️ Saúde</div>
+  <div class="emoji-grid">❤️🏥💊🩺🏋️🧘🧬🩻🩹💉🦷👁️🫀🧠🌡️</div>
+  <div style="font-size:11px;color:var(--text-muted);margin:8px 0 6px;font-weight:600">📚 Educação</div>
+  <div class="emoji-grid">📚📖🎓✏️🖊️💻📐🔬🎒📝🏫🧑‍💻📓🖥️📡</div>
+  <div style="font-size:11px;color:var(--text-muted);margin:8px 0 6px;font-weight:600">🎮 Lazer</div>
+  <div class="emoji-grid">🎮🎬🎵🎸🏖️⛷️🎳🎭🎨🎤🎲🏆🎯🎪🎠</div>
+  <div style="font-size:11px;color:var(--text-muted);margin:8px 0 6px;font-weight:600">👗 Vestuário</div>
+  <div class="emoji-grid">👗👟👜👒💄👔👕🧥👠💍🧣🕶️👛🎽🧤</div>
+  <div style="font-size:11px;color:var(--text-muted);margin:8px 0 6px;font-weight:600">🐶 Pets</div>
+  <div class="emoji-grid">🐶🐱🐹🐰🦜🐠🦮🐾🦴🐈🪺🛁🧴🦟🌿</div>
+  <div style="font-size:11px;color:var(--text-muted);margin:8px 0 6px;font-weight:600">🧵 Trabalho & Negócio</div>
+  <div class="emoji-grid">🧵💼🔨⚙️📦🏭🖨️📋🗂️📊📣🤝🧰🪡✂️</div>
+  <div style="font-size:11px;color:var(--text-muted);margin:8px 0 6px;font-weight:600">🌟 Outros</div>
+  <div class="emoji-grid">🌟⭐🎁🎊🙏🌈☀️🌙⚡🔥💧🌊🍀🌸🦋</div>
 </div>
 
 <div class="notif" id="notif"></div>
@@ -1930,7 +1974,32 @@
   </div>
 </div>
 
-<!-- Modal: Editar Assinatura -->
+<!-- Modal: Editar Categoria -->
+<div class="modal-overlay" id="edit-cat-modal" style="display:none" onclick="if(event.target===this)closeEditCatModal()">
+  <div class="modal-box">
+    <div class="modal-title">
+      ✏️ Editar Categoria
+      <button class="modal-close" onclick="closeEditCatModal()">×</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-group full">
+        <label>Nome</label>
+        <input type="text" id="edit-cat-name">
+      </div>
+      <div class="form-group full">
+        <label>Emoji</label>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px">
+          <div id="edit-cat-emoji-preview" onclick="openEmojiPicker('edit-cat-emoji-preview', function(e){ _editCatEmoji=e; })" style="font-size:32px;width:50px;height:50px;display:flex;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer" title="Clique para escolher">🏷️</div>
+          <div style="font-size:12px;color:var(--text-muted)">Clique para escolher</div>
+        </div>
+      </div>
+      <div class="form-group full" style="flex-direction:row;gap:8px">
+        <button class="btn btn-primary" style="flex:1" onclick="saveEditCat()">Salvar</button>
+        <button class="btn btn-ghost" onclick="closeEditCatModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="modal-overlay" id="edit-sub-modal" style="display:none" onclick="if(event.target===this)closeEditSubModal()">
   <div class="modal-box">
     <div class="modal-title">
@@ -1944,7 +2013,10 @@
       </div>
       <div class="form-group">
         <label>Emoji</label>
-        <input type="text" id="edit-sub-emoji" maxlength="4" style="font-size:20px;text-align:center">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div id="edit-sub-emoji-preview" onclick="openEmojiPicker('edit-sub-emoji-preview', function(e){ window._editSubEmoji=e; })" style="font-size:28px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer" title="Clique para escolher">🔄</div>
+          <span style="font-size:12px;color:var(--text-muted)">Clique para escolher</span>
+        </div>
       </div>
       <div class="form-group">
         <label>Valor (R$)</label>
@@ -2790,7 +2862,8 @@ function openEditSubModal(subId) {
   _editSubId = subId;
 
   document.getElementById('edit-sub-name').value  = sub.name;
-  document.getElementById('edit-sub-emoji').value = sub.emoji || '';
+  var editSubPrev = document.getElementById('edit-sub-emoji-preview');
+  if (editSubPrev) { editSubPrev.textContent = sub.emoji || '🔄'; window._editSubEmoji = sub.emoji || '🔄'; }
   document.getElementById('edit-sub-value').value = sub.value;
   document.getElementById('edit-sub-day').value   = sub.day;
 
@@ -2828,6 +2901,125 @@ function onEditSubCatChange(selectedSubcat) {
   }
 }
 
+var _editCatId = null;
+var _editCatEmoji = '';
+
+function openEditCatModal(catId) {
+  var cats = getCats();
+  var cat  = cats.find(function(c){ return c.id === catId; });
+  if (!cat) return;
+  _editCatId    = catId;
+  _editCatEmoji = cat.emoji;
+
+  document.getElementById('edit-cat-name').value = cat.name;
+  document.getElementById('edit-cat-emoji-preview').textContent = cat.emoji;
+
+  // Transformar texto de emojis em spans clicáveis
+  var grids = document.querySelectorAll('.emoji-grid');
+  grids.forEach(function(grid) {
+    if (grid.dataset.initialized) return;
+    var emojis = grid.textContent.trim();
+    grid.innerHTML = '';
+    // Dividir por caracteres de emoji (pode ter múltiplos code points)
+    var arr = Array.from(emojis);
+    arr.forEach(function(em) {
+      if (em.trim()) {
+        var span = document.createElement('span');
+        span.textContent = em;
+        span.onclick = function() { selectEmoji(em); };
+        grid.appendChild(span);
+      }
+    });
+    grid.dataset.initialized = '1';
+  });
+
+  // Marcar emoji atual como selecionado
+  selectEmoji(cat.emoji);
+  document.getElementById('edit-cat-modal').style.display = 'flex';
+}
+
+var _emojiPickerCallback = null;
+var _emojiPickerPreviewId = null;
+
+function openEmojiPicker(targetPreviewId, onSelect) {
+  _emojiPickerCallback  = onSelect;
+  _emojiPickerPreviewId = targetPreviewId;
+
+  var picker  = document.getElementById('emoji-picker');
+  var overlay = document.getElementById('emoji-picker-overlay');
+  var preview = document.getElementById(targetPreviewId);
+  if (!picker || !preview) return;
+
+  // Inicializar spans se ainda não foi feito
+  if (!picker.dataset.initialized) {
+    var grids = picker.querySelectorAll('.emoji-grid');
+    grids.forEach(function(grid) {
+      var emojis = Array.from(grid.textContent.trim());
+      grid.innerHTML = '';
+      emojis.forEach(function(em) {
+        if (em.trim()) {
+          var span = document.createElement('span');
+          span.textContent = em;
+          span.onclick = function(e) {
+            e.stopPropagation();
+            var el = document.getElementById(_emojiPickerPreviewId);
+            if (el) el.textContent = em;
+            picker.querySelectorAll('.emoji-grid span').forEach(function(s){ s.classList.remove('selected'); });
+            span.classList.add('selected');
+            if (_emojiPickerCallback) _emojiPickerCallback(em);
+            closeEmojiPicker();
+          };
+          grid.appendChild(span);
+        }
+      });
+    });
+    picker.dataset.initialized = '1';
+  }
+
+  // Posicionar próximo ao preview
+  var rect = preview.getBoundingClientRect();
+  picker.style.top  = Math.min(rect.bottom + 6, window.innerHeight - 340) + 'px';
+  picker.style.left = Math.min(rect.left, window.innerWidth - 330) + 'px';
+  picker.style.display = 'block';
+  if (overlay) overlay.style.display = 'block';
+}
+
+function closeEmojiPicker() {
+  var picker  = document.getElementById('emoji-picker');
+  var overlay = document.getElementById('emoji-picker-overlay');
+  if (picker)  picker.style.display  = 'none';
+  if (overlay) overlay.style.display = 'none';
+}
+
+function selectEmoji(emoji) {
+  _editCatEmoji = emoji;
+  var preview = document.getElementById('edit-cat-emoji-preview');
+  if (preview) preview.textContent = emoji;
+}
+
+function closeEditCatModal() {
+  document.getElementById('edit-cat-modal').style.display = 'none';
+  _editCatId = null;
+}
+
+function saveEditCat() {
+  if (!_editCatId) return;
+  var name = document.getElementById('edit-cat-name').value.trim();
+  if (!name) return notify('Informe o nome da categoria', true);
+
+  var cats = getCats();
+  var idx  = cats.findIndex(function(c){ return c.id === _editCatId; });
+  if (idx === -1) return;
+
+  cats[idx].name  = name;
+  cats[idx].emoji = _editCatEmoji || cats[idx].emoji;
+  saveKey('cats', cats);
+
+  closeEditCatModal();
+  notify('✓ Categoria atualizada!');
+  renderCatsPage();
+}
+
 function closeEditSubModal() {
   document.getElementById('edit-sub-modal').style.display = 'none';
   _editSubId = null;
@@ -2850,7 +3042,7 @@ function saveEditSub() {
   var subcat   = (subcatEl && document.getElementById('edit-sub-subcat-group').style.display !== 'none') ? subcatEl.value : '';
 
   subs[idx].name   = name;
-  subs[idx].emoji  = document.getElementById('edit-sub-emoji').value.trim() || subs[idx].emoji;
+  subs[idx].emoji  = window._editSubEmoji || document.getElementById('edit-sub-emoji-preview').textContent.trim() || subs[idx].emoji;
   subs[idx].value  = value;
   subs[idx].day    = day;
   subs[idx].cat    = document.getElementById('edit-sub-cat').value;
@@ -2978,7 +3170,7 @@ function toggleAddSubForm() {
 
 function saveSubscription() {
   var name   = document.getElementById('sub-name').value.trim();
-  var emoji  = document.getElementById('sub-emoji').value.trim() || (currentSubsTab === 'income' ? '💚' : '🔄');
+  var emoji  = (window._subEmoji || document.getElementById('sub-emoji-preview').textContent.trim() || (currentSubsTab === 'income' ? '💚' : '🔄'));
   var type   = document.getElementById('sub-type').value;
   var value  = parseFloat(document.getElementById('sub-value').value);
   var day    = parseInt(document.getElementById('sub-day').value);
@@ -2996,7 +3188,9 @@ function saveSubscription() {
   saveSubscriptions(subs);
 
   document.getElementById('sub-name').value  = '';
-  document.getElementById('sub-emoji').value = '';
+  var subPrev = document.getElementById('sub-emoji-preview');
+  if (subPrev) subPrev.textContent = '🔄';
+  window._subEmoji = '';
   document.getElementById('sub-value').value = '';
   document.getElementById('sub-day').value   = '';
   toggleAddSubForm();
@@ -3681,7 +3875,7 @@ function undoInstallment(id) {
 }
 
 function deleteDebt(id) {
-  if (!confirm('Remover esta dívida permanentemente?')) return;
+  
   saveKey('debts', loadKey('debts').filter(function(d){ return d.id!==id; }));
   notify('Dívida removida.');
   renderDebts();
@@ -3745,7 +3939,7 @@ function renderDebts() {
 // ══════════════════════════════════════════════════════════════
 function addCategory() {
   var name  = document.getElementById('newcat-name').value.trim();
-  var emoji = document.getElementById('newcat-emoji').value.trim() || '🏷️';
+  var emoji = (window._newcatEmoji || document.getElementById('newcat-emoji-preview').textContent.trim() || '🏷️');
   var type  = document.getElementById('newcat-type').value;
   if (!name) return notify('Informe o nome da categoria', true);
   var cats = getCats();
@@ -3754,13 +3948,15 @@ function addCategory() {
   cats.push({id:genId(), name:name, emoji:emoji, type:type, isDefault:false, subcategories:[]});
   saveCats(cats);
   document.getElementById('newcat-name').value  = '';
-  document.getElementById('newcat-emoji').value = '';
+  var newcatPrev = document.getElementById('newcat-emoji-preview');
+  if (newcatPrev) newcatPrev.textContent = '🏷️';
+  window._newcatEmoji = '';
   notify('✓ Categoria "'+name+'" criada!');
   renderCatsPage();
 }
 
 function deleteCategory(id) {
-  if (!confirm('Remover esta categoria? Transações existentes não serão afetadas.')) return;
+  
   saveCats(getCats().filter(function(c){ return c.id!==id; }));
   notify('Categoria removida.');
   renderCatsPage();
@@ -3849,6 +4045,7 @@ function renderCatsPage() {
           +'</div>'
         +'</div>'
         +'<div style="display:flex;align-items:center;gap:8px">'
+          +'<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openEditCatModal(\''+c.id+'\')" title="Editar">✏️</button>'
           +(!c.isDefault?'<button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteCategory(\''+c.id+'\')" title="Remover categoria">✕ Remover</button>':'')
           +'<span class="cat-chevron">▶</span>'
         +'</div>'
@@ -3987,7 +4184,7 @@ function addDollarEntry() {
 }
 
 function deleteDollarEntry(id) {
-  if (!confirm('Remover este registro?')) return;
+  
   saveDollar(loadDollar().filter(function(e){ return e.id !== id; }));
   notify('Registro removido.');
   renderDollarPage();
@@ -4429,7 +4626,7 @@ function cycleDestination(id) {
 }
 
 function deleteExtra(id) {
-  if (!confirm('Remover este registro?')) return;
+  
   saveExtra(loadExtra().filter(function(e){ return e.id !== id; }));
   notify('Registro removido.');
   renderExtraPage();
@@ -4528,7 +4725,7 @@ function addCarPurchase() {
 }
 
 function deleteCarPurchase(id) {
-  if (!confirm('Remover este lançamento e todas as parcelas das Transações?')) return;
+  
   // Remove from car_purchases
   savePurchases(loadPurchases().filter(function(p){ return p.id !== id; }));
   // Remove all related transactions
@@ -4750,7 +4947,7 @@ function seedInvestIfNeeded() {
 function addInvestBox() {
   var name  = document.getElementById('inv-box-name').value.trim();
   var goal  = parseFloat(document.getElementById('inv-box-goal').value);
-  var emoji = document.getElementById('inv-box-emoji').value.trim() || '🏦';
+  var emoji = (window._invBoxEmoji || document.getElementById('inv-box-emoji-preview').textContent.trim() || '🏦');
   var color = document.getElementById('inv-box-color').value;
   var notes = document.getElementById('inv-box-notes').value.trim();
 
@@ -4763,14 +4960,16 @@ function addInvestBox() {
 
   document.getElementById('inv-box-name').value  = '';
   document.getElementById('inv-box-goal').value  = '';
-  document.getElementById('inv-box-emoji').value = '';
+  var invBoxPrev = document.getElementById('inv-box-emoji-preview');
+  if (invBoxPrev) invBoxPrev.textContent = '🏦';
+  window._invBoxEmoji = '';
   document.getElementById('inv-box-notes').value = '';
   notify('✓ Caixinha "'+name+'" criada!');
   renderInvest();
 }
 
 function deleteInvestBox(id) {
-  if (!confirm('Remover esta caixinha? Os aportes registrados nela também serão removidos.')) return;
+  
   saveInvestBoxes(loadInvestBoxes().filter(function(b){ return b.id !== id; }));
   saveAportes(loadAportes().filter(function(a){ return a.boxId !== id; }));
   notify('Caixinha removida.');
@@ -4825,7 +5024,6 @@ function addAporte() {
 }
 
 function deleteAporte(id) {
-  if (!confirm('Remover este aporte?')) return;
   saveAportes(loadAportes().filter(function(a){ return a.id !== id; }));
   notify('Aporte removido.');
   renderInvest();
@@ -5080,7 +5278,7 @@ function addAtlSale() {
 }
 
 function deleteAtlSale(id) {
-  if (!confirm('Remover esta venda?')) return;
+  
   saveAtlSales(loadAtlSales().filter(function(s){return s.id!==id;}));
   notify('Venda removida.');
   renderAtelie();
@@ -5124,7 +5322,7 @@ function addAtlCost() {
 }
 
 function deleteAtlCost(id) {
-  if (!confirm('Remover este custo?')) return;
+  
   saveAtlCosts(loadAtlCosts().filter(function(c){return c.id!==id;}));
   notify('Custo removido.');
   renderAtelie();
@@ -5172,7 +5370,7 @@ function addTerAporte() {
 }
 
 function deleteTerAporte(id) {
-  if (!confirm('Remover este aporte?')) return;
+  
   saveTerAportes(loadTerAportes().filter(function(a){ return a.id!==id; }));
   notify('Aporte removido.');
   renderTerAnt();
@@ -5384,7 +5582,7 @@ function updateAtlAdiantStatus(id, status) {
 }
 
 function deleteAtlAdiant(id) {
-  if (!confirm('Remover este adiantamento?')) return;
+  
   saveAtlAdiant(loadAtlAdiant().filter(function(a){ return a.id !== id; }));
   notify('Removido.');
   renderAtlAdiant();
