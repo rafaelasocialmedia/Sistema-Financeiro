@@ -2,7 +2,8 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <script>if(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)||screen.width<=768){document.documentElement.classList.add('is-mobile');}</script>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
@@ -174,6 +175,33 @@
     @keyframes slideUp{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
 
     /* ══════════ RESPONSIVO MOBILE ══════════ */
+    /* MOBILE — via classe JS (compatível com todos os navegadores mobile) */
+    .is-mobile .sidebar{width:100%!important;height:auto!important;position:fixed!important;bottom:0!important;top:auto!important;left:0!important;right:0!important;flex-direction:row!important;padding:0!important;border-right:none!important;border-top:1px solid var(--border)!important;z-index:200!important;overflow-x:auto!important;display:flex!important;}
+    .is-mobile .logo,.is-mobile .sidebar-footer{display:none!important;}
+    .is-mobile .nav{display:flex!important;flex-direction:row!important;width:100%!important;}
+    .is-mobile .nav-item{flex-direction:column!important;gap:2px!important;padding:6px 4px!important;font-size:9px!important;border-left:none!important;border-top:3px solid transparent!important;flex:1!important;min-width:44px!important;text-align:center!important;justify-content:center!important;display:flex!important;align-items:center!important;}
+    .is-mobile .nav-item.active{border-left-color:transparent!important;border-top-color:var(--accent)!important;}
+    .is-mobile .nav-icon{font-size:20px!important;}
+    .is-mobile .nav-item span{font-size:9px!important;}
+    .is-mobile .main{margin-left:0!important;padding:12px 10px!important;padding-bottom:80px!important;}
+    .is-mobile .cards-grid{grid-template-columns:1fr 1fr!important;gap:8px!important;}
+    .is-mobile .two-col,.is-mobile .form-grid{grid-template-columns:1fr!important;}
+    .is-mobile .form-group.full{grid-column:1!important;}
+    .is-mobile .page-title{font-size:18px!important;}
+    .is-mobile .page-header-row{flex-direction:column!important;align-items:flex-start!important;gap:8px!important;}
+    .is-mobile .sub-tabs{gap:2px!important;}
+    .is-mobile .sub-tab{font-size:11px!important;padding:8px 4px!important;}
+    .is-mobile .pay-mode-toggle{flex-direction:row!important;}
+    .is-mobile .pay-mode-btn{font-size:10px!important;padding:7px 2px!important;}
+    .is-mobile .table-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch!important;}
+    .is-mobile table{min-width:480px!important;}
+    .is-mobile .modal-box{margin:10px!important;max-height:88vh!important;}
+    .is-mobile .card-value{font-size:16px!important;}
+    .is-mobile .sub-card{flex-direction:column!important;align-items:flex-start!important;gap:8px!important;}
+    .is-mobile .sub-card-right{width:100%!important;justify-content:space-between!important;}
+    .is-mobile #dash-estimativa>div{grid-template-columns:1fr 1fr!important;gap:8px!important;}
+    .is-mobile .panel{padding:14px!important;}
+
     @media (max-width: 768px) {
       .sidebar {
         width: 100% !important;
@@ -1974,7 +2002,109 @@
   </div>
 </div>
 
-<!-- Modal: Editar Categoria -->
+<!-- Modal: Editar Aporte -->
+<div class="modal-overlay" id="edit-aporte-modal" style="display:none" onclick="if(event.target===this)closeModal('edit-aporte-modal')">
+  <div class="modal-box">
+    <div class="modal-title">✏️ Editar Aporte <button class="modal-close" onclick="closeModal('edit-aporte-modal')">×</button></div>
+    <div class="form-grid">
+      <div class="form-group"><label>Valor (R$)</label><input type="number" id="ea-value" step="0.01"></div>
+      <div class="form-group"><label>Data</label><input type="date" id="ea-date"></div>
+      <div class="form-group"><label>Caixinha</label><select id="ea-box"></select></div>
+      <div class="form-group"><label>Notas</label><input type="text" id="ea-notes"></div>
+      <div class="form-group full" style="flex-direction:row;gap:8px">
+        <button class="btn btn-primary" style="flex:1" onclick="saveEditAporte()">Salvar</button>
+        <button class="btn btn-ghost" onclick="closeModal('edit-aporte-modal')">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Editar Dólar -->
+<div class="modal-overlay" id="edit-dollar-modal" style="display:none" onclick="if(event.target===this)closeModal('edit-dollar-modal')">
+  <div class="modal-box">
+    <div class="modal-title">✏️ Editar Registro Dólar <button class="modal-close" onclick="closeModal('edit-dollar-modal')">×</button></div>
+    <div class="form-grid">
+      <div class="form-group"><label>Mês</label><input type="month" id="ed-month"></div>
+      <div class="form-group"><label>Valor (USD)</label><input type="number" id="ed-usd" step="0.01"></div>
+      <div class="form-group"><label>Cotação (R$)</label><input type="number" id="ed-rate" step="0.01"></div>
+      <div class="form-group full" style="flex-direction:row;gap:8px">
+        <button class="btn btn-primary" style="flex:1" onclick="saveEditDollar()">Salvar</button>
+        <button class="btn btn-ghost" onclick="closeModal('edit-dollar-modal')">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Editar Renda Extra -->
+<div class="modal-overlay" id="edit-extra-modal" style="display:none" onclick="if(event.target===this)closeModal('edit-extra-modal')">
+  <div class="modal-box">
+    <div class="modal-title">✏️ Editar Renda Extra <button class="modal-close" onclick="closeModal('edit-extra-modal')">×</button></div>
+    <div class="form-grid">
+      <div class="form-group"><label>Descrição</label><input type="text" id="ee-desc"></div>
+      <div class="form-group"><label>Valor (R$)</label><input type="number" id="ee-value" step="0.01"></div>
+      <div class="form-group"><label>Data</label><input type="date" id="ee-date"></div>
+      <div class="form-group full" style="flex-direction:row;gap:8px">
+        <button class="btn btn-primary" style="flex:1" onclick="saveEditExtra()">Salvar</button>
+        <button class="btn btn-ghost" onclick="closeModal('edit-extra-modal')">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Editar Venda Ateliê -->
+<div class="modal-overlay" id="edit-atl-sale-modal" style="display:none" onclick="if(event.target===this)closeModal('edit-atl-sale-modal')">
+  <div class="modal-box">
+    <div class="modal-title">✏️ Editar Venda <button class="modal-close" onclick="closeModal('edit-atl-sale-modal')">×</button></div>
+    <div class="form-grid">
+      <div class="form-group"><label>Descrição</label><input type="text" id="eas-desc"></div>
+      <div class="form-group"><label>Valor (R$)</label><input type="number" id="eas-value" step="0.01"></div>
+      <div class="form-group"><label>Data</label><input type="date" id="eas-date"></div>
+      <div class="form-group full" style="flex-direction:row;gap:8px">
+        <button class="btn btn-primary" style="flex:1" onclick="saveEditAtlSale()">Salvar</button>
+        <button class="btn btn-ghost" onclick="closeModal('edit-atl-sale-modal')">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Editar Custo Ateliê -->
+<div class="modal-overlay" id="edit-atl-cost-modal" style="display:none" onclick="if(event.target===this)closeModal('edit-atl-cost-modal')">
+  <div class="modal-box">
+    <div class="modal-title">✏️ Editar Custo <button class="modal-close" onclick="closeModal('edit-atl-cost-modal')">×</button></div>
+    <div class="form-grid">
+      <div class="form-group"><label>Descrição</label><input type="text" id="eac-desc"></div>
+      <div class="form-group"><label>Valor (R$)</label><input type="number" id="eac-value" step="0.01"></div>
+      <div class="form-group"><label>Data</label><input type="date" id="eac-date"></div>
+      <div class="form-group full" style="flex-direction:row;gap:8px">
+        <button class="btn btn-primary" style="flex:1" onclick="saveEditAtlCost()">Salvar</button>
+        <button class="btn btn-ghost" onclick="closeModal('edit-atl-cost-modal')">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Editar Caixinha -->
+<div class="modal-overlay" id="edit-invest-box-modal" style="display:none" onclick="if(event.target===this)closeModal('edit-invest-box-modal')">
+  <div class="modal-box">
+    <div class="modal-title">✏️ Editar Caixinha <button class="modal-close" onclick="closeModal('edit-invest-box-modal')">×</button></div>
+    <div class="form-grid">
+      <div class="form-group"><label>Nome</label><input type="text" id="eib-name"></div>
+      <div class="form-group">
+        <label>Emoji</label>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div id="eib-emoji-preview" onclick="openEmojiPicker('eib-emoji-preview', function(e){ window._eibEmoji=e; })" style="font-size:28px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer">🏦</div>
+          <span style="font-size:12px;color:var(--text-muted)">Clique para escolher</span>
+        </div>
+      </div>
+      <div class="form-group"><label>Meta (R$)</label><input type="number" id="eib-goal" step="0.01"></div>
+      <div class="form-group"><label>Taxa anual (%)</label><input type="number" id="eib-rate" step="0.01"></div>
+      <div class="form-group full" style="flex-direction:row;gap:8px">
+        <button class="btn btn-primary" style="flex:1" onclick="saveEditInvestBox()">Salvar</button>
+        <button class="btn btn-ghost" onclick="closeModal('edit-invest-box-modal')">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="modal-overlay" id="edit-cat-modal" style="display:none" onclick="if(event.target===this)closeEditCatModal()">
   <div class="modal-box">
     <div class="modal-title">
@@ -3055,6 +3185,171 @@ function saveEditSub() {
   closeEditSubModal();
   notify('✓ Atualizado!');
   renderSubscriptions();
+}
+
+function closeModal(id) {
+  var el = document.getElementById(id);
+  if (el) el.style.display = 'none';
+}
+
+// ── Editar Aporte ──
+var _editAporteId = null;
+function openEditAporteModal(id) {
+  var aportes = loadAportes();
+  var a = aportes.find(function(x){ return x.id == id; });
+  if (!a) return;
+  _editAporteId = id;
+  document.getElementById('ea-value').value = a.val;
+  document.getElementById('ea-date').value  = a.date;
+  document.getElementById('ea-notes').value = a.notes || '';
+  var boxes = loadInvestBoxes();
+  var sel   = document.getElementById('ea-box');
+  sel.innerHTML = boxes.map(function(b){ return '<option value="'+b.id+'"'+(b.id==a.boxId?' selected':'')+'>'+b.emoji+' '+escHtml(b.name)+'</option>'; }).join('');
+  document.getElementById('edit-aporte-modal').style.display = 'flex';
+}
+function saveEditAporte() {
+  var aportes = loadAportes();
+  var idx = aportes.findIndex(function(x){ return x.id == _editAporteId; });
+  if (idx === -1) return;
+  aportes[idx].val   = parseFloat(document.getElementById('ea-value').value);
+  aportes[idx].date  = document.getElementById('ea-date').value;
+  aportes[idx].notes = document.getElementById('ea-notes').value.trim();
+  aportes[idx].boxId = parseInt(document.getElementById('ea-box').value);
+  saveAportes(aportes);
+  closeModal('edit-aporte-modal');
+  notify('✓ Aporte atualizado!');
+  renderInvest();
+}
+
+// ── Editar Dólar ──
+var _editDollarId = null;
+function openEditDollarModal(id) {
+  var entries = loadKey('dollar_entries');
+  var e = entries.find(function(x){ return x.id == id; });
+  if (!e) return;
+  _editDollarId = id;
+  document.getElementById('ed-month').value = e.month;
+  document.getElementById('ed-usd').value   = e.usd;
+  document.getElementById('ed-rate').value  = e.rate;
+  document.getElementById('edit-dollar-modal').style.display = 'flex';
+}
+function saveEditDollar() {
+  var entries = loadKey('dollar_entries');
+  var idx = entries.findIndex(function(x){ return x.id == _editDollarId; });
+  if (idx === -1) return;
+  entries[idx].month = document.getElementById('ed-month').value;
+  entries[idx].usd   = parseFloat(document.getElementById('ed-usd').value);
+  entries[idx].rate  = parseFloat(document.getElementById('ed-rate').value);
+  entries[idx].brl   = entries[idx].usd * entries[idx].rate;
+  saveKey('dollar_entries', entries);
+  closeModal('edit-dollar-modal');
+  notify('✓ Registro atualizado!');
+  renderDollarPage();
+}
+
+// ── Editar Renda Extra ──
+var _editExtraId = null;
+function openEditExtraModal(id) {
+  var entries = loadKey('extra_entries');
+  var e = entries.find(function(x){ return x.id == id; });
+  if (!e) return;
+  _editExtraId = id;
+  document.getElementById('ee-desc').value  = e.desc || '';
+  document.getElementById('ee-value').value = e.value;
+  document.getElementById('ee-date').value  = e.date;
+  document.getElementById('edit-extra-modal').style.display = 'flex';
+}
+function saveEditExtra() {
+  var entries = loadKey('extra_entries');
+  var idx = entries.findIndex(function(x){ return x.id == _editExtraId; });
+  if (idx === -1) return;
+  entries[idx].desc  = document.getElementById('ee-desc').value.trim();
+  entries[idx].value = parseFloat(document.getElementById('ee-value').value);
+  entries[idx].date  = document.getElementById('ee-date').value;
+  saveKey('extra_entries', entries);
+  closeModal('edit-extra-modal');
+  notify('✓ Renda Extra atualizada!');
+  renderExtraPage();
+}
+
+// ── Editar Venda Ateliê ──
+var _editAtlSaleId = null;
+function openEditAtlSaleModal(id) {
+  var sales = loadKey('atelie_sales');
+  var s = sales.find(function(x){ return x.id == id; });
+  if (!s) return;
+  _editAtlSaleId = id;
+  document.getElementById('eas-desc').value  = s.desc || '';
+  document.getElementById('eas-value').value = s.value;
+  document.getElementById('eas-date').value  = s.date;
+  document.getElementById('edit-atl-sale-modal').style.display = 'flex';
+}
+function saveEditAtlSale() {
+  var sales = loadKey('atelie_sales');
+  var idx = sales.findIndex(function(x){ return x.id == _editAtlSaleId; });
+  if (idx === -1) return;
+  sales[idx].desc  = document.getElementById('eas-desc').value.trim();
+  sales[idx].value = parseFloat(document.getElementById('eas-value').value);
+  sales[idx].date  = document.getElementById('eas-date').value;
+  saveKey('atelie_sales', sales);
+  closeModal('edit-atl-sale-modal');
+  notify('✓ Venda atualizada!');
+  renderAtelie();
+}
+
+// ── Editar Custo Ateliê ──
+var _editAtlCostId = null;
+function openEditAtlCostModal(id) {
+  var costs = loadKey('atelie_costs');
+  var c = costs.find(function(x){ return x.id == id; });
+  if (!c) return;
+  _editAtlCostId = id;
+  document.getElementById('eac-desc').value  = c.desc || '';
+  document.getElementById('eac-value').value = c.value;
+  document.getElementById('eac-date').value  = c.date;
+  document.getElementById('edit-atl-cost-modal').style.display = 'flex';
+}
+function saveEditAtlCost() {
+  var costs = loadKey('atelie_costs');
+  var idx = costs.findIndex(function(x){ return x.id == _editAtlCostId; });
+  if (idx === -1) return;
+  costs[idx].desc  = document.getElementById('eac-desc').value.trim();
+  costs[idx].value = parseFloat(document.getElementById('eac-value').value);
+  costs[idx].date  = document.getElementById('eac-date').value;
+  saveKey('atelie_costs', costs);
+  closeModal('edit-atl-cost-modal');
+  notify('✓ Custo atualizado!');
+  renderAtelie();
+}
+
+// ── Editar Caixinha ──
+var _editInvestBoxId = null;
+function openEditInvestBoxModal(id) {
+  var boxes = loadInvestBoxes();
+  var b = boxes.find(function(x){ return x.id == id; });
+  if (!b) return;
+  _editInvestBoxId = id;
+  document.getElementById('eib-name').value  = b.name;
+  document.getElementById('eib-goal').value  = b.goal || '';
+  document.getElementById('eib-rate').value  = b.rate || '';
+  var prev = document.getElementById('eib-emoji-preview');
+  if (prev) { prev.textContent = b.emoji || '🏦'; window._eibEmoji = b.emoji || '🏦'; }
+  document.getElementById('edit-invest-box-modal').style.display = 'flex';
+}
+function saveEditInvestBox() {
+  var boxes = loadInvestBoxes();
+  var idx = boxes.findIndex(function(x){ return x.id == _editInvestBoxId; });
+  if (idx === -1) return;
+  var name = document.getElementById('eib-name').value.trim();
+  if (!name) return notify('Informe o nome', true);
+  boxes[idx].name  = name;
+  boxes[idx].emoji = window._eibEmoji || document.getElementById('eib-emoji-preview').textContent.trim() || boxes[idx].emoji;
+  boxes[idx].goal  = parseFloat(document.getElementById('eib-goal').value) || 0;
+  boxes[idx].rate  = parseFloat(document.getElementById('eib-rate').value) || 0;
+  saveInvestBoxes(boxes);
+  closeModal('edit-invest-box-modal');
+  notify('✓ Caixinha atualizada!');
+  renderInvest();
 }
 
 function closeEditCarModal() {
@@ -4291,7 +4586,7 @@ function renderDollarPage() {
       +'<td style="font-family:var(--font-num);color:'+diffColor+'">'+(e.diff!=null?(e.diff>=0?'+':'-')+fmt(Math.abs(e.diff)):'—')+'</td>'
       +'<td>'+vsStr+'</td>'
       +'<td style="font-size:12px;color:var(--text-muted)">'+escHtml(e.notes||'—')+'</td>'
-      +'<td><button class="btn btn-danger btn-sm" onclick="deleteDollarEntry('+e.id+')">✕</button></td>'
+      +'<td><button class="btn btn-ghost btn-sm" onclick="openEditDollarModal('+e.id+')" title="Editar">✏️</button><button class="btn btn-danger btn-sm" onclick="deleteDollarEntry('+e.id+')">✕</button></td>'
       +'</tr>';
   }).join('');
 }
@@ -4701,7 +4996,7 @@ function renderExtraTable() {
       +'<td>'+currLabel+'</td>'
       +'<td class="amount-pos">'+fmt(e.brl)+usdInfo+'</td>'
       +'<td>'+destLabel+'</td>'
-      +'<td><button class="btn btn-danger btn-sm" onclick="deleteExtra('+e.id+')">✕</button></td>'
+      +'<td><button class="btn btn-ghost btn-sm" onclick="openEditExtraModal('+e.id+')" title="Editar">✏️</button><button class="btn btn-danger btn-sm" onclick="deleteExtra('+e.id+')">✕</button></td>'
       +'</tr>';
   }).join('');
 }
@@ -5139,6 +5434,7 @@ function renderInvest() {
                 +(b.notes?'<div style="font-size:11px;color:var(--text-muted);margin-top:2px">'+escHtml(b.notes)+'</div>':'')
               +'</div>'
             +'</div>'
+            +'<button class="btn btn-ghost btn-sm" onclick="openEditInvestBoxModal(\''+b.id+'\')" title="Editar">✏️</button>'
             +'<button class="btn btn-danger btn-sm" onclick="deleteInvestBox(\''+b.id+'\')">✕</button>'
           +'</div>'
           +'<div style="display:flex;justify-content:space-between;margin-bottom:4px">'
@@ -5209,7 +5505,7 @@ function renderInvestHistory() {
       +'<td class="amount-pos">'+fmt(a.val)+'</td>'
       +'<td style="font-family:var(--font-num);color:var(--accent)">'+fmt(currentVal)
         +(interest>0?'<div style="font-size:10px;color:var(--accent)">+'+fmt(interest)+' juros</div>':'')+'</td>'
-      +'<td><button class="btn btn-danger btn-sm" onclick="deleteAporte('+a.id+')">✕</button></td>'
+      +'<td><button class="btn btn-ghost btn-sm" onclick="openEditAporteModal('+a.id+')" title="Editar">✏️</button><button class="btn btn-danger btn-sm" onclick="deleteAporte('+a.id+')">✕</button></td>'
       +'</tr>';
   }).join('');
 }
@@ -5712,7 +6008,7 @@ function renderAtlTables() {
         +'<td>'+escHtml(s.desc)+'</td>'
         +'<td style="font-family:var(--font-num);color:var(--text-muted)">'+fmt(s.value)+commNote+'</td>'
         +'<td class="amount-pos">'+fmt(s.liquid)+'</td>'
-        +'<td><button class="btn btn-danger btn-sm" onclick="deleteAtlSale('+s.id+')">✕</button></td>'
+        +'<td><button class="btn btn-ghost btn-sm" onclick="openEditAtlSaleModal('+s.id+')" title="Editar">✏️</button><button class="btn btn-danger btn-sm" onclick="deleteAtlSale('+s.id+')">✕</button></td>'
         +'</tr>';
     }).join('');
   }
@@ -5730,7 +6026,7 @@ function renderAtlTables() {
         +'<td>'+escHtml(c.desc)+'</td>'
         +'<td style="font-size:12px;color:var(--text-muted)">'+payLabel+'</td>'
         +'<td class="amount-neg">'+fmt(c.value)+'</td>'
-        +'<td><button class="btn btn-danger btn-sm" onclick="deleteAtlCost('+c.id+')">✕</button></td>'
+        +'<td><button class="btn btn-ghost btn-sm" onclick="openEditAtlCostModal('+c.id+')" title="Editar">✏️</button><button class="btn btn-danger btn-sm" onclick="deleteAtlCost('+c.id+')">✕</button></td>'
         +'</tr>';
     }).join('');
   }
@@ -6047,6 +6343,35 @@ function quickPayTerreno() {
       });
     });
     if (changed) saveKey('transactions', txs);
+  })();
+
+  // Forçar layout mobile via JS — compatível com Samsung Internet
+  (function applyMobileLayout() {
+    var isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+    if (!isMobile) return;
+    var style = document.createElement('style');
+    style.textContent = [
+      '.sidebar{width:100%!important;height:auto!important;position:fixed!important;bottom:0!important;top:auto!important;left:0!important;right:0!important;flex-direction:row!important;padding:0!important;border-right:none!important;border-top:1px solid var(--border)!important;z-index:200!important;overflow-x:auto!important;display:flex!important;}',
+      '.logo{display:none!important;} .sidebar-footer{display:none!important;}',
+      '.nav{display:flex!important;flex-direction:row!important;width:100%!important;}',
+      '.nav-item{flex-direction:column!important;gap:2px!important;padding:6px 4px!important;font-size:9px!important;border-left:none!important;border-top:3px solid transparent!important;flex:1!important;min-width:44px!important;text-align:center!important;justify-content:center!important;display:flex!important;align-items:center!important;}',
+      '.nav-item.active{border-left-color:transparent!important;border-top-color:var(--accent)!important;}',
+      '.nav-icon{font-size:20px!important;} .nav-item span{font-size:9px!important;}',
+      '.main{margin-left:0!important;padding:12px 10px!important;padding-bottom:80px!important;}',
+      '.cards-grid{grid-template-columns:1fr 1fr!important;gap:8px!important;}',
+      '.two-col{grid-template-columns:1fr!important;} .form-grid{grid-template-columns:1fr!important;}',
+      '.form-group.full{grid-column:1!important;} .page-title{font-size:18px!important;}',
+      '.page-header-row{flex-direction:column!important;align-items:flex-start!important;gap:8px!important;}',
+      '.sub-tabs{gap:2px!important;} .sub-tab{font-size:11px!important;padding:8px 4px!important;}',
+      '.pay-mode-toggle{flex-direction:row!important;} .pay-mode-btn{font-size:10px!important;padding:7px 2px!important;}',
+      '.table-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch!important;} table{min-width:480px!important;}',
+      '.modal-box{margin:10px!important;max-height:88vh!important;} .card-value{font-size:16px!important;}',
+      '.sub-card{flex-direction:column!important;align-items:flex-start!important;gap:8px!important;}',
+      '.sub-card-right{width:100%!important;justify-content:space-between!important;}',
+      '#dash-estimativa>div{grid-template-columns:1fr 1fr!important;gap:8px!important;}',
+      '.panel{padding:14px!important;} .panel-title{font-size:13px!important;}',
+    ].join('');
+    document.head.appendChild(style);
   })();
 
   renderDashboard();
