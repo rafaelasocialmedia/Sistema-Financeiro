@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-05-21T02:08:04.854Z",
+  "savedAt": "2026-05-23T14:01:22.948Z",
   "data": {
     "fp_cats": [
       {
@@ -522,6 +522,30 @@
         "purchaseId": 1779321938023
       },
       {
+        "id": 1779540900755,
+        "type": "expense",
+        "amount": 117.9,
+        "cat": "Alimentação",
+        "subcat": "Delivery",
+        "desc": "X calota (💜 Nubank)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1779540900754
+      },
+      {
+        "id": 1779540917263,
+        "type": "expense",
+        "amount": 80,
+        "cat": "Alimentação",
+        "subcat": "Delivery",
+        "desc": "Pizza (💜 Nubank)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1779540917262
+      },
+      {
         "id": 1779312247447,
         "type": "income",
         "amount": 2500,
@@ -551,7 +575,7 @@
         "subcat": "",
         "desc": "🔄 Academia(kelvin) (🏦 Inter)",
         "date": "2026-05-10",
-        "source": "cartao",
+        "source": "recorrente",
         "card": "inter",
         "purchaseId": 1779321721892
       },
@@ -563,7 +587,7 @@
         "subcat": "",
         "desc": "🔄 Academia(rafa) (🏦 Inter)",
         "date": "2026-05-10",
-        "source": "cartao",
+        "source": "recorrente",
         "card": "inter",
         "purchaseId": 1779321722764
       },
@@ -587,7 +611,7 @@
         "subcat": "",
         "desc": "🔄 Academia(rafa) (🏦 Inter)",
         "date": "2026-05-10",
-        "source": "cartao",
+        "source": "recorrente",
         "card": "inter",
         "purchaseId": 1779322055666
       },
@@ -599,7 +623,7 @@
         "subcat": "",
         "desc": "🔄 Academia(kelvin) (🏦 Inter)",
         "date": "2026-05-10",
-        "source": "cartao",
+        "source": "recorrente",
         "card": "inter",
         "purchaseId": 1779322056645
       },
@@ -611,7 +635,7 @@
         "subcat": "Parcela",
         "desc": "🔄 Parcela do terreno (🏦 Inter)",
         "date": "2026-05-10",
-        "source": "cartao",
+        "source": "recorrente",
         "card": "inter",
         "purchaseId": 1779322057759
       },
@@ -623,7 +647,7 @@
         "subcat": "Internet",
         "desc": "🔄 Internet (🏦 Inter)",
         "date": "2026-05-10",
-        "source": "cartao",
+        "source": "recorrente",
         "card": "inter",
         "purchaseId": 1779322058692
       },
@@ -651,6 +675,28 @@
         "total": 685.64,
         "parcelas": 1,
         "installmentVal": 685.64
+      },
+      {
+        "id": 1779540900754,
+        "card": "nubank",
+        "date": "2026-05-22",
+        "desc": "X calota",
+        "cat": "Alimentação",
+        "subcat": "Delivery",
+        "total": 117.9,
+        "parcelas": 1,
+        "installmentVal": 117.9
+      },
+      {
+        "id": 1779540917262,
+        "card": "nubank",
+        "date": "2026-05-22",
+        "desc": "Pizza",
+        "cat": "Alimentação",
+        "subcat": "Delivery",
+        "total": 80,
+        "parcelas": 1,
+        "installmentVal": 80
       },
       {
         "id": 1779321513444,
