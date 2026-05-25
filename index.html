@@ -390,6 +390,7 @@
       <div class="nav-item" id="nav-movimentos" onclick="navigate('movimentos')"><span class="nav-icon">💰</span><span>Movimentos</span></div>
       <div class="nav-item" onclick="navigate('budget')"><span class="nav-icon">🎯</span><span>Orçamento</span></div>
       <div class="nav-item" onclick="navigate('terreno')"><span class="nav-icon">🏗️</span><span>Terreno</span></div>
+      <div class="nav-item" onclick="navigate('anual')"><span class="nav-icon">📅</span><span>Anual</span></div>
       <div class="nav-item" onclick="navigate('categories')"><span class="nav-icon">⚙️</span><span>Config</span></div>
     </div>
     <div class="sidebar-footer">v3.1 • dados locais</div>
@@ -1867,6 +1868,86 @@
     </div>
 
     <!-- ═══════════ CATEGORIAS ═══════════ -->
+    <!-- ═══════════ ANUAL ═══════════ -->
+    <div class="page" id="page-anual">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div>
+            <div class="page-title">📅 Visão Anual <button class="help-btn" onclick="toggleHelp('anual')">?</button></div>
+            <div class="page-subtitle">Resumo completo — clique em um mês para ver detalhes</div>
+          </div>
+          <div class="year-nav-row" style="display:flex;align-items:center;gap:12px">
+            <div class="month-btn" onclick="changeAnualYear(-1)">‹</div>
+            <div style="font-size:20px;font-weight:700;font-family:var(--font-num)" id="anual-year-label">2026</div>
+            <div class="month-btn" onclick="changeAnualYear(1)">›</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Investimentos (acima) -->
+      <div class="panel" id="anual-inv-panel" style="border-color:var(--purple);margin-bottom:18px">
+        <div class="panel-title" style="color:var(--purple)">
+          <span>🏦 Investimentos — progresso acumulado</span>
+          <button class="btn btn-ghost btn-sm" onclick="toggleAnualInv()" id="anual-inv-toggle-btn">▼ Recolher</button>
+        </div>
+        <div id="anual-inv-ano-row" style="padding:10px 14px;background:var(--surface);border-radius:var(--radius-sm);display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <span style="font-size:13px;color:var(--text-muted)">Total aportado em <span id="anual-inv-ano-label">2026</span></span>
+          <span style="font-family:var(--font-num);font-size:15px;font-weight:700;color:var(--purple)" id="anual-inv-ano-val">R$ 0,00</span>
+        </div>
+        <div id="anual-inv-list"></div>
+      </div>
+
+      <!-- Resumo receitas/despesas -->
+      <div class="cards-grid" style="margin-bottom:18px">
+        <div class="card"><div class="card-label">💚 Receitas do ano</div><div class="card-value pos" id="anual-total-rec">R$ 0,00</div></div>
+        <div class="card"><div class="card-label">🔴 Despesas do ano</div><div class="card-value neg" id="anual-total-dep">R$ 0,00</div></div>
+        <div class="card"><div class="card-label">✨ Saldo do ano</div><div class="card-value" id="anual-total-sal">R$ 0,00</div></div>
+      </div>
+
+      <!-- Legenda -->
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px;display:flex;gap:14px;flex-wrap:wrap">
+        <span>🟢 Verde = receita</span>
+        <span>🔴 Vermelho = despesa</span>
+        <span>🟣 Roxo = aporte (mais intenso = maior aporte)</span>
+      </div>
+
+      <!-- Grid meses -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px" id="anual-months-grid"></div>
+
+      <!-- Detalhe do mês -->
+      <div class="panel" id="anual-month-detail" style="display:none;border-color:var(--accent)">
+        <div class="panel-title" id="anual-month-detail-title" style="color:var(--accent)"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div style="padding:10px;background:var(--surface);border-radius:var(--radius-sm)">
+            <div style="font-size:11px;color:var(--text-muted)">💚 Receitas</div>
+            <div style="font-family:var(--font-num);color:var(--accent);font-weight:700" id="anual-md-rec"></div>
+          </div>
+          <div style="padding:10px;background:var(--surface);border-radius:var(--radius-sm)">
+            <div style="font-size:11px;color:var(--text-muted)">🔴 Despesas</div>
+            <div style="font-family:var(--font-num);color:var(--red);font-weight:700" id="anual-md-dep"></div>
+          </div>
+          <div style="padding:10px;background:var(--surface);border-radius:var(--radius-sm)">
+            <div style="font-size:11px;color:var(--text-muted)">🔄 Recorrentes</div>
+            <div style="font-family:var(--font-num);color:var(--gold);font-weight:700" id="anual-md-rec2"></div>
+          </div>
+          <div style="padding:10px;background:var(--surface);border-radius:var(--radius-sm)">
+            <div style="font-size:11px;color:var(--text-muted)">🏦 Aporte</div>
+            <div style="font-family:var(--font-num);color:var(--purple);font-weight:700" id="anual-md-inv"></div>
+          </div>
+          <div style="padding:10px;background:var(--surface);border-radius:var(--radius-sm);grid-column:1/-1">
+            <div style="font-size:11px;color:var(--text-muted)">✨ Saldo</div>
+            <div style="font-family:var(--font-num);font-weight:700;font-size:18px" id="anual-md-sal"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top categorias -->
+      <div class="panel">
+        <div class="panel-title">🏆 Top categorias <span style="font-size:11px;color:var(--text-muted);font-weight:400">por despesa no ano</span></div>
+        <div id="anual-top-cats"></div>
+      </div>
+    </div>
+
     <div class="page" id="page-categories">
       <div class="page-header">
         <div class="page-title">Categorias & Config <button class="help-btn" onclick="toggleHelp('config')">?</button></div>
@@ -2376,6 +2457,7 @@ function refreshPage(page) {
   if (page === 'cartoes')      { populateCarCatSelect(); renderCartoes(); }
   if (page === 'invest')       renderInvest();
   if (page === 'atelie')       renderAtelie();
+  if (page === 'anual')        { renderAnualPage(); }
   if (page === 'categories')   { renderCatsPage(); updateGithubSyncUI(); }
 }
 
@@ -2615,6 +2697,16 @@ var HELP_TEXTS = {
       +'<li><strong>Lucro</strong> — calculado automaticamente como Vendas − Custos.</li>'
       +'<li><strong>Adiantamentos</strong> — valores recebidos antes de entregar o produto. Ficam separados até a entrega ser confirmada.</li>'
       +'<li><strong>Dica</strong> — mantenha o Ateliê separado das finanças pessoais.</li>'
+      +'</ul>'
+  },
+  anual: {
+    title: '📅 Visão Anual',
+    text: '<ul>'
+      +'<li><strong>Investimentos</strong> — sempre no topo, mostrando o progresso acumulado de cada caixinha independente do ano. Não reseta — continua de onde parou.</li>'
+      +'<li><strong>Resumo do ano</strong> — total de receitas, despesas e saldo do ano selecionado.</li>'
+      +'<li><strong>Grid de meses</strong> — clique em qualquer mês para ver o detalhe. Fundo roxo = teve aporte naquele mês, quanto mais intenso maior o aporte.</li>'
+      +'<li><strong>Top categorias</strong> — onde mais gastou no ano.</li>'
+      +'<li><strong>Navegação</strong> — use as setas ‹ › para navegar entre anos.</li>'
       +'</ul>'
   },
   config: {
@@ -5238,8 +5330,163 @@ var INVEST_SEED = [
 
 function loadInvestBoxes()       { return loadKey('invest_boxes',   []); }
 function saveInvestBoxes(boxes)  { saveKey('invest_boxes',   boxes); }
-function loadAportes()           { return loadKey('invest_aportes', []); }
-function saveAportes(aportes)    { saveKey('invest_aportes', aportes); }
+// ══════════════════════════════════════════════════════════════
+// VISÃO ANUAL
+// ══════════════════════════════════════════════════════════════
+var anualYear = new Date().getFullYear();
+var anualSelectedMonth = -1;
+var anualInvExpanded = true;
+
+function changeAnualYear(d) {
+  anualYear += d;
+  anualSelectedMonth = -1;
+  var detail = document.getElementById('anual-month-detail');
+  if (detail) detail.style.display = 'none';
+  renderAnualPage();
+}
+
+function toggleAnualInv() {
+  anualInvExpanded = !anualInvExpanded;
+  var list = document.getElementById('anual-inv-list');
+  var btn  = document.getElementById('anual-inv-toggle-btn');
+  if (list) list.style.display = anualInvExpanded ? 'block' : 'none';
+  if (btn)  btn.textContent    = anualInvExpanded ? '▼ Recolher' : '▶ Expandir';
+}
+
+function renderAnualPage() {
+  var yearEl   = document.getElementById('anual-year-label');
+  var invAnoEl = document.getElementById('anual-inv-ano-label');
+  if (yearEl)   yearEl.textContent   = anualYear;
+  if (invAnoEl) invAnoEl.textContent = anualYear;
+
+  var txs     = loadKey('transactions');
+  var yearTxs = txs.filter(function(t){ return t.date && t.date.startsWith(String(anualYear)); });
+  var allAportes = loadKey('invest_aportes', []);
+
+  var totalRec = yearTxs.filter(function(t){ return t.type==='income'; }).reduce(function(s,t){ return s+t.amount; },0);
+  var totalDep = yearTxs.filter(function(t){ return t.type==='expense'; }).reduce(function(s,t){ return s+t.amount; },0);
+  var totalSal = totalRec - totalDep;
+
+  var recEl = document.getElementById('anual-total-rec'); if (recEl) recEl.textContent = fmt(totalRec);
+  var depEl = document.getElementById('anual-total-dep'); if (depEl) depEl.textContent = fmt(totalDep);
+  var salEl = document.getElementById('anual-total-sal');
+  if (salEl) { salEl.textContent = fmt(Math.abs(totalSal)); salEl.style.color = totalSal>=0?'var(--accent)':'var(--red)'; }
+
+  var aporteMeses = MONTHS_SHORT.map(function(_, m) {
+    var mk = String(anualYear)+'-'+String(m+1).padStart(2,'0');
+    return allAportes.filter(function(a){ return a.date && a.date.startsWith(mk); }).reduce(function(s,a){ return s+(a.val||a.value||0); },0);
+  });
+  var maxAporte = Math.max.apply(null, aporteMeses) || 1;
+
+  var grid = document.getElementById('anual-months-grid');
+  if (grid) {
+    grid.innerHTML = MONTHS_SHORT.map(function(name, m) {
+      var mk   = String(anualYear)+'-'+String(m+1).padStart(2,'0');
+      var mTxs = yearTxs.filter(function(t){ return t.date && t.date.startsWith(mk); });
+      var rec  = mTxs.filter(function(t){ return t.type==='income'; }).reduce(function(s,t){ return s+t.amount; },0);
+      var dep  = mTxs.filter(function(t){ return t.type==='expense'; }).reduce(function(s,t){ return s+t.amount; },0);
+      var sal  = rec - dep;
+      var empty = rec===0 && dep===0;
+      var aporte = aporteMeses[m];
+      var aportePct = aporte>0 ? Math.max(0.08, aporte/maxAporte) : 0;
+      var purpleBg  = aporte>0 ? 'rgba(162,155,254,'+aportePct.toFixed(2)+')' : 'var(--card)';
+      var isActive  = anualSelectedMonth === m;
+      var borderColor = isActive ? 'var(--accent)' : aporte>0 ? 'rgba(162,155,254,0.5)' : 'var(--border)';
+      var maxR = Math.max(rec, dep) || 1;
+      var recH = Math.max(3, Math.round(rec/maxR*20));
+      var depH = Math.max(3, Math.round(dep/maxR*20));
+      var apH  = aporte>0 ? Math.max(3, Math.round(aporte/maxAporte*20)) : 0;
+      return '<div onclick="selectAnualMonth('+m+')" style="background:'+purpleBg+';border:1px solid '+borderColor+';border-radius:var(--radius-sm);padding:12px;cursor:pointer;transition:all .2s">'
+        +'<div style="font-size:12px;color:var(--text-muted);font-weight:600;margin-bottom:6px">'+name+'</div>'
+        +(empty
+          ?'<div style="font-size:11px;color:var(--text-dim)">Sem dados</div>'
+          :'<div style="font-family:var(--font-num);font-size:13px;font-weight:700;color:'+(sal>=0?'var(--accent)':'var(--red)')+'">'+fmt(Math.abs(sal))+'</div>'
+           +(aporte>0?'<div style="font-size:10px;color:var(--purple)">+'+fmt(aporte)+'</div>':'')
+           +'<div style="display:flex;gap:2px;margin-top:6px;align-items:flex-end;height:20px">'
+             +'<div style="flex:1;border-radius:2px;background:var(--accent);height:'+recH+'px"></div>'
+             +'<div style="flex:1;border-radius:2px;background:var(--red);height:'+depH+'px"></div>'
+             +(apH?'<div style="flex:1;border-radius:2px;background:var(--purple);height:'+apH+'px"></div>':'')
+           +'</div>'
+        )+'</div>';
+    }).join('');
+  }
+
+  var boxes   = loadInvestBoxes();
+  var totalAno = 0;
+  var invHtml = boxes.map(function(b) {
+    var acumulado = allAportes.filter(function(a){ return a.boxId==b.id; }).reduce(function(s,a){ return s+(a.val||a.value||0); },0);
+    var anoVal    = allAportes.filter(function(a){ return a.boxId==b.id && a.date && a.date.startsWith(String(anualYear)); }).reduce(function(s,a){ return s+(a.val||a.value||0); },0);
+    totalAno += anoVal;
+    var goal = b.goal || 0;
+    var pct  = goal>0 ? Math.min(100, Math.round(acumulado/goal*100)) : 0;
+    var concluido = goal>0 && acumulado>=goal;
+    var colMap = {accent:'var(--accent)',gold:'var(--gold)',blue:'var(--blue)',red:'var(--red)',purple:'var(--purple)'};
+    var barColor = colMap[b.color] || 'var(--accent)';
+    return '<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;margin-bottom:10px">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'
+        +'<div style="font-size:14px;font-weight:600">'+b.emoji+' '+escHtml(b.name)+(concluido?' <span style="font-size:11px;background:var(--accent-dim);color:var(--accent);padding:2px 8px;border-radius:20px">✅ Concluída</span>':'')+'</div>'
+        +'<div style="font-family:var(--font-num);font-size:12px;color:var(--text-muted)">'+pct+'%</div>'
+      +'</div>'
+      +(goal>0?'<div style="height:8px;background:var(--bg);border-radius:4px;overflow:hidden;margin-bottom:8px"><div style="height:100%;border-radius:4px;width:'+pct+'%;background:'+barColor+'"></div></div>':'')
+      +'<div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted)">'
+        +'<span>Acumulado: <strong style="color:'+barColor+'">'+fmt(acumulado)+'</strong></span>'
+        +(goal>0?'<span>Meta: <strong>'+fmt(goal)+'</strong></span>':'')
+      +'</div>'
+      +(anoVal>0?'<div style="margin-top:6px;font-size:11px;background:rgba(162,155,254,0.15);color:var(--purple);border-radius:20px;padding:2px 8px;display:inline-block">+'+fmt(anoVal)+' em '+anualYear+'</div>':'')
+    +'</div>';
+  }).join('');
+
+  var invAnoVal = document.getElementById('anual-inv-ano-val'); if (invAnoVal) invAnoVal.textContent = fmt(totalAno);
+  var invList   = document.getElementById('anual-inv-list');    if (invList)   invList.innerHTML    = invHtml||'<div style="color:var(--text-muted);font-size:13px;text-align:center;padding:16px">Nenhuma caixinha cadastrada</div>';
+
+  var catTotals = {};
+  yearTxs.filter(function(t){ return t.type==='expense'; }).forEach(function(t){ catTotals[t.cat]=(catTotals[t.cat]||0)+t.amount; });
+  var cats    = Object.keys(catTotals).sort(function(a,b){ return catTotals[b]-catTotals[a]; });
+  var maxCat  = catTotals[cats[0]]||1;
+  var catCols = ['var(--red)','var(--gold)','var(--blue)','var(--accent)','var(--text-muted)'];
+  var topCats = document.getElementById('anual-top-cats');
+  if (topCats) {
+    topCats.innerHTML = cats.length ? cats.slice(0,5).map(function(c,i){
+      var pct    = Math.round(catTotals[c]/maxCat*100);
+      var catObj = getCatByName(c);
+      var emoji  = catObj ? catObj.emoji : '🏷️';
+      return '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">'
+        +'<div style="font-size:13px;flex:1">'+emoji+' '+escHtml(c)+'</div>'
+        +'<div style="flex:2;height:6px;background:var(--surface);border-radius:3px;overflow:hidden"><div style="width:'+pct+'%;height:100%;border-radius:3px;background:'+catCols[i]+'"></div></div>'
+        +'<div style="font-family:var(--font-num);font-size:12px;color:var(--text-muted);min-width:80px;text-align:right">'+fmt(catTotals[c])+'</div>'
+      +'</div>';
+    }).join('') : '<div style="color:var(--text-muted);font-size:13px;text-align:center;padding:16px">Sem dados para este ano</div>';
+  }
+}
+
+function selectAnualMonth(m) {
+  anualSelectedMonth = m;
+  renderAnualPage();
+  var detail = document.getElementById('anual-month-detail');
+  if (!detail) return;
+  var mk       = String(anualYear)+'-'+String(m+1).padStart(2,'0');
+  var txs      = loadKey('transactions');
+  var mTxs     = txs.filter(function(t){ return t.date && t.date.startsWith(mk); });
+  var rec      = mTxs.filter(function(t){ return t.type==='income'; }).reduce(function(s,t){ return s+t.amount; },0);
+  var dep      = mTxs.filter(function(t){ return t.type==='expense'; }).reduce(function(s,t){ return s+t.amount; },0);
+  var rec2     = mTxs.filter(function(t){ return t.source==='recorrente'; }).reduce(function(s,t){ return s+t.amount; },0);
+  var allAp    = loadKey('invest_aportes', []);
+  var inv      = allAp.filter(function(a){ return a.date && a.date.startsWith(mk); }).reduce(function(s,a){ return s+(a.val||a.value||0); },0);
+  var sal      = rec - dep;
+  document.getElementById('anual-month-detail-title').textContent = MONTHS_SHORT[m]+' '+anualYear;
+  document.getElementById('anual-md-rec').textContent  = fmt(rec);
+  document.getElementById('anual-md-dep').textContent  = fmt(dep);
+  document.getElementById('anual-md-rec2').textContent = fmt(rec2);
+  document.getElementById('anual-md-inv').textContent  = inv>0 ? fmt(inv) : 'Nenhum';
+  var salEl = document.getElementById('anual-md-sal');
+  salEl.textContent = fmt(Math.abs(sal));
+  salEl.style.color = sal>=0?'var(--accent)':'var(--red)';
+  detail.style.display = 'block';
+  detail.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function loadAportes()        { return loadKey('invest_aportes', []); }
+function saveAportes(v)       { saveKey('invest_aportes', v); }
 
 function seedInvestIfNeeded() {
   var boxes = loadInvestBoxes();
