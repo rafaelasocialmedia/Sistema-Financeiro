@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-05-23T14:01:22.948Z",
+  "savedAt": "2026-05-27T18:10:52.074Z",
   "data": {
     "fp_cats": [
       {
@@ -134,6 +134,14 @@
           {
             "id": "id_1779314730508_u930d",
             "name": "IPTU"
+          },
+          {
+            "id": "ter_Parcela_Normal",
+            "name": "Parcela Normal"
+          },
+          {
+            "id": "ter_Adiantamento_de_Parcela",
+            "name": "Adiantamento de Parcela"
           }
         ]
       },
@@ -546,6 +554,54 @@
         "purchaseId": 1779540917262
       },
       {
+        "id": 1779905139310,
+        "type": "expense",
+        "amount": 9.2,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779905139309
+      },
+      {
+        "id": 1779905366989,
+        "type": "expense",
+        "amount": 76.2,
+        "cat": "Ateliê",
+        "subcat": "",
+        "desc": "Precisa repor o valor gasto (favorita) (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779905366988
+      },
+      {
+        "id": 1779905399548,
+        "type": "expense",
+        "amount": 12.9,
+        "cat": "Espiritualidade",
+        "subcat": "Transsporte",
+        "desc": "Transporte (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779905399547
+      },
+      {
+        "id": 1779905427470,
+        "type": "expense",
+        "amount": 11.2,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "Precisa repor o valor gasto (favorita) (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1779905427469
+      },
+      {
         "id": 1779312247447,
         "type": "income",
         "amount": 2500,
@@ -555,6 +611,17 @@
         "date": "2026-06-01",
         "payment": "dinheiro",
         "paymentAccount": ""
+      },
+      {
+        "id": 1779903800501,
+        "type": "expense",
+        "amount": 47.37,
+        "cat": "Ateliê",
+        "subcat": "",
+        "desc": "Precisa repor",
+        "date": "2026-05-26",
+        "payment": "pix",
+        "paymentAccount": "bb"
       },
       {
         "id": 1779315423446,
@@ -675,6 +742,61 @@
         "total": 685.64,
         "parcelas": 1,
         "installmentVal": 685.64
+      },
+      {
+        "id": 1779322342890,
+        "card": "bb",
+        "date": "2026-05-27",
+        "desc": "Casa favorita",
+        "cat": "Ateliê",
+        "subcat": "",
+        "total": 57,
+        "parcelas": 1,
+        "installmentVal": 57
+      },
+      {
+        "id": 1779905427469,
+        "card": "inter",
+        "date": "2026-05-27",
+        "desc": "Precisa repor o valor gasto (favorita)",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 11.2,
+        "parcelas": 1,
+        "installmentVal": 11.2
+      },
+      {
+        "id": 1779905139309,
+        "card": "inter",
+        "date": "2026-05-23",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 9.2,
+        "parcelas": 1,
+        "installmentVal": 9.2
+      },
+      {
+        "id": 1779905366988,
+        "card": "inter",
+        "date": "2026-05-23",
+        "desc": "Precisa repor o valor gasto (favorita)",
+        "cat": "Ateliê",
+        "subcat": "",
+        "total": 76.2,
+        "parcelas": 1,
+        "installmentVal": 76.2
+      },
+      {
+        "id": 1779905399547,
+        "card": "inter",
+        "date": "2026-05-23",
+        "desc": "Transporte",
+        "cat": "Espiritualidade",
+        "subcat": "Transsporte",
+        "total": 12.9,
+        "parcelas": 1,
+        "installmentVal": 12.9
       },
       {
         "id": 1779540900754,
@@ -917,17 +1039,6 @@
         "total": 492.48,
         "parcelas": 9,
         "installmentVal": 54.72
-      },
-      {
-        "id": 1779322342890,
-        "card": "bb",
-        "date": "2026-04-04",
-        "desc": "Casa favorita",
-        "cat": "Ateliê",
-        "subcat": "",
-        "total": 57,
-        "parcelas": 1,
-        "installmentVal": 57
       }
     ],
     "fp_invest_boxes": [
@@ -954,6 +1065,17 @@
         "color": "gold",
         "goal": 5000,
         "notes": "CDB Nubank liquidez diária — 100% CDI (~13,15% a.a.)"
+      }
+    ],
+    "fp_atelie_costs": [
+      {
+        "id": 1779905294888,
+        "cat": "Outros",
+        "payment": "outro",
+        "desc": "Precisa repor o valor gasto (favorita)",
+        "value": 76.2,
+        "date": "2026-05-23",
+        "month": "2026-05"
       }
     ],
     "fp_subscriptions": [
