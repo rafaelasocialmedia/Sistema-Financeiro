@@ -1270,63 +1270,78 @@
         </div>
       </div>
 
-      <!-- Fase 2: Semáforo de Antecipação -->
+      <!-- Gráfico mensal de parcelas -->
       <div class="panel" style="border-color:var(--blue)">
         <div class="panel-title" style="color:var(--blue)">
-          🚦 Simulador de Antecipação de Parcelas
-          <span style="font-size:12px;font-weight:400;color:var(--text-muted)">consulte o banco e registre a cotação do mês</span>
-        </div>
-
-        <!-- Semáforo -->
-        <div id="ter-semaforo" style="margin-bottom:20px"></div>
-
-        <div class="two-col">
-          <!-- Configuração -->
-          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px">
-            <div style="font-size:13px;font-weight:600;margin-bottom:12px">⚙️ Configurar Meta</div>
-            <div class="form-grid">
-              <div class="form-group full">
-                <label>Quero antecipar quantas parcelas?</label>
-                <input type="number" id="ter-ant-target" placeholder="Ex: 10" min="1" oninput="saveTerAnt()">
-              </div>
-              <div class="form-group full">
-                <label>Meta mensal de economia (R$)</label>
-                <input type="number" id="ter-ant-monthly" placeholder="Ex: 500,00" step="0.01" min="0" oninput="saveTerAnt()">
-              </div>
-              <div style="grid-column:1/-1;padding:12px 14px;background:var(--gold-dim);border:1px solid var(--gold);border-radius:var(--radius-sm);font-size:13px;color:var(--text-muted)">
-                💰 Para registrar aportes, vá em <strong style="color:var(--gold);cursor:pointer" onclick="navigate('invest')">🏦 Metas → Antecipação Terreno</strong>. O semáforo lê o saldo automaticamente!
-              </div>
-            </div>
+          📊 Pagamentos por Mês
+          <div class="month-selector" style="margin:0">
+            <div class="month-btn" onclick="changeTerYear(-1)">‹</div>
+            <div style="font-size:13px;font-weight:600" id="ter-chart-year">2026</div>
+            <div class="month-btn" onclick="changeTerYear(1)">›</div>
           </div>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:10px;font-size:11px;color:var(--text-muted)">
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:var(--blue);display:inline-block"></span>Normal</span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:var(--accent);display:inline-block"></span>Antecipada</span>
+        </div>
+        <div id="ter-chart" style="display:flex;gap:6px;align-items:flex-end;height:80px;padding-bottom:4px"></div>
+        <div id="ter-chart-labels" style="display:flex;gap:6px;margin-top:4px"></div>
+        <div style="margin-top:14px;display:flex;gap:16px;font-size:13px">
+          <span>Normais: <strong style="color:var(--blue)" id="ter-chart-normal-count">0</strong></span>
+          <span>Antecipadas: <strong style="color:var(--accent)" id="ter-chart-ant-count">0</strong></span>
+          <span>Total ano: <strong style="color:var(--gold)" id="ter-chart-total-val">R$ 0,00</strong></span>
+        </div>
+      </div>
 
-          <!-- Cotação do mês -->
-          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px">
-            <div style="font-size:13px;font-weight:600;margin-bottom:12px">📞 Cotação do Banco este mês</div>
-            <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px">
-              Consulte o banco e informe quanto estão cobrando para antecipar as parcelas escolhidas.
-            </div>
-            <div class="form-grid">
-              <div class="form-group">
-                <label>Mês de referência</label>
-                <input type="month" id="ter-ant-month">
-              </div>
-              <div class="form-group">
-                <label>Nº parcelas cotadas</label>
-                <input type="number" id="ter-ant-quot-n" placeholder="Ex: 10" min="1">
-              </div>
-              <div class="form-group full">
-                <label>Valor da cotação (R$)</label>
-                <input type="number" id="ter-ant-quot-val" placeholder="Ex: 4066,92" step="0.01" min="0">
-              </div>
-              <div class="form-group full">
-                <button class="btn btn-success" style="width:100%" onclick="addTerAntQuot()">+ Registrar Cotação</button>
-              </div>
+      <!-- Meta anual -->
+      <div class="panel" style="border-color:var(--gold)">
+        <div class="panel-title" style="color:var(--gold)">🎯 Meta Anual</div>
+        <div id="ter-meta-anual-content"></div>
+        <div style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px">
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center">
+            <span>Definir meta para <span id="ter-meta-ano-label">2026</span></span>
+            <button class="btn btn-ghost btn-sm" onclick="editTerMetaAnual()" title="Editar meta">✏️ Editar</button>
+          </div>
+          <div id="ter-meta-form" style="display:none">
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <input type="number" id="ter-meta-normais" placeholder="Parcelas normais" min="1" style="flex:1;min-width:140px">
+              <input type="number" id="ter-meta-antecip" placeholder="Antecipações" min="0" style="flex:1;min-width:120px">
+              <button class="btn btn-primary btn-sm" onclick="saveTerMetaAnual()">Salvar</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteTerMetaAnual()" title="Apagar meta">✕</button>
             </div>
           </div>
         </div>
+      </div>
 
+      <!-- Simulador de Antecipação -->
+      <!-- Simulador / Cotação do banco -->
+      <div class="panel" style="border-color:var(--blue)">
+        <div class="panel-title" style="color:var(--blue)">
+          📞 Cotação do Banco
+          <span style="font-size:12px;font-weight:400;color:var(--text-muted)">consulte e registre todo mês</span>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px">
+          Consulte o banco e informe quanto estão cobrando para antecipar as parcelas escolhidas.
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Mês de referência</label>
+            <input type="month" id="ter-ant-month">
+          </div>
+          <div class="form-group">
+            <label>Nº parcelas cotadas</label>
+            <input type="number" id="ter-ant-quot-n" placeholder="Ex: 10" min="1">
+          </div>
+          <div class="form-group full">
+            <label>Valor da cotação (R$)</label>
+            <input type="number" id="ter-ant-quot-val" placeholder="Ex: 4066,92" step="0.01" min="0">
+          </div>
+          <div class="form-group full">
+            <button class="btn btn-primary" style="width:100%" onclick="addTerAntQuot()">+ Registrar Cotação</button>
+          </div>
+        </div>
         <!-- Histórico de cotações -->
-        <div style="margin-top:16px">
+        <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:14px">
           <div style="font-size:13px;font-weight:600;margin-bottom:10px">📋 Histórico de Cotações</div>
           <div id="ter-ant-history">
             <div class="empty-state" style="padding:16px">
@@ -2336,7 +2351,7 @@ const SEED_CATS = [
   {id:'dc7', name:'Contas',          emoji:'⚡', type:'expense',  isDefault:true,
     subcategories:[{id:'s5',name:'Luz'},{id:'s6',name:'Água'},{id:'s7',name:'Internet'},{id:'s8',name:'Gás'}]},
   {id:'dc8', name:'Terreno',         emoji:'🌱', type:'expense',  isDefault:true,
-    subcategories:[{id:'s9',name:'Parcela'},{id:'s10',name:'Condomínio'}]},
+    subcategories:[{id:'s9',name:'Parcela Normal'},{id:'s9b',name:'Adiantamento de Parcela'},{id:'s10',name:'Condomínio'}]},
   {id:'dc9', name:'Transporte',      emoji:'🚗', type:'expense',  isDefault:true,  subcategories:[]},
   {id:'dc10',name:'Saúde',           emoji:'🏥', type:'expense',  isDefault:true,  subcategories:[]},
   {id:'dc11',name:'Educação',        emoji:'📚', type:'expense',  isDefault:true,  subcategories:[]},
@@ -4815,6 +4830,119 @@ var TERRENO_DEFAULT = {
   readjustHistory: []
 };
 
+// ── Gráfico e Meta Anual do Terreno ──
+var terChartYear = new Date().getFullYear();
+
+function changeTerYear(d) {
+  terChartYear += d;
+  var el = document.getElementById('ter-chart-year');
+  if (el) el.textContent = terChartYear;
+  renderTerChart();
+}
+
+function renderTerChart() {
+  var chart  = document.getElementById('ter-chart');
+  var labels = document.getElementById('ter-chart-labels');
+  if (!chart) return;
+
+  var txs     = loadKey('transactions');
+  var yearTxs = txs.filter(function(t){
+    return t.date && t.date.startsWith(String(terChartYear)) && t.cat === 'Terreno';
+  });
+
+  var normal  = new Array(12).fill(0);
+  var antecip = new Array(12).fill(0);
+  yearTxs.forEach(function(t) {
+    var m = parseInt(t.date.split('-')[1]) - 1;
+    if (t.subcat === 'Adiantamento de Parcela') antecip[m]++;
+    else if (t.subcat === 'Parcela Normal' || t.subcat === 'Parcela') normal[m]++;
+  });
+
+  var maxVal    = Math.max.apply(null, normal.map(function(n,i){ return n+antecip[i]; })) || 1;
+  var totalNorm = normal.reduce(function(s,n){ return s+n; },0);
+  var totalAnt  = antecip.reduce(function(s,n){ return s+n; },0);
+  var d         = loadTerreno();
+  var totalVal  = (totalNorm + totalAnt) * (d.installment || 0);
+
+  var mn = ['J','F','M','A','M','J','J','A','S','O','N','D'];
+  chart.innerHTML = mn.map(function(_, i) {
+    var nH = Math.round(normal[i]/maxVal*70);
+    var aH = Math.round(antecip[i]/maxVal*70);
+    var hasData = normal[i]>0 || antecip[i]>0;
+    return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;justify-content:flex-end">'
+      +(aH>0?'<div style="width:100%;height:'+aH+'px;background:var(--accent);border-radius:2px 2px 0 0"></div>':'')
+      +(nH>0?'<div style="width:100%;height:'+nH+'px;background:var(--blue);border-radius:'+(aH>0?'0':'2px 2px')+' 0 0"></div>':'')
+      +(!hasData?'<div style="width:100%;height:4px;background:var(--border);border-radius:2px"></div>':'')
+    +'</div>';
+  }).join('');
+
+  labels.innerHTML = mn.map(function(n){
+    return '<div style="flex:1;text-align:center;font-size:9px;color:var(--text-muted)">'+n+'</div>';
+  }).join('');
+
+  var nc = document.getElementById('ter-chart-normal-count'); if (nc) nc.textContent = totalNorm;
+  var ac = document.getElementById('ter-chart-ant-count');    if (ac) ac.textContent = totalAnt;
+  var tv = document.getElementById('ter-chart-total-val');    if (tv) tv.textContent = fmt(totalVal);
+  renderTerMetaAnual();
+}
+
+function editTerMetaAnual() {
+  var form = document.getElementById('ter-meta-form');
+  if (!form) return;
+  var meta    = loadKey('ter_meta_anual', {});
+  var anoMeta = meta[terChartYear];
+  if (anoMeta) {
+    document.getElementById('ter-meta-normais').value = anoMeta.normais;
+    document.getElementById('ter-meta-antecip').value = anoMeta.antecip;
+  }
+  form.style.display = form.style.display === 'none' ? 'block' : 'none';
+}
+
+function saveTerMetaAnual() {
+  var normais = parseInt(document.getElementById('ter-meta-normais').value) || 12;
+  var antecip = parseInt(document.getElementById('ter-meta-antecip').value) || 0;
+  var meta    = loadKey('ter_meta_anual', {});
+  meta[terChartYear] = { normais: normais, antecip: antecip };
+  saveKey('ter_meta_anual', meta);
+  var form = document.getElementById('ter-meta-form');
+  if (form) form.style.display = 'none';
+  notify('✓ Meta salva!');
+  renderTerMetaAnual();
+}
+
+function renderTerMetaAnual() {
+  var el = document.getElementById('ter-meta-anual-content');
+  if (!el) return;
+  var meta    = loadKey('ter_meta_anual', {});
+  var anoMeta = meta[terChartYear];
+  var d       = loadTerreno();
+  if (!anoMeta) {
+    el.innerHTML = '<div style="color:var(--text-muted);font-size:13px;padding:8px 0">Nenhuma meta definida para '+terChartYear+'. Define abaixo!</div>';
+    return;
+  }
+  var txs       = loadKey('transactions');
+  var yearTxs   = txs.filter(function(t){ return t.date && t.date.startsWith(String(terChartYear)) && t.cat==='Terreno'; });
+  var normPagas = yearTxs.filter(function(t){ return t.subcat === 'Parcela Normal' || t.subcat === 'Parcela'; }).length;
+  var antPagas  = yearTxs.filter(function(t){ return t.subcat === 'Adiantamento de Parcela'; }).length;
+  var pctN      = Math.min(100, anoMeta.normais>0 ? Math.round(normPagas/anoMeta.normais*100) : 100);
+  var pctA      = Math.min(100, anoMeta.antecip>0 ? Math.round(antPagas/anoMeta.antecip*100) : 100);
+  var reajustes = loadKey('ter_readjusts', []);
+  var proxReaj  = reajustes.length ? reajustes[reajustes.length-1] : null;
+  el.innerHTML = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">'
+    +'<div style="background:var(--surface);border-radius:var(--radius-sm);padding:12px">'
+      +'<div style="font-size:11px;color:var(--text-muted);margin-bottom:6px">📅 Parcelas Normais</div>'
+      +'<div style="font-family:var(--font-num);font-weight:700;color:var(--blue)">'+normPagas+' / '+anoMeta.normais+'</div>'
+      +'<div style="height:6px;background:var(--bg);border-radius:3px;margin-top:6px;overflow:hidden"><div style="height:100%;width:'+pctN+'%;background:var(--blue);border-radius:3px"></div></div>'
+    +'</div>'
+    +'<div style="background:var(--surface);border-radius:var(--radius-sm);padding:12px">'
+      +'<div style="font-size:11px;color:var(--text-muted);margin-bottom:6px">⚡ Antecipações</div>'
+      +'<div style="font-family:var(--font-num);font-weight:700;color:var(--accent)">'+antPagas+' / '+anoMeta.antecip+'</div>'
+      +'<div style="height:6px;background:var(--bg);border-radius:3px;margin-top:6px;overflow:hidden"><div style="height:100%;width:'+pctA+'%;background:var(--accent);border-radius:3px"></div></div>'
+    +'</div>'
+  +'</div>'
+  +(d.installment>0?'<div style="font-size:12px;color:var(--text-muted)">Parcela atual: <strong style="color:var(--gold)">'+fmt(d.installment)+'</strong>'+(proxReaj?' · Último reajuste: '+proxReaj.ipca+'% ('+proxReaj.year+')':'')+'</div>':'');
+}
+
 function loadTerreno() {
   try {
     var v = localStorage.getItem('fp_terreno');
@@ -4917,23 +5045,17 @@ function renderTerreno() {
   document.getElementById('ter-input-readjust').value    = d.readjustMonth;
   document.getElementById('ter-input-notes').value       = d.notes || '';
 
-  // Readjust history
-  var histEl = document.getElementById('ter-history-list');
-  var hist   = d.readjustHistory || [];
-  if (!hist.length) {
-    histEl.innerHTML = '<div class="empty-state" style="padding:20px"><div class="empty-icon" style="font-size:24px">📋</div>Nenhum reajuste registrado ainda.</div>';
-  } else {
-    histEl.innerHTML = '<table style="width:100%"><thead><tr><th>Ano</th><th>IPCA</th><th>Nova Parcela</th><th></th></tr></thead><tbody>'
-      + hist.slice().reverse().map(function(r){
-          return '<tr>'
-            +'<td style="font-family:var(--font-num)">' + r.year + '</td>'
-            +'<td style="color:var(--red);font-family:var(--font-num)">'+(r.ipca!=null?r.ipca.toFixed(2)+'%':'—')+'</td>'
-            +'<td class="amount-neg">' + fmt(r.value) + '</td>'
-            +'<td><button class="btn btn-danger btn-sm" onclick="deleteReadjust('+r.year+')">✕</button></td>'
-            +'</tr>';
-        }).join('')
-      + '</tbody></table>';
-  }
+  renderTerChart();
+}
+
+function deleteTerMetaAnual() {
+  var meta = loadKey('ter_meta_anual', {});
+  delete meta[terChartYear];
+  saveKey('ter_meta_anual', meta);
+  var form = document.getElementById('ter-meta-form');
+  if (form) form.style.display = 'none';
+  notify('Meta de '+terChartYear+' removida.');
+  renderTerMetaAnual();
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -6637,9 +6759,23 @@ function quickPayTerreno() {
     document.head.appendChild(style);
   })();
 
-  renderDashboard();
+  // Migrar subcategorias do Terreno
+  (function migrateTerrenoSubcats() {
+    var cats = getCats();
+    var ter  = cats.find(function(c){ return c.name === 'Terreno'; });
+    if (!ter) return;
+    var needs = ['Parcela Normal', 'Adiantamento de Parcela'];
+    var changed = false;
+    needs.forEach(function(name) {
+      if (!ter.subcategories.find(function(s){ return s.name === name; })) {
+        ter.subcategories.push({ id: 'ter_'+name.replace(/ /g,'_'), name: name });
+        changed = true;
+      }
+    });
+    if (changed) saveKey('cats', cats);
+  })();
 
-  // Registrar Service Worker (PWA)
+  renderDashboard();
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js')
       .then(function(reg) { console.log('✅ SW registrado:', reg.scope); })
