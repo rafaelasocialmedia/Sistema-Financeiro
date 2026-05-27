@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-05-27T18:10:52.074Z",
+  "savedAt": "2026-05-27T18:12:38.795Z",
   "data": {
     "fp_cats": [
       {
@@ -1076,6 +1076,15 @@
         "value": 76.2,
         "date": "2026-05-23",
         "month": "2026-05"
+      },
+      {
+        "id": 1779905476303,
+        "cat": "Outros",
+        "payment": "outro",
+        "desc": "Precisa repor o valor gasto (favorita)",
+        "value": 11.2,
+        "date": "2026-05-23",
+        "month": "2026-05"
       }
     ],
     "fp_subscriptions": [
@@ -1108,7 +1117,7 @@
         "name": "Netflix",
         "emoji": "💚",
         "type": "income",
-        "value": 2500,
+        "value": 9000,
         "day": 10,
         "cat": "Freelance",
         "subcat": "JustDancingGame",
