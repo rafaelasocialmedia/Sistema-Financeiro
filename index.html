@@ -524,6 +524,15 @@
           </div>
         </div>
       </div>
+      <!-- Lembrete de Aportes -->
+      <div class="panel" id="dash-aportes-panel" style="margin-bottom:18px;border-color:var(--purple)">
+        <div class="panel-title" style="color:var(--purple);cursor:pointer" onclick="toggleDashAportes()">
+          <span>💡 Aportes necessários este mês</span>
+          <button class="btn btn-ghost btn-sm" id="dash-aportes-toggle-btn">▼</button>
+        </div>
+        <div id="dash-aportes-content"></div>
+      </div>
+
       <!-- Dollar summary row -->
       <div style="display:grid;grid-template-columns:1fr 3fr;gap:14px;margin-bottom:24px">
         <div class="card" id="dash-dollar-card" style="cursor:pointer" onclick="navigate('dollar')">
@@ -4010,6 +4019,7 @@ function renderDashboard() {
 
   renderDashDollarCard();
   renderEstimativa();
+  renderDashAportes();
   renderTerrenoAlert();
   populateQlCatSelect();
   renderDashIntegrated();
@@ -4800,6 +4810,72 @@ function renderEstimativa() {
   }
 }
 
+var dashAportesExpanded = true;
+
+function toggleDashAportes() {
+  dashAportesExpanded = !dashAportesExpanded;
+  var content = document.getElementById('dash-aportes-content');
+  var btn     = document.getElementById('dash-aportes-toggle-btn');
+  if (content) content.style.display = dashAportesExpanded ? 'block' : 'none';
+  if (btn)     btn.textContent        = dashAportesExpanded ? '▼' : '▶';
+}
+
+function renderDashAportes() {
+  var el = document.getElementById('dash-aportes-content');
+  if (!el) return;
+
+  var boxes   = loadInvestBoxes();
+  var aportes = loadKey('invest_aportes', []);
+
+  if (!boxes.length) {
+    el.innerHTML = '<div style="color:var(--text-muted);font-size:13px;padding:8px 0">Nenhuma caixinha cadastrada. Crie metas em <strong style="color:var(--purple);cursor:pointer" onclick="navigate(\'invest\')">Metas</strong>!</div>';
+    return;
+  }
+
+  // Calcular aporte sugerido por caixinha
+  // Baseado na meta e no quanto falta dividido pelos meses restantes do ano
+  var now         = new Date();
+  var monthsLeft  = Math.max(1, 12 - now.getMonth());
+  var rows        = [];
+  var totalSuger  = 0;
+
+  boxes.forEach(function(b) {
+    var acumulado = aportes.filter(function(a){ return a.boxId==b.id; }).reduce(function(s,a){ return s+(a.val||a.value||0); },0);
+    var goal      = b.goal || 0;
+    if (goal <= 0 || acumulado >= goal) return; // pula concluídas ou sem meta
+    var falta     = goal - acumulado;
+    var sugerido  = Math.ceil(falta / monthsLeft);
+    totalSuger   += sugerido;
+    rows.push({ emoji: b.emoji, name: b.name, sugerido: sugerido, falta: falta, goal: goal, acumulado: acumulado });
+  });
+
+  if (!rows.length) {
+    el.innerHTML = '<div style="color:var(--accent);font-size:13px;padding:8px 0">✅ Todas as metas concluídas!</div>';
+    return;
+  }
+
+  el.innerHTML = '<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">'
+    + rows.map(function(r) {
+        var pct = Math.round(r.acumulado/r.goal*100);
+        return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface);border-radius:var(--radius-sm)">'
+          +'<div style="display:flex;align-items:center;gap:10px;flex:1">'
+            +'<span style="font-size:20px">'+r.emoji+'</span>'
+            +'<div>'
+              +'<div style="font-size:13px;font-weight:600">'+escHtml(r.name)+'</div>'
+              +'<div style="font-size:11px;color:var(--text-muted)">'+pct+'% concluído · falta '+fmt(r.falta)+'</div>'
+            +'</div>'
+          +'</div>'
+          +'<div style="font-family:var(--font-num);font-weight:700;color:var(--purple);font-size:15px">'+fmt(r.sugerido)+'</div>'
+        +'</div>';
+      }).join('')
+    +'</div>'
+    +'<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:rgba(162,155,254,0.1);border-radius:var(--radius-sm);border:1px solid rgba(162,155,254,0.3)">'
+      +'<span style="font-size:13px;color:var(--text-muted)">Total a guardar este mês</span>'
+      +'<span style="font-family:var(--font-num);font-weight:700;color:var(--purple);font-size:16px">'+fmt(totalSuger)+'</span>'
+    +'</div>'
+    +'<div style="font-size:11px;color:var(--text-dim);margin-top:8px">* Baseado nos meses restantes do ano ('+monthsLeft+' meses)</div>';
+}
+
 function renderDashDollarCard() {
   var el = document.getElementById('dash-dollar-card');
   if (!el) return;
@@ -5357,6 +5433,9 @@ function renderCartoes() {
   // Cards por cartão: fatura + vencimento integrados
   var faturasEl = document.getElementById('car-faturas');
   if (faturasEl) {
+    // Buscar transações do mês para identificar recorrentes por cartão
+    var monthTxs = getMonthTx(currentYear, currentMonth);
+
     faturasEl.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">'
       + Object.keys(CARDS).map(function(key){
           var c         = CARDS[key];
@@ -5365,6 +5444,12 @@ function renderCartoes() {
           var hasChgs   = cardChgs.length > 0;
           var days      = daysUntil(c.venc);
           var urgColor  = days <= 3 ? 'var(--red)' : days <= 7 ? 'var(--gold)' : 'var(--accent)';
+
+          // Separar recorrentes dos normais
+          var recorrTxs  = monthTxs.filter(function(t){ return t.card===key && t.source==='recorrente'; });
+          var recorrVal  = recorrTxs.reduce(function(s,t){ return s+t.amount; },0);
+          var normalVal  = cardTotal - recorrVal;
+
           return '<div class="card" style="border-color:'+(hasChgs?c.color:'var(--border)')+';padding:16px">'
             +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'
               +'<div style="display:flex;align-items:center;gap:8px">'
@@ -5373,7 +5458,19 @@ function renderCartoes() {
               +'</div>'
               +'<span style="font-size:11px;color:'+urgColor+';font-weight:600;background:rgba(0,0,0,.2);padding:3px 8px;border-radius:20px">'+days+'d</span>'
             +'</div>'
-            +'<div style="font-family:var(--font-num);color:'+(hasChgs?'var(--red)':'var(--text-muted)')+';font-size:20px;font-weight:700;margin-bottom:4px">'+fmt(cardTotal)+'</div>'
+            +'<div style="font-family:var(--font-num);color:'+(hasChgs?'var(--red)':'var(--text-muted)')+';font-size:20px;font-weight:700;margin-bottom:6px">'+fmt(cardTotal)+'</div>'
+            +(recorrVal>0
+              ?'<div style="border-top:1px solid var(--border);padding-top:6px;margin-bottom:6px">'
+                +'<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px">'
+                  +'<span style="color:var(--text-muted)">💳 Gastos normais</span>'
+                  +'<span style="font-family:var(--font-num);color:var(--red)">'+fmt(normalVal)+'</span>'
+                +'</div>'
+                +'<div style="display:flex;justify-content:space-between;font-size:11px">'
+                  +'<span style="color:var(--text-muted)">🔄 Recorrentes</span>'
+                  +'<span style="font-family:var(--font-num);color:var(--purple)">'+fmt(recorrVal)+'</span>'
+                +'</div>'
+              +'</div>'
+              :'')
             +'<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted)">'
               +'<span>'+cardChgs.length+' lançamento'+(cardChgs.length!==1?'s':'')+'</span>'
               +'<span>Vence dia '+c.venc+'</span>'
