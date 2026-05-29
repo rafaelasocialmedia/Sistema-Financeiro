@@ -524,6 +524,15 @@
           </div>
         </div>
       </div>
+      <!-- Reembolso Ateliê -->
+      <div class="panel" id="dash-reembolso-panel" style="margin-bottom:18px;border-color:var(--gold);display:none">
+        <div class="panel-title" style="color:var(--gold);cursor:pointer" onclick="toggleDashReembolso()">
+          <span>💼 Ateliê — reembolso pendente</span>
+          <button class="btn btn-ghost btn-sm" id="dash-reembolso-toggle-btn">▼</button>
+        </div>
+        <div id="dash-reembolso-content"></div>
+      </div>
+
       <!-- Lembrete de Aportes -->
       <div class="panel" id="dash-aportes-panel" style="margin-bottom:18px;border-color:var(--purple)">
         <div class="panel-title" style="color:var(--purple);cursor:pointer" onclick="toggleDashAportes()">
@@ -1779,9 +1788,11 @@
             <div class="form-group">
               <label>Pagamento</label>
               <select id="atl-cost-payment">
-                <option value="ml">🟢 Cartão ML</option>
                 <option value="dinheiro">💵 Dinheiro / Pix</option>
-                <option value="outro">💳 Outro cartão</option>
+                <option value="inter">🏦 Inter</option>
+                <option value="nubank">💜 Nubank</option>
+                <option value="bb">🟡 Banco do Brasil</option>
+                <option value="ml">🟢 Mercado Livre</option>
               </select>
             </div>
             <div class="form-group full">
@@ -2114,6 +2125,17 @@
       <div class="form-group">
         <label>Data</label>
         <input type="date" id="edit-tx-date">
+      </div>
+      <div class="form-group" id="edit-tx-payment-group">
+        <label>Forma de pagamento</label>
+        <select id="edit-tx-payment" onchange="onEditTxPaymentChange()">
+          <option value="dinheiro">💵 Dinheiro</option>
+          <option value="pix">📱 Pix</option>
+          <option value="inter">🏦 Inter</option>
+          <option value="nubank">💜 Nubank</option>
+          <option value="bb">🟡 Banco do Brasil</option>
+          <option value="ml">🟢 Mercado Livre</option>
+        </select>
       </div>
       <div class="form-group full" style="flex-direction:row;gap:8px">
         <button class="btn btn-primary" style="flex:1" onclick="saveEditTx()">Salvar</button>
@@ -3042,6 +3064,16 @@ function openEditTxModal(id) {
   document.getElementById('edit-tx-desc').value   = tx.desc || '';
   document.getElementById('edit-tx-date').value   = tx.date;
 
+  // Forma de pagamento
+  var payEl = document.getElementById('edit-tx-payment');
+  if (payEl) {
+    var payVal = tx.card || tx.payment || 'dinheiro';
+    payEl.value = payVal;
+  }
+  // Esconder forma de pagamento se for transação de cartão gerenciada
+  var payGrp = document.getElementById('edit-tx-payment-group');
+  if (payGrp) payGrp.style.display = tx.source === 'cartao' ? 'none' : '';
+
   // Popular categorias
   var catSel = document.getElementById('edit-tx-cat');
   var cats   = getCats().filter(function(c){ return c.type === tx.type || c.type === 'both'; });
@@ -3080,6 +3112,10 @@ function saveEditTx() {
   txs[idx].subcat = document.getElementById('edit-tx-subcat').value;
   txs[idx].desc   = document.getElementById('edit-tx-desc').value.trim();
   txs[idx].date   = document.getElementById('edit-tx-date').value;
+  var payEl = document.getElementById('edit-tx-payment');
+  if (payEl && document.getElementById('edit-tx-payment-group').style.display !== 'none') {
+    txs[idx].payment = payEl.value;
+  }
 
   txs.sort(function(a,b){ return b.date.localeCompare(a.date); });
   saveKey('transactions', txs);
@@ -4020,6 +4056,7 @@ function renderDashboard() {
   renderDashDollarCard();
   renderEstimativa();
   renderDashAportes();
+  renderDashReembolso();
   renderTerrenoAlert();
   populateQlCatSelect();
   renderDashIntegrated();
@@ -4812,6 +4849,62 @@ function renderEstimativa() {
 
 var dashAportesExpanded = true;
 
+var dashReembolsoExpanded = true;
+
+function toggleDashReembolso() {
+  dashReembolsoExpanded = !dashReembolsoExpanded;
+  var content = document.getElementById('dash-reembolso-content');
+  var btn     = document.getElementById('dash-reembolso-toggle-btn');
+  if (content) content.style.display = dashReembolsoExpanded ? 'block' : 'none';
+  if (btn)     btn.textContent        = dashReembolsoExpanded ? '▼' : '▶';
+}
+
+function renderDashReembolso() {
+  var panel   = document.getElementById('dash-reembolso-panel');
+  var el      = document.getElementById('dash-reembolso-content');
+  if (!panel || !el) return;
+
+  var costs = loadKey('atelie_costs', []);
+  // Pegar custos pagos com cartão pessoal (não dinheiro) não reembolsados
+  var CARD_KEYS = ['inter','nubank','bb','ml'];
+  var cartaoCosts = costs.filter(function(c){
+    return CARD_KEYS.indexOf(c.payment) !== -1 && !c.reembolsado;
+  });
+
+  if (!cartaoCosts.length) {
+    panel.style.display = 'none';
+    return;
+  }
+  panel.style.display = 'block';
+
+  // Agrupar por cartão
+  var byCard = {};
+  cartaoCosts.forEach(function(c) {
+    if (!byCard[c.payment]) byCard[c.payment] = 0;
+    byCard[c.payment] += c.value;
+  });
+
+  var total = cartaoCosts.reduce(function(s,c){ return s+c.value; },0);
+
+  el.innerHTML = '<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">'
+    + Object.keys(byCard).map(function(key) {
+        var cardInfo = CARDS[key] || { icon:'💳', name: key };
+        return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface);border-radius:var(--radius-sm)">'
+          +'<div style="display:flex;align-items:center;gap:8px">'
+            +'<span style="font-size:18px">'+cardInfo.icon+'</span>'
+            +'<span style="font-size:13px;font-weight:600">'+cardInfo.name+'</span>'
+          +'</div>'
+          +'<span style="font-family:var(--font-num);font-weight:700;color:var(--gold)">'+fmt(byCard[key])+'</span>'
+        +'</div>';
+      }).join('')
+  +'</div>'
+  +'<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:rgba(255,209,102,0.1);border-radius:var(--radius-sm);border:1px solid rgba(255,209,102,0.3)">'
+    +'<span style="font-size:13px;color:var(--text-muted)">Total a reembolsar</span>'
+    +'<span style="font-family:var(--font-num);font-weight:700;color:var(--gold);font-size:16px">'+fmt(total)+'</span>'
+  +'</div>'
+  +'<div style="font-size:11px;color:var(--text-dim);margin-top:8px">Custos do Ateliê pagos com cartão pessoal pendentes de reembolso</div>';
+}
+
 function toggleDashAportes() {
   dashAportesExpanded = !dashAportesExpanded;
   var content = document.getElementById('dash-aportes-content');
@@ -5445,10 +5538,22 @@ function renderCartoes() {
           var days      = daysUntil(c.venc);
           var urgColor  = days <= 3 ? 'var(--red)' : days <= 7 ? 'var(--gold)' : 'var(--accent)';
 
-          // Separar recorrentes dos normais
-          var recorrTxs  = monthTxs.filter(function(t){ return t.card===key && t.source==='recorrente'; });
-          var recorrVal  = recorrTxs.reduce(function(s,t){ return s+t.amount; },0);
-          var normalVal  = cardTotal - recorrVal;
+          // Separar recorrentes dos normais (confirmados + pendentes)
+          var subs = loadSubscriptions();
+          var mk   = currentYear+'-'+String(currentMonth+1).padStart(2,'0');
+
+          // Recorrentes confirmados via cartão
+          var recorrConfirm = monthTxs.filter(function(t){ return t.card===key && t.source==='recorrente'; });
+          var recorrConfVal = recorrConfirm.reduce(function(s,t){ return s+t.amount; },0);
+
+          // Recorrentes pendentes deste cartão
+          var recorrPend = subs.filter(function(s){
+            return (s.type||'expense')==='expense' && s.card===key && s.confirmedMonths.indexOf(mk)===-1;
+          });
+          var recorrPendVal = recorrPend.reduce(function(s,sub){ return s+sub.value; },0);
+
+          var recorrVal  = recorrConfVal + recorrPendVal;
+          var normalVal  = cardTotal - recorrConfVal;
 
           return '<div class="card" style="border-color:'+(hasChgs?c.color:'var(--border)')+';padding:16px">'
             +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'
@@ -5466,7 +5571,7 @@ function renderCartoes() {
                   +'<span style="font-family:var(--font-num);color:var(--red)">'+fmt(normalVal)+'</span>'
                 +'</div>'
                 +'<div style="display:flex;justify-content:space-between;font-size:11px">'
-                  +'<span style="color:var(--text-muted)">🔄 Recorrentes</span>'
+                  +'<span style="color:var(--text-muted)">🔄 Recorrentes'+(recorrPendVal>0?' <span style="color:var(--gold);font-size:10px">('+recorrPend.length+' pendente'+(recorrPend.length!==1?'s':'')+')</span>':'')+'</span>'
                   +'<span style="font-family:var(--font-num);color:var(--purple)">'+fmt(recorrVal)+'</span>'
                 +'</div>'
               +'</div>'
@@ -6099,6 +6204,17 @@ function addAtlCost() {
   renderAtelie();
 }
 
+function marcarReembolso(id) {
+  var costs = loadKey('atelie_costs', []);
+  var idx   = costs.findIndex(function(c){ return c.id == id; });
+  if (idx === -1) return;
+  costs[idx].reembolsado = true;
+  saveKey('atelie_costs', costs);
+  notify('✅ Marcado como reembolsado!');
+  renderAtelie();
+  renderDashReembolso();
+}
+
 function deleteAtlCost(id) {
   
   saveAtlCosts(loadAtlCosts().filter(function(c){return c.id!==id;}));
@@ -6501,12 +6617,19 @@ function renderAtlTables() {
     ctbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">🧾</div>Nenhum custo neste mês</div></td></tr>';
   } else {
     ctbody.innerHTML = costs.map(function(c){
-      var payLabel = c.payment==='ml'?'🟢 Cartão ML':c.payment==='outro'?'💳 Outro cartão':'💵 Dinheiro/Pix';
-      return '<tr>'
+      var CARD_LABELS = {inter:'🏦 Inter', nubank:'💜 Nubank', bb:'🟡 B.B', ml:'🟢 ML', dinheiro:'💵 Dinheiro/Pix'};
+      var payLabel = CARD_LABELS[c.payment] || '💵 Dinheiro/Pix';
+      var isCartao = c.payment && c.payment !== 'dinheiro';
+      var reembBtn = isCartao
+        ? (c.reembolsado
+            ? '<span style="font-size:11px;color:var(--accent)">✅ Reembolsado</span>'
+            : '<button class="btn btn-ghost btn-sm" onclick="marcarReembolso('+c.id+')" style="font-size:10px;color:var(--gold)" title="Marcar como reembolsado">💰 Reembolsar</button>')
+        : '';
+      return '<tr style="'+(isCartao&&!c.reembolsado?'background:rgba(255,209,102,0.04)':'')+'">'
         +'<td>'+fmtDate(c.date)+'</td>'
         +'<td>'+(COST_CAT_EMOJIS[c.cat]||'💸')+' '+escHtml(c.cat)+'</td>'
         +'<td>'+escHtml(c.desc)+'</td>'
-        +'<td style="font-size:12px;color:var(--text-muted)">'+payLabel+'</td>'
+        +'<td style="font-size:12px;color:var(--text-muted)">'+payLabel+'<br>'+reembBtn+'</td>'
         +'<td class="amount-neg">'+fmt(c.value)+'</td>'
         +'<td><button class="btn btn-ghost btn-sm" onclick="openEditAtlCostModal('+c.id+')" title="Editar">✏️</button><button class="btn btn-danger btn-sm" onclick="deleteAtlCost('+c.id+')">✕</button></td>'
         +'</tr>';
