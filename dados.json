@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-05-28T00:47:48.814Z",
+  "savedAt": "2026-06-01T18:00:46.446Z",
   "data": {
     "fp_cats": [
       {
@@ -249,6 +249,23 @@
           {
             "id": "id_1779315337366_op7vi",
             "name": "Ajuda"
+          }
+        ]
+      },
+      {
+        "id": "id_1780336722287_bj5ch",
+        "name": "Empresa",
+        "emoji": "💻",
+        "type": "expense",
+        "isDefault": false,
+        "subcategories": [
+          {
+            "id": "id_1780336736892_c0xab",
+            "name": "MEI Kelvin"
+          },
+          {
+            "id": "id_1780336741281_3inax",
+            "name": "MEI Rafa"
           }
         ]
       }
@@ -602,6 +619,29 @@
         "purchaseId": 1779905427469
       },
       {
+        "id": 1780320259590,
+        "type": "expense",
+        "amount": 120,
+        "cat": "Alimentação",
+        "subcat": "Delivery",
+        "desc": "Lanche (💜 Nubank)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1780320259589
+      },
+      {
+        "id": 1780336760986,
+        "type": "income",
+        "amount": 5000,
+        "cat": "Salário",
+        "subcat": "Finance",
+        "desc": "💚 FInance(Unity)",
+        "date": "2026-06-10",
+        "payment": "dinheiro",
+        "source": "recorrente"
+      },
+      {
         "id": 1779312247447,
         "type": "income",
         "amount": 2500,
@@ -613,6 +653,17 @@
         "paymentAccount": ""
       },
       {
+        "id": 1780336769074,
+        "type": "expense",
+        "amount": 90.92,
+        "cat": "Empresa",
+        "subcat": "MEI Kelvin",
+        "desc": "MEI",
+        "date": "2026-05-29",
+        "payment": "pix",
+        "paymentAccount": "nubank"
+      },
+      {
         "id": 1779903800501,
         "type": "expense",
         "amount": 47.37,
@@ -622,17 +673,6 @@
         "date": "2026-05-26",
         "payment": "pix",
         "paymentAccount": "bb"
-      },
-      {
-        "id": 1779315423446,
-        "type": "expense",
-        "amount": 800,
-        "cat": "Moradia",
-        "subcat": "Aluguel",
-        "desc": "800,00",
-        "date": "2026-05-15",
-        "payment": "dinheiro",
-        "paymentAccount": ""
       },
       {
         "id": 1779321721893,
@@ -742,6 +782,17 @@
         "total": 685.64,
         "parcelas": 1,
         "installmentVal": 685.64
+      },
+      {
+        "id": 1780320259589,
+        "card": "nubank",
+        "date": "2026-05-31",
+        "desc": "Lanche",
+        "cat": "Alimentação",
+        "subcat": "Delivery",
+        "total": 120,
+        "parcelas": 1,
+        "installmentVal": 120
       },
       {
         "id": 1779322342890,
@@ -1110,7 +1161,9 @@
         "cat": "Salário",
         "subcat": "Finance",
         "card": "dinheiro",
-        "confirmedMonths": []
+        "confirmedMonths": [
+          "2026-06"
+        ]
       },
       {
         "id": 1779314597041,
@@ -1228,6 +1281,18 @@
         "cat": "Freelance",
         "subcat": "",
         "card": "dinheiro",
+        "confirmedMonths": []
+      },
+      {
+        "id": 1779931271216,
+        "name": "Aluguel",
+        "emoji": "🏡",
+        "type": "expense",
+        "value": 800,
+        "day": 15,
+        "cat": "Moradia",
+        "subcat": "Aluguel",
+        "card": "inter",
         "confirmedMonths": []
       }
     ]
