@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-06-01T18:00:46.446Z",
+  "savedAt": "2026-06-01T18:40:30.911Z",
   "data": {
     "fp_cats": [
       {
@@ -88,6 +88,10 @@
           {
             "id": "id_1779314125399_7hqsv",
             "name": "Condominio"
+          },
+          {
+            "id": "id_1780338713844_zk0en",
+            "name": "Reforma Hidaulica"
           }
         ]
       },
@@ -200,11 +204,16 @@
       },
       {
         "id": "dc15",
-        "name": "Outros (despesa)",
+        "name": "Armazenamento",
         "emoji": "💸",
         "type": "expense",
         "isDefault": true,
-        "subcategories": []
+        "subcategories": [
+          {
+            "id": "id_1780338234083_k9vsz",
+            "name": "Drive"
+          }
+        ]
       },
       {
         "id": "id_1779314210608_pzct4",
@@ -642,6 +651,185 @@
         "source": "recorrente"
       },
       {
+        "id": 1780338193055,
+        "type": "expense",
+        "amount": 94.98,
+        "cat": "Alimentação",
+        "subcat": "Delivery",
+        "desc": "X salada(Podrao) (💜 Nubank)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1780338193054
+      },
+      {
+        "id": 1780338305596,
+        "type": "expense",
+        "amount": 49.99,
+        "cat": "Armazenamento",
+        "subcat": "Drive",
+        "desc": "☁️ Drive (💜 Nubank)",
+        "date": "2026-06-10",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1780338305595
+      },
+      {
+        "id": 1780338336824,
+        "type": "expense",
+        "amount": 29.9,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "Remédio (💜 Nubank)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1780338336823
+      },
+      {
+        "id": 1780338351335,
+        "type": "expense",
+        "amount": 42.01,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "Remedio((Bombinha) (💜 Nubank)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1780338351334
+      },
+      {
+        "id": 1780338371964,
+        "type": "expense",
+        "amount": 38.8,
+        "cat": "Entretenimento",
+        "subcat": "Jantar",
+        "desc": "Restaurante (💜 Nubank)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1780338371963
+      },
+      {
+        "id": 1780338482061,
+        "type": "expense",
+        "amount": 24.9,
+        "cat": "Entretenimento",
+        "subcat": "Crunchirol",
+        "desc": "❤ Crunchyroll (💜 Nubank)",
+        "date": "2026-06-10",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1780338482060
+      },
+      {
+        "id": 1780338510228,
+        "type": "expense",
+        "amount": 93.86,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "Remedio (💜 Nubank)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1780338510227
+      },
+      {
+        "id": 1780338846350,
+        "type": "expense",
+        "amount": 12.5,
+        "cat": "Moradia",
+        "subcat": "Reforma Hidaulica",
+        "desc": "Guaraluz (💜 Nubank)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1780338846349
+      },
+      {
+        "id": 1780338877579,
+        "type": "expense",
+        "amount": 62.98,
+        "cat": "Moradia",
+        "subcat": "Reforma Hidaulica",
+        "desc": "Chaves (💜 Nubank)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1780338877578
+      },
+      {
+        "id": 1780338917034,
+        "type": "expense",
+        "amount": 33.4,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "❤ Cartao de todos (💜 Nubank)",
+        "date": "2026-06-10",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1780338917033
+      },
+      {
+        "id": 1780338931049,
+        "type": "expense",
+        "amount": 295,
+        "cat": "Moradia",
+        "subcat": "Reforma Hidaulica",
+        "desc": "Chuveiro (💜 Nubank)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1780338931048
+      },
+      {
+        "id": 1780338957870,
+        "type": "expense",
+        "amount": 12.48,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Supermercado (💜 Nubank)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1780338957869
+      },
+      {
+        "id": 1780338969747,
+        "type": "expense",
+        "amount": 29.9,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "Remedio (💜 Nubank)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1780338969746
+      },
+      {
+        "id": 1780338999131,
+        "type": "expense",
+        "amount": 117.9,
+        "cat": "Alimentação",
+        "subcat": "Delivery",
+        "desc": "XCalota (💜 Nubank)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1780338999130
+      },
+      {
+        "id": 1780336874536,
+        "type": "expense",
+        "amount": 86.05,
+        "cat": "Empresa",
+        "subcat": "MEI Kelvin",
+        "desc": "Mei",
+        "date": "2026-06-01",
+        "payment": "pix",
+        "paymentAccount": "nubank"
+      },
+      {
         "id": 1779312247447,
         "type": "income",
         "amount": 2500,
@@ -659,7 +847,7 @@
         "cat": "Empresa",
         "subcat": "MEI Kelvin",
         "desc": "MEI",
-        "date": "2026-05-29",
+        "date": "2026-06-01",
         "payment": "pix",
         "paymentAccount": "nubank"
       },
@@ -773,6 +961,28 @@
     ],
     "fp_car_purchases": [
       {
+        "id": 1780338305595,
+        "card": "nubank",
+        "date": "2026-06-27",
+        "desc": "☁️ Drive",
+        "cat": "Armazenamento",
+        "subcat": "Drive",
+        "total": 49.99,
+        "parcelas": 1,
+        "installmentVal": 49.99
+      },
+      {
+        "id": 1780338482060,
+        "card": "nubank",
+        "date": "2026-06-21",
+        "desc": "❤ Crunchyroll",
+        "cat": "Entretenimento",
+        "subcat": "Crunchirol",
+        "total": 24.9,
+        "parcelas": 1,
+        "installmentVal": 24.9
+      },
+      {
         "id": 1779314903944,
         "card": "inter",
         "date": "2026-06-10",
@@ -784,15 +994,70 @@
         "installmentVal": 685.64
       },
       {
+        "id": 1780338917033,
+        "card": "nubank",
+        "date": "2026-06-10",
+        "desc": "❤ Cartao de todos",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 33.4,
+        "parcelas": 1,
+        "installmentVal": 33.4
+      },
+      {
         "id": 1780320259589,
         "card": "nubank",
-        "date": "2026-05-31",
+        "date": "2026-05-30",
         "desc": "Lanche",
         "cat": "Alimentação",
         "subcat": "Delivery",
         "total": 120,
         "parcelas": 1,
         "installmentVal": 120
+      },
+      {
+        "id": 1780338193054,
+        "card": "nubank",
+        "date": "2026-05-30",
+        "desc": "X salada(Podrao)",
+        "cat": "Alimentação",
+        "subcat": "Delivery",
+        "total": 94.98,
+        "parcelas": 1,
+        "installmentVal": 94.98
+      },
+      {
+        "id": 1780338336823,
+        "card": "nubank",
+        "date": "2026-05-30",
+        "desc": "Remédio",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 29.9,
+        "parcelas": 1,
+        "installmentVal": 29.9
+      },
+      {
+        "id": 1780338351334,
+        "card": "nubank",
+        "date": "2026-05-30",
+        "desc": "Remedio((Bombinha)",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 42.01,
+        "parcelas": 1,
+        "installmentVal": 42.01
+      },
+      {
+        "id": 1780338371963,
+        "card": "nubank",
+        "date": "2026-05-30",
+        "desc": "Restaurante",
+        "cat": "Entretenimento",
+        "subcat": "Jantar",
+        "total": 38.8,
+        "parcelas": 1,
+        "installmentVal": 38.8
       },
       {
         "id": 1779322342890,
@@ -870,6 +1135,17 @@
         "total": 80,
         "parcelas": 1,
         "installmentVal": 80
+      },
+      {
+        "id": 1780338510227,
+        "card": "nubank",
+        "date": "2026-05-22",
+        "desc": "Remedio",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 93.86,
+        "parcelas": 1,
+        "installmentVal": 93.86
       },
       {
         "id": 1779321513444,
@@ -982,6 +1258,61 @@
         "installmentVal": 115.83
       },
       {
+        "id": 1780338846349,
+        "card": "nubank",
+        "date": "2026-05-11",
+        "desc": "Guaraluz",
+        "cat": "Moradia",
+        "subcat": "Reforma Hidaulica",
+        "total": 12.5,
+        "parcelas": 1,
+        "installmentVal": 12.5
+      },
+      {
+        "id": 1780338877578,
+        "card": "nubank",
+        "date": "2026-05-11",
+        "desc": "Chaves",
+        "cat": "Moradia",
+        "subcat": "Reforma Hidaulica",
+        "total": 62.98,
+        "parcelas": 1,
+        "installmentVal": 62.98
+      },
+      {
+        "id": 1780338931048,
+        "card": "nubank",
+        "date": "2026-05-11",
+        "desc": "Chuveiro",
+        "cat": "Moradia",
+        "subcat": "Reforma Hidaulica",
+        "total": 295,
+        "parcelas": 1,
+        "installmentVal": 295
+      },
+      {
+        "id": 1780338957869,
+        "card": "nubank",
+        "date": "2026-05-11",
+        "desc": "Supermercado",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 12.48,
+        "parcelas": 1,
+        "installmentVal": 12.48
+      },
+      {
+        "id": 1780338969746,
+        "card": "nubank",
+        "date": "2026-05-11",
+        "desc": "Remedio",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 29.9,
+        "parcelas": 1,
+        "installmentVal": 29.9
+      },
+      {
         "id": 1779321721892,
         "card": "inter",
         "date": "2026-05-10",
@@ -1057,6 +1388,17 @@
         "total": 57.17,
         "parcelas": 1,
         "installmentVal": 57.17
+      },
+      {
+        "id": 1780338999130,
+        "card": "nubank",
+        "date": "2026-05-09",
+        "desc": "XCalota",
+        "cat": "Alimentação",
+        "subcat": "Delivery",
+        "total": 117.9,
+        "parcelas": 1,
+        "installmentVal": 117.9
       },
       {
         "id": 1779321803543,
@@ -1164,18 +1506,6 @@
         "confirmedMonths": [
           "2026-06"
         ]
-      },
-      {
-        "id": 1779314597041,
-        "name": "Netflix",
-        "emoji": "💚",
-        "type": "income",
-        "value": 9000,
-        "day": 10,
-        "cat": "Freelance",
-        "subcat": "JustDancingGame",
-        "card": "dinheiro",
-        "confirmedMonths": []
       },
       {
         "id": 1779314617671,
@@ -1294,6 +1624,48 @@
         "subcat": "Aluguel",
         "card": "inter",
         "confirmedMonths": []
+      },
+      {
+        "id": 1780338303392,
+        "name": "Drive",
+        "emoji": "☁️",
+        "type": "expense",
+        "value": 49.99,
+        "day": 27,
+        "cat": "Armazenamento",
+        "subcat": "Drive",
+        "card": "nubank",
+        "confirmedMonths": [
+          "2026-06"
+        ]
+      },
+      {
+        "id": 1780338478518,
+        "name": "Crunchyroll",
+        "emoji": "❤",
+        "type": "expense",
+        "value": 24.9,
+        "day": 21,
+        "cat": "Entretenimento",
+        "subcat": "Crunchirol",
+        "card": "nubank",
+        "confirmedMonths": [
+          "2026-06"
+        ]
+      },
+      {
+        "id": 1780338913454,
+        "name": "Cartao de todos",
+        "emoji": "❤",
+        "type": "expense",
+        "value": 33.4,
+        "day": 10,
+        "cat": "Saúde",
+        "subcat": "",
+        "card": "nubank",
+        "confirmedMonths": [
+          "2026-06"
+        ]
       }
     ]
   }
