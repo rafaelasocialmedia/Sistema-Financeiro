@@ -2443,8 +2443,14 @@ function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'
 function genId() { return 'id_'+Date.now()+'_'+Math.random().toString(36).slice(2,7); }
 
 function getMonthTx(y, m) {
-  const key = monthKey(y, m);
-  return loadKey('transactions').filter(t => t.date && t.date.startsWith(key));
+  var key = monthKey(y, m);
+  return loadKey('transactions').filter(function(t) {
+    if (!t.date) return false;
+    if (t.card && CARDS[t.card] && CARDS[t.card].close) {
+      return cardBillingMonth(t.date, t.card) === key;
+    }
+    return t.date.startsWith(key);
+  });
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -3901,19 +3907,41 @@ function renderTxTable() {
 
   var totEl = document.getElementById('tx-totals');
   if (totEl) {
-    var balColor = inc-exp >= 0 ? 'var(--accent)' : 'var(--red)';
-    totEl.innerHTML = '<span>Receitas: <strong style="color:var(--accent)">+'+fmt(inc)+'</strong></span>'
-      +'<span>Despesas: <strong style="color:var(--red)">-'+fmt(exp)+'</strong></span>'
-      +'<span style="color:var(--gold)">🔄 Fixos/Parcelas: <strong>'+fmt(fixos)+'</strong></span>'
-      +'<span style="color:var(--text-muted)">💵 Gastos novos: <strong>'+fmt(novos)+'</strong></span>'
-      +'<span>Saldo: <strong style="color:'+balColor+'">'+fmt(inc-exp)+'</strong></span>'
-      +'<div style="width:100%;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--text-muted)">'
-        +'<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:rgba(45,255,143,0.2);margin-right:4px"></span>Receita</span>'
-        +'<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:rgba(162,155,254,0.2);margin-right:4px"></span>Recorrente</span>'
-        +'<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:rgba(255,209,102,0.2);margin-right:4px"></span>Parcela</span>'
-        +'<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:rgba(0,180,216,0.2);margin-right:4px"></span>Cartão dia a dia</span>'
-        +'<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--surface);margin-right:4px"></span>Dinheiro/Pix</span>'
-      +'</div>';
+    if (currentTxSourceFilter === 'recorrente') {
+      // Rodapé especial para filtro Recorrentes
+      var mk2      = currentYear + '-' + String(currentMonth + 1).padStart(2,'0');
+      var subs2    = loadSubscriptions();
+      var pendSubs = subs2.filter(function(s){ return s.confirmedMonths.indexOf(mk2) === -1; });
+      var pendVal  = pendSubs.reduce(function(acc, s){
+        if ((s.type || 'expense') === 'expense') return acc + s.value;
+        return acc - s.value;
+      }, 0);
+      var confirmedVal = exp - inc; // confirmados já lançados (despesas - receitas recorrentes)
+      var totalPrevisto = confirmedVal + pendVal;
+      totEl.innerHTML =
+        '<div style="display:flex;flex-direction:column;gap:6px;width:100%">'
+          +'<div style="display:flex;gap:18px;flex-wrap:wrap;align-items:center">'
+            +'<span>✅ Confirmados: <strong style="color:var(--accent)">'+fmt(confirmedVal)+'</strong></span>'
+            +'<span>⏳ Pendentes: <strong style="color:var(--gold)">'+fmt(pendVal)+'</strong>'
+              +' <span style="font-size:11px;color:var(--text-muted)">('+pendSubs.length+' item'+(pendSubs.length!==1?'s':'')+')</span></span>'
+            +'<span style="font-size:15px;font-weight:700">Total previsto: <strong style="color:var(--purple)">'+fmt(totalPrevisto)+'</strong></span>'
+          +'</div>'
+        +'</div>';
+    } else {
+      var balColor = inc-exp >= 0 ? 'var(--accent)' : 'var(--red)';
+      totEl.innerHTML = '<span>Receitas: <strong style="color:var(--accent)">+'+fmt(inc)+'</strong></span>'
+        +'<span>Despesas: <strong style="color:var(--red)">-'+fmt(exp)+'</strong></span>'
+        +'<span style="color:var(--gold)">🔄 Fixos/Parcelas: <strong>'+fmt(fixos)+'</strong></span>'
+        +'<span style="color:var(--text-muted)">💵 Gastos novos: <strong>'+fmt(novos)+'</strong></span>'
+        +'<span>Saldo: <strong style="color:'+balColor+'">'+fmt(inc-exp)+'</strong></span>'
+        +'<div style="width:100%;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--text-muted)">'
+          +'<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:rgba(45,255,143,0.2);margin-right:4px"></span>Receita</span>'
+          +'<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:rgba(162,155,254,0.2);margin-right:4px"></span>Recorrente</span>'
+          +'<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:rgba(255,209,102,0.2);margin-right:4px"></span>Parcela</span>'
+          +'<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:rgba(0,180,216,0.2);margin-right:4px"></span>Cartão dia a dia</span>'
+          +'<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--surface);margin-right:4px"></span>Dinheiro/Pix</span>'
+        +'</div>';
+    }
   }
 }
 
@@ -5404,11 +5432,32 @@ function renderExtraTable() {
 // CARTÕES
 // ══════════════════════════════════════════════════════════════
 var CARDS = {
-  inter:  { name:'Inter',         icon:'🏦', color:'#00b4d8', venc:10 },
-  nubank: { name:'Nubank',        icon:'💜', color:'#a29bfe', venc:10 },
-  bb:     { name:'Banco do Brasil',icon:'🟡', color:'#ffd166', venc:6  },
-  ml:     { name:'Mercado Livre', icon:'🟢', color:'#2dff8f', venc:13 }
+  inter:  { name:'Inter',         icon:'🏦', color:'#00b4d8', venc:10, close:6  },
+  nubank: { name:'Nubank',        icon:'💜', color:'#a29bfe', venc:10, close:6  },
+  bb:     { name:'Banco do Brasil',icon:'🟡', color:'#ffd166', venc:6,  close:27 },
+  ml:     { name:'Mercado Livre', icon:'🟢', color:'#2dff8f', venc:15, close:8  }
 };
+
+// Retorna o mês de fatura (YYYY-MM) de uma compra no cartão,
+// respeitando a data de fechamento do cartão.
+function cardBillingMonth(dateStr, cardKey) {
+  var card = CARDS[cardKey];
+  if (!card || !card.close) return dateStr.slice(0, 7);
+  var parts = dateStr.split('-');
+  var y = parseInt(parts[0]);
+  var m = parseInt(parts[1]) - 1; // 0-indexed
+  var d = parseInt(parts[2]);
+  // Fatura cai no mes seguinte ao fechamento.
+  // Compra ate o dia de fechamento: fatura do mes seguinte ao da compra.
+  // Compra apos o fechamento: fatura dois meses a frente.
+  m++;
+  if (m > 11) { m = 0; y++; }
+  if (d > card.close) {
+    m++;
+    if (m > 11) { m = 0; y++; }
+  }
+  return y + '-' + String(m + 1).padStart(2, '0');
+}
 
 function loadPurchases()         { return loadKey('car_purchases', []); }
 function savePurchases(entries)  { saveKey('car_purchases', entries); }
