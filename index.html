@@ -598,9 +598,15 @@
 
       <div class="two-col">
         <div class="panel">
-          <div class="panel-title">Gastos por Categoria</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+            <div class="panel-title" style="margin:0">Gastos por Categoria</div>
+            <div style="display:flex;gap:4px">
+              <button id="donut-tab-all" onclick="setDonutTab('all')" style="font-size:11px;padding:3px 10px;border-radius:20px;border:1px solid var(--accent);background:var(--accent);color:var(--bg);cursor:pointer;font-weight:600">Tudo</button>
+              <button id="donut-tab-confirmed" onclick="setDonutTab('confirmed')" style="font-size:11px;padding:3px 10px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer">Confirmados</button>
+            </div>
+          </div>
+          <div id="donut-renda-info" style="font-size:11px;color:var(--text-muted);text-align:center;margin-bottom:4px"></div>
           <svg id="donut-chart" viewBox="0 0 200 190" style="width:100%;display:block"></svg>
-          <div id="donut-legend" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;"></div>
         </div>
         <div class="panel">
           <div class="panel-title">Receitas vs Despesas — 6 meses</div>
@@ -4090,10 +4096,11 @@ function renderDashboard() {
   renderDashIntegrated();
 
   // Donut — expenses by category
-  var catMap = {};
-  txs.filter(function(t){return t.type==='expense';}).forEach(function(t){ catMap[t.cat]=(catMap[t.cat]||0)+t.amount; });
-  var donutData = Object.entries(catMap).sort(function(a,b){return b[1]-a[1];}).map(function(e){return {label:e[0],value:e[1]};});
-  makeDonut('donut-chart','donut-legend',donutData);
+  var _donutTxs = txs;
+  var _donutIncome = income;
+  window._donutAllTxs = txs;
+  window._donutIncome = income;
+  renderDonutChart('all');
 
   // Bar chart — 6 months
   var barData = [];
@@ -4562,6 +4569,7 @@ var WISE_IOF   = 0.0038; // 0,38% fixo por lei
 var WISE_FEE   = 0.0043; // 0,43% taxa de serviço Wise
 var PLATFORMS  = [
   { name:'Wise',             icon:'⭐', fee:0.0043, note:'câmbio mid-market + taxa serviço' },
+  { name:'Binance',          icon:'🟡', fee:0,      fixedFee:3.50, noIOF:true, note:'taxa fixa R$ 3,50' },
   { name:'Nomad',            icon:'🌎', fee:0.0100, note:'spread ~1,0%' },
   { name:'Banco Inter',      icon:'🏦', fee:0.0125, note:'spread ~1,25%' },
   { name:'Remessa Online',   icon:'💸', fee:0.0164, note:'spread ~1,64%' },
@@ -4616,14 +4624,17 @@ function renderSimulator(usd, ptax) {
     +'<th>Você recebe</th><th>Desconto</th><th>vs Wise</th>'
     +'</tr></thead><tbody>';
   PLATFORMS.forEach(function(p, i) {
-    var total   = gross * (1 - WISE_IOF - p.fee);
+    var iof     = p.noIOF ? 0 : WISE_IOF;
+    var total   = p.fixedFee ? (gross - p.fixedFee) : gross * (1 - iof - p.fee);
     var disc    = gross - total;
     var vsWise  = total - best;
     var isWise  = i === 0;
+    var iofLabel = p.noIOF ? '—' : (WISE_IOF*100).toFixed(2)+'%';
+    var feeLabel = p.fixedFee ? 'R$ 3,50' : (p.fee*100).toFixed(2)+'%';
     html += '<tr style="'+(isWise?'background:var(--accent-dim)':'')+'">'
       +'<td><strong>'+p.icon+' '+p.name+'</strong><div style="font-size:11px;color:var(--text-muted)">'+p.note+'</div></td>'
-      +'<td style="font-family:var(--font-num);color:var(--text-muted)">'+(WISE_IOF*100).toFixed(2)+'%</td>'
-      +'<td style="font-family:var(--font-num);color:var(--text-muted)">'+(p.fee*100).toFixed(2)+'%</td>'
+      +'<td style="font-family:var(--font-num);color:var(--text-muted)">'+iofLabel+'</td>'
+      +'<td style="font-family:var(--font-num);color:var(--text-muted)">'+feeLabel+'</td>'
       +'<td class="amount-pos" style="font-size:15px">'+fmt(total)+'</td>'
       +'<td style="font-family:var(--font-num);color:var(--red)">- '+fmt(disc)+'</td>'
       +'<td style="font-family:var(--font-num);color:'+(isWise?'var(--accent)':'var(--red)')+'">'
@@ -5447,11 +5458,7 @@ function cardBillingMonth(dateStr, cardKey) {
   var y = parseInt(parts[0]);
   var m = parseInt(parts[1]) - 1; // 0-indexed
   var d = parseInt(parts[2]);
-  // Fatura cai no mes seguinte ao fechamento.
-  // Compra ate o dia de fechamento: fatura do mes seguinte ao da compra.
-  // Compra apos o fechamento: fatura dois meses a frente.
-  m++;
-  if (m > 11) { m = 0; y++; }
+  // Se passou do fechamento, fatura eh no mes seguinte. Senao, eh no mes atual.
   if (d > card.close) {
     m++;
     if (m > 11) { m = 0; y++; }
@@ -7051,6 +7058,36 @@ function quickPayTerreno() {
       .catch(function(err) { console.warn('SW erro:', err); });
   }
 })();
+var _currentDonutTab = 'all';
+function setDonutTab(tab) {
+  _currentDonutTab = tab;
+  var btnAll  = document.getElementById('donut-tab-all');
+  var btnConf = document.getElementById('donut-tab-confirmed');
+  if (btnAll) { btnAll.style.background  = tab==='all' ? 'var(--accent)' : 'transparent'; btnAll.style.color  = tab==='all' ? 'var(--bg)' : 'var(--text-muted)'; btnAll.style.borderColor  = tab==='all' ? 'var(--accent)' : 'var(--border)'; }
+  if (btnConf){ btnConf.style.background = tab==='confirmed' ? 'var(--accent)' : 'transparent'; btnConf.style.color = tab==='confirmed' ? 'var(--bg)' : 'var(--text-muted)'; btnConf.style.borderColor = tab==='confirmed' ? 'var(--accent)' : 'var(--border)'; }
+  renderDonutChart(tab);
+}
+function renderDonutChart(tab) {
+  var txs    = window._donutAllTxs || [];
+  var renda  = window._donutIncome || 0;
+  var catMap = {};
+  var mk     = (currentYear) + '-' + String(currentMonth+1).padStart(2,'0');
+  if (tab === 'all') {
+    txs.filter(function(t){return t.type==='expense';}).forEach(function(t){ catMap[t.cat]=(catMap[t.cat]||0)+t.amount; });
+    var subs = loadSubscriptions().filter(function(s){ return (s.type||'expense')==='expense' && s.confirmedMonths.indexOf(mk)===-1; });
+    subs.forEach(function(s){ catMap[s.cat]=(catMap[s.cat]||0)+s.value; });
+  } else {
+    txs.filter(function(t){return t.type==='expense';}).forEach(function(t){ catMap[t.cat]=(catMap[t.cat]||0)+t.amount; });
+  }
+  var total = Object.values(catMap).reduce(function(s,v){return s+v;},0);
+  var infoEl = document.getElementById('donut-renda-info');
+  if (infoEl && renda > 0) {
+    var pct = total > 0 ? ((total/renda)*100).toFixed(0) : 0;
+    infoEl.innerHTML = 'Renda: <strong style="color:var(--accent)">'+fmt(renda)+'</strong> · Gastos: <strong style="color:var(--red)">'+pct+'%</strong>';
+  }
+  var donutData = Object.entries(catMap).sort(function(a,b){return b[1]-a[1];}).map(function(e){return {label:e[0],value:e[1]};});
+  makeDonut('donut-chart','donut-legend',donutData);
+}
 </script>
 </body>
 </html>
