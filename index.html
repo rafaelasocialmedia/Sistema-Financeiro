@@ -565,7 +565,7 @@
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px">
           <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px">
-            <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">💚 Entradas</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">💚 Entradas</span></div>
             <div id="dash-int-income-rows"></div>
             <div style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px;display:flex;justify-content:space-between">
               <span style="font-size:12px;color:var(--text-muted)">Total</span>
@@ -573,7 +573,7 @@
             </div>
           </div>
           <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px">
-            <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">🔴 Saídas</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">🔴 Saídas</span><div style="display:flex;gap:4px"><button id="dash-tab-confirmed" onclick="setDashTab('confirmed')" style="font-size:10px;padding:2px 8px;border-radius:20px;border:1px solid var(--accent);background:var(--accent);color:var(--bg);cursor:pointer;font-weight:600">✅ Confirmados</button><button id="dash-tab-pending" onclick="setDashTab('pending')" style="font-size:10px;padding:2px 8px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer">⏳ Pendentes</button></div></div>
             <div id="dash-int-expense-rows"></div>
             <div style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px;display:flex;justify-content:space-between">
               <span style="font-size:12px;color:var(--text-muted)">Total</span>
@@ -1082,6 +1082,17 @@
               <label>Valor real recebido em R$ (na conta)</label>
               <input type="number" id="dol-brl" placeholder="Ex: 5619,99" step="0.01" min="0" oninput="calcDollarPreview()">
             </div>
+            <div class="form-group">
+              <label>Plataforma utilizada</label>
+              <select id="dol-platform" onchange="calcDollarPreview()" style="width:100%">
+                <option value="wise">⭐ Wise</option>
+                <option value="binance">🟡 Binance</option>
+                <option value="nomad">🌎 Nomad</option>
+                <option value="inter">🏦 Banco Inter</option>
+                <option value="remessa">💸 Remessa Online</option>
+                <option value="tradicional">🏛️ Banco tradicional</option>
+              </select>
+            </div>
           </div>
 
           <!-- Breakdown calculado -->
@@ -1097,7 +1108,7 @@
                 <span style="font-family:var(--font-num);color:var(--red)" id="dol-iof">—</span>
               </div>
               <div style="display:flex;justify-content:space-between">
-                <span style="color:var(--text-muted)">Taxa Wise (~0,43%)</span>
+                <span style="color:var(--text-muted)" id="dol-fee-label">Taxa Wise (~0,43%)</span>
                 <span style="font-family:var(--font-num);color:var(--red)" id="dol-wise-fee">—</span>
               </div>
               <div style="border-top:1px solid var(--border);padding-top:7px;display:flex;justify-content:space-between">
@@ -3976,57 +3987,90 @@ function renderDashIntegrated() {
   var carCharges  = getMonthCharges(currentYear, currentMonth);
   var carTotal    = carCharges.reduce(function(s,c){return s+c.installmentVal;},0);
 
-  // Build income rows
-  var incomeRows = [];
-  var salIncome = txs.filter(function(t){return t.type==='income' && t.cat!=='Renda Extra';}).reduce(function(s,t){return s+t.amount;},0);
-  if (salIncome > 0)  incomeRows.push({label:'💼 Salários', val: salIncome});
-  if (dolIncome > 0)  incomeRows.push({label:'💵 Dólar', val: dolIncome});
-  if (extraIncome > 0)incomeRows.push({label:'💪 Renda Extra', val: extraIncome});
+  var mk2 = currentYear + '-' + String(currentMonth+1).padStart(2,'0');
+  var subs = loadSubscriptions();
 
-  var totalIncome = income + (dolIncome > 0 && !txs.find(function(t){return t.source==='dollar';}) ? 0 : 0);
-  totalIncome = Math.max(income, salIncome + dolIncome + extraIncome);
+  // ENTRADAS
+  // Confirmadas: transacoes income do mes
+  var confirmedIncRows = [];
+  txs.filter(function(t){return t.type==='income';}).forEach(function(t){
+    confirmedIncRows.push({label: (t.desc||t.cat||'Entrada'), val: t.amount});
+  });
+  // Pendentes: recorrentes income nao confirmados
+  var pendingIncRows = subs.filter(function(s){
+    return (s.type==='income') && s.confirmedMonths.indexOf(mk2)===-1;
+  }).map(function(s){ return {label: s.name, val: s.value}; });
 
-  // Build expense rows
-  var txExpense   = txs.filter(function(t){return t.type==='expense' && t.source!=='cartao';}).reduce(function(s,t){return s+t.amount;},0);
-  var expenseRows = [];
-  if (txExpense > 0) expenseRows.push({label:'📋 Despesas gerais', val: txExpense});
-  if (carTotal > 0)  expenseRows.push({label:'💳 Cartões', val: carTotal});
-  if (terCost > 0)   expenseRows.push({label:'🏗️ Terreno', val: terCost});
+  // SAIDAS
+  // Confirmadas: transacoes expense do mes (sem cartao, pois cartao tem bloco proprio)
+  var confirmedExpRows = [];
+  var cardTotal = txs.filter(function(t){return t.type==='expense' && t.card;}).reduce(function(s,t){return s+t.amount;},0);
+  if (cardTotal > 0) confirmedExpRows.push({label:'💳 Cartões', val: cardTotal});
+  txs.filter(function(t){return t.type==='expense' && !t.card && t.source!=='recorrente';}).forEach(function(t){
+    confirmedExpRows.push({label: (t.desc||t.cat||'Despesa'), val: t.amount});
+  });
+  // Recorrentes confirmados no mes
+  subs.filter(function(s){
+    return (s.type||'expense')==='expense' && s.confirmedMonths.indexOf(mk2)!==-1;
+  }).forEach(function(s){ confirmedExpRows.push({label:'🔄 '+s.name, val: s.value}); });
+  // Pendentes: recorrentes expense nao confirmados
+  var pendingExpRows = subs.filter(function(s){
+    return (s.type||'expense')==='expense' && s.confirmedMonths.indexOf(mk2)===-1;
+  }).map(function(s){ return {label:'🔄 '+s.name, val: s.value}; });
 
-  var totalExpense = txExpense + carTotal;
+  var totalConfirmedInc = confirmedIncRows.reduce(function(s,r){return s+r.val;},0);
+  var totalPendingInc   = pendingIncRows.reduce(function(s,r){return s+r.val;},0);
+  var totalIncome       = totalConfirmedInc;
+  var totalConfirmedExp = confirmedExpRows.reduce(function(s,r){return s+r.val;},0);
+  var totalPendingExp   = pendingExpRows.reduce(function(s,r){return s+r.val;},0);
+  var totalExpense      = totalConfirmedExp;
   var sobra        = totalIncome - totalExpense;
   var pct          = totalIncome > 0 ? Math.min(100, (totalIncome-totalExpense)/totalIncome*100) : 0;
   var sobraColor   = sobra >= 0 ? 'var(--accent)' : 'var(--red)';
 
-  // Period label
-  var periodEl = document.getElementById('dash-int-period');
-  if (periodEl) periodEl.textContent = monthLabel();
+  function renderRows(rows, color) {
+    if (!rows.length) return '<div style="color:var(--text-dim);font-size:12px">Nenhum item</div>';
+    return rows.map(function(r){
+      return '<div style="display:flex;justify-content:space-between;margin-bottom:5px">'
+        +'<span style="color:var(--text-muted);font-size:13px">'+r.label+'</span>'
+        +'<span style="font-family:var(--font-num);color:'+color+'">'+fmt(r.val)+'</span>'
+        +'</div>';
+    }).join('');
+  }
 
-  // Income rows
+  // Tabs state
+  window._dashTab = window._dashTab || 'confirmed';
+  function setDashTab(tab) {
+    window._dashTab = tab;
+    var bc = document.getElementById('dash-tab-confirmed');
+    var bp = document.getElementById('dash-tab-pending');
+    if(bc){bc.style.background=tab==='confirmed'?'var(--accent)':'transparent';bc.style.color=tab==='confirmed'?'var(--bg)':'var(--text-muted)';}
+    if(bp){bp.style.background=tab==='pending'?'var(--gold)':'transparent';bp.style.color=tab==='pending'?'var(--bg)':'var(--text-muted)';}
+    var incEl2  = document.getElementById('dash-int-income-rows');
+    var expEl2  = document.getElementById('dash-int-expense-rows');
+    var totIncEl = document.getElementById('dash-int-total-income');
+    var totExpEl = document.getElementById('dash-int-total-expense');
+    if(tab==='confirmed'){
+      if(incEl2)  incEl2.innerHTML  = renderRows(confirmedIncRows,'var(--accent)');
+      if(expEl2)  expEl2.innerHTML  = renderRows(confirmedExpRows,'var(--red)');
+      if(totIncEl)totIncEl.textContent = fmt(totalConfirmedInc);
+      if(totExpEl)totExpEl.textContent = fmt(totalConfirmedExp);
+    } else {
+      if(incEl2)  incEl2.innerHTML  = renderRows(pendingIncRows,'var(--accent)');
+      if(expEl2)  expEl2.innerHTML  = renderRows(pendingExpRows,'var(--gold)');
+      if(totIncEl)totIncEl.textContent = fmt(totalPendingInc);
+      if(totExpEl)totExpEl.textContent = fmt(totalPendingExp);
+    }
+  }
+  window.setDashTab = setDashTab;
+
+  // Income rows (initial render)
   var incEl = document.getElementById('dash-int-income-rows');
-  if (incEl) {
-    incEl.innerHTML = incomeRows.length
-      ? incomeRows.map(function(r){
-          return '<div style="display:flex;justify-content:space-between;margin-bottom:6px">'
-            +'<span style="color:var(--text-muted)">'+r.label+'</span>'
-            +'<span style="font-family:var(--font-num);color:var(--accent)">'+fmt(r.val)+'</span>'
-            +'</div>';
-        }).join('')
-      : '<div style="color:var(--text-dim);font-size:12px">Nenhuma entrada registrada</div>';
-  }
+  if (incEl) incEl.innerHTML = renderRows(confirmedIncRows, 'var(--accent)');
 
-  // Expense rows
+  // Expense rows (initial render)
   var expEl = document.getElementById('dash-int-expense-rows');
-  if (expEl) {
-    expEl.innerHTML = expenseRows.length
-      ? expenseRows.map(function(r){
-          return '<div style="display:flex;justify-content:space-between;margin-bottom:6px">'
-            +'<span style="color:var(--text-muted)">'+r.label+'</span>'
-            +'<span style="font-family:var(--font-num);color:var(--red)">'+fmt(r.val)+'</span>'
-            +'</div>';
-        }).join('')
-      : '<div style="color:var(--text-dim);font-size:12px">Nenhuma saída registrada</div>';
-  }
+  if (expEl) expEl.innerHTML = renderRows(confirmedExpRows, 'var(--red)');
 
   document.getElementById('dash-int-total-income').textContent  = fmt(totalIncome);
   document.getElementById('dash-int-total-expense').textContent = fmt(totalExpense);
@@ -4587,12 +4631,20 @@ function calcDollarPreview() {
   if (!bd) return;
   if (usd > 0 && ptax > 0) {
     bd.style.display = 'block';
-    var gross     = usd * ptax;
-    var iofVal    = gross * WISE_IOF;
-    var feeVal    = gross * WISE_FEE;
+    var gross = usd * ptax;
+    var platSel = document.getElementById('dol-platform');
+    var platKey = platSel ? platSel.value : 'wise';
+    var platMap = { wise:{iof:WISE_IOF,fee:WISE_FEE,label:'Taxa Wise (~0,43%)',fixedFee:0}, binance:{iof:0,fee:0,label:'Taxa Binance (fixo)',fixedFee:3.50}, nomad:{iof:WISE_IOF,fee:0.0100,label:'Spread Nomad (~1,0%)',fixedFee:0}, inter:{iof:WISE_IOF,fee:0.0125,label:'Spread Inter (~1,25%)',fixedFee:0}, remessa:{iof:WISE_IOF,fee:0.0164,label:'Spread Remessa (~1,64%)',fixedFee:0}, tradicional:{iof:WISE_IOF,fee:0.0300,label:'Spread Banco Trad. (~3,0%)',fixedFee:0} };
+    var plat = platMap[platKey] || platMap.wise;
+    var iofVal  = gross * plat.iof;
+    var feeVal  = plat.fixedFee > 0 ? plat.fixedFee : gross * plat.fee;
     var estimated = gross - iofVal - feeVal;
+    var iofEl = document.getElementById('dol-iof').parentElement.querySelector('span:first-child');
+    if (iofEl) iofEl.textContent = plat.iof > 0 ? 'IOF (0,38% — fixo por lei)' : 'IOF (isento)';
+    var feeLabelEl = document.getElementById('dol-fee-label');
+    if (feeLabelEl) feeLabelEl.textContent = plat.label;
     document.getElementById('dol-gross').textContent    = fmt(gross);
-    document.getElementById('dol-iof').textContent      = '- ' + fmt(iofVal);
+    document.getElementById('dol-iof').textContent      = plat.iof > 0 ? '- ' + fmt(iofVal) : '—';
     document.getElementById('dol-wise-fee').textContent = '- ' + fmt(feeVal);
     document.getElementById('dol-estimated').textContent= fmt(estimated);
     var diffRow = document.getElementById('dol-diff-row');
