@@ -565,7 +565,7 @@
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px">
           <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">💚 Entradas</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px">💚 Entradas</span><div style="display:flex;gap:4px"><button id="dash-inc-tab-confirmed" onclick="setDashIncTab('confirmed')" style="font-size:10px;padding:2px 8px;border-radius:20px;border:1px solid var(--accent);background:var(--accent);color:var(--bg);cursor:pointer;font-weight:600">✅ Confirmados</button><button id="dash-inc-tab-pending" onclick="setDashIncTab('pending')" style="font-size:10px;padding:2px 8px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer">⏳ Pendentes</button></div></div>
             <div id="dash-int-income-rows"></div>
             <div style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px;display:flex;justify-content:space-between">
               <span style="font-size:12px;color:var(--text-muted)">Total</span>
@@ -578,12 +578,17 @@
             <div style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px;display:flex;justify-content:space-between">
               <span style="font-size:12px;color:var(--text-muted)">Total</span>
               <span style="font-family:var(--font-num);font-weight:700;color:var(--red)" id="dash-int-total-expense">R$ 0,00</span>
+              </div>
+              <div id="dash-exp-previsto-row" style="display:none;border-top:1px solid var(--border);margin-top:6px;padding-top:6px;display:flex;justify-content:space-between">
+                <span style="font-size:12px;color:var(--gold)">Total previsto</span>
+                <span style="font-family:var(--font-num);font-weight:700;color:var(--gold)" id="dash-int-total-previsto">R$ 0,00</span>
             </div>
           </div>
           <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px">
             <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">✨ Sobra do Mês</div>
             <div style="font-family:var(--font-num);font-size:26px;font-weight:700" id="dash-int-sobra">R$ 0,00</div>
-            <div style="font-size:11px;color:var(--text-muted);margin-top:4px">entradas − saídas</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:4px">entradas − saídas confirmadas</div>
+            <div style="font-size:11px;color:var(--gold);margin-top:6px">Previsto: <span id="dash-int-sobra-previsto" style="font-weight:700">R$ 0,00</span></div>
             <div class="progress-bar" style="margin-top:10px">
               <div class="progress-fill" id="dash-int-sobra-bar" style="width:0%"></div>
             </div>
@@ -3373,6 +3378,23 @@ function saveEditSub() {
   }
 
   saveSubscriptions(subs);
+
+  // Se ja confirmado no mes atual, atualiza o banco da transacao ja lancada
+  var mk = curMonthKey();
+  if (subs[idx].confirmedMonths.indexOf(mk) !== -1 && subs[idx].type !== 'income') {
+    var txs2 = loadKey('transactions');
+    var subName = subs[idx].emoji + ' ' + subs[idx].name;
+    var newCard = subs[idx].card;
+    var changed = false;
+    txs2.forEach(function(t) {
+      if (t.source === 'recorrente' && t.desc && t.desc.indexOf(subs[idx].name) !== -1 && t.date && t.date.startsWith(mk)) {
+        t.card    = CARDS[newCard] ? newCard : undefined;
+        t.payment = CARDS[newCard] ? undefined : newCard;
+        changed   = true;
+      }
+    });
+    if (changed) saveKey('transactions', txs2);
+  }
   closeEditSubModal();
   notify('✓ Atualizado!');
   renderSubscriptions();
@@ -4002,18 +4024,27 @@ function renderDashIntegrated() {
   }).map(function(s){ return {label: s.name, val: s.value}; });
 
   // SAIDAS
-  // Confirmadas: transacoes expense do mes (sem cartao, pois cartao tem bloco proprio)
   var confirmedExpRows = [];
-  var cardTotal = txs.filter(function(t){return t.type==='expense' && t.card;}).reduce(function(s,t){return s+t.amount;},0);
-  if (cardTotal > 0) confirmedExpRows.push({label:'💳 Cartões', val: cardTotal});
-  txs.filter(function(t){return t.type==='expense' && !t.card && t.source!=='recorrente';}).forEach(function(t){
-    confirmedExpRows.push({label: (t.desc||t.cat||'Despesa'), val: t.amount});
-  });
-  // Recorrentes confirmados no mes
+
+  // A vista credito (cartao, nao parcelado, nao recorrente)
+  var avistaTotal = txs.filter(function(t){ return t.type==='expense' && t.card && !t.purchaseId && t.source!=='recorrente'; }).reduce(function(s,t){return s+t.amount;},0);
+  if (avistaTotal > 0) confirmedExpRows.push({label:'💳 À vista crédito', val: avistaTotal});
+
+  // Parcelado (car_purchases installments)
+  var carCharges2 = getMonthCharges(currentYear, currentMonth);
+  var parceladoTotal = carCharges2.reduce(function(s,c){return s+c.installmentVal;},0);
+  if (parceladoTotal > 0) confirmedExpRows.push({label:'📦 Parcelado', val: parceladoTotal});
+
+  // Pix / Dinheiro
+  var pixTotal = txs.filter(function(t){ return t.type==='expense' && !t.card && t.source!=='recorrente'; }).reduce(function(s,t){return s+t.amount;},0);
+  if (pixTotal > 0) confirmedExpRows.push({label:'📱 Pix/Dinheiro', val: pixTotal});
+
+  // Recorrentes confirmados
   subs.filter(function(s){
     return (s.type||'expense')==='expense' && s.confirmedMonths.indexOf(mk2)!==-1;
   }).forEach(function(s){ confirmedExpRows.push({label:'🔄 '+s.name, val: s.value}); });
-  // Pendentes: recorrentes expense nao confirmados
+
+  // Pendentes: recorrentes nao confirmados
   var pendingExpRows = subs.filter(function(s){
     return (s.type||'expense')==='expense' && s.confirmedMonths.indexOf(mk2)===-1;
   }).map(function(s){ return {label:'🔄 '+s.name, val: s.value}; });
@@ -4039,30 +4070,57 @@ function renderDashIntegrated() {
   }
 
   // Tabs state
-  window._dashTab = window._dashTab || 'confirmed';
+  var totalPrevisto = totalConfirmedExp + totalPendingExp;
+  var totalIncPrevisto = totalConfirmedInc + totalPendingInc;
+  var sobraPrevista = totalIncPrevisto - totalPrevisto;
+
+  // Update sobra prevista element
+  var sobraPrevEl = document.getElementById('dash-int-sobra-previsto');
+  if (sobraPrevEl) { sobraPrevEl.textContent = fmt(sobraPrevista); sobraPrevEl.style.color = sobraPrevista >= 0 ? 'var(--gold)' : 'var(--red)'; }
+
+  window._dashTab    = window._dashTab    || 'confirmed';
+  window._dashIncTab = window._dashIncTab || 'confirmed';
+
   function setDashTab(tab) {
     window._dashTab = tab;
     var bc = document.getElementById('dash-tab-confirmed');
     var bp = document.getElementById('dash-tab-pending');
-    if(bc){bc.style.background=tab==='confirmed'?'var(--accent)':'transparent';bc.style.color=tab==='confirmed'?'var(--bg)':'var(--text-muted)';}
-    if(bp){bp.style.background=tab==='pending'?'var(--gold)':'transparent';bp.style.color=tab==='pending'?'var(--bg)':'var(--text-muted)';}
-    var incEl2  = document.getElementById('dash-int-income-rows');
-    var expEl2  = document.getElementById('dash-int-expense-rows');
-    var totIncEl = document.getElementById('dash-int-total-income');
+    if(bc){bc.style.background=tab==='confirmed'?'var(--accent)':'transparent';bc.style.color=tab==='confirmed'?'var(--bg)':'var(--text-muted)';bc.style.borderColor=tab==='confirmed'?'var(--accent)':'var(--border)';}
+    if(bp){bp.style.background=tab==='pending'?'var(--gold)':'transparent';bp.style.color=tab==='pending'?'var(--bg)':'var(--text-muted)';bp.style.borderColor=tab==='pending'?'var(--gold)':'var(--border)';}
+    var expEl2   = document.getElementById('dash-int-expense-rows');
     var totExpEl = document.getElementById('dash-int-total-expense');
+    var prevRow  = document.getElementById('dash-exp-previsto-row');
+    var prevEl   = document.getElementById('dash-int-total-previsto');
     if(tab==='confirmed'){
-      if(incEl2)  incEl2.innerHTML  = renderRows(confirmedIncRows,'var(--accent)');
-      if(expEl2)  expEl2.innerHTML  = renderRows(confirmedExpRows,'var(--red)');
-      if(totIncEl)totIncEl.textContent = fmt(totalConfirmedInc);
-      if(totExpEl)totExpEl.textContent = fmt(totalConfirmedExp);
+      if(expEl2)   expEl2.innerHTML       = renderRows(confirmedExpRows,'var(--red)');
+      if(totExpEl) totExpEl.textContent   = fmt(totalConfirmedExp);
+      if(prevRow)  prevRow.style.display  = 'none';
     } else {
-      if(incEl2)  incEl2.innerHTML  = renderRows(pendingIncRows,'var(--accent)');
-      if(expEl2)  expEl2.innerHTML  = renderRows(pendingExpRows,'var(--gold)');
-      if(totIncEl)totIncEl.textContent = fmt(totalPendingInc);
-      if(totExpEl)totExpEl.textContent = fmt(totalPendingExp);
+      if(expEl2)   expEl2.innerHTML       = renderRows(pendingExpRows,'var(--gold)');
+      if(totExpEl) totExpEl.textContent   = fmt(totalPendingExp);
+      if(prevRow)  prevRow.style.display  = 'flex';
+      if(prevEl)   prevEl.textContent     = fmt(totalPrevisto);
     }
   }
   window.setDashTab = setDashTab;
+
+  function setDashIncTab(tab) {
+    window._dashIncTab = tab;
+    var bc = document.getElementById('dash-inc-tab-confirmed');
+    var bp = document.getElementById('dash-inc-tab-pending');
+    if(bc){bc.style.background=tab==='confirmed'?'var(--accent)':'transparent';bc.style.color=tab==='confirmed'?'var(--bg)':'var(--text-muted)';bc.style.borderColor=tab==='confirmed'?'var(--accent)':'var(--border)';}
+    if(bp){bp.style.background=tab==='pending'?'var(--gold)':'transparent';bp.style.color=tab==='pending'?'var(--bg)':'var(--text-muted)';bp.style.borderColor=tab==='pending'?'var(--gold)':'var(--border)';}
+    var incEl2   = document.getElementById('dash-int-income-rows');
+    var totIncEl = document.getElementById('dash-int-total-income');
+    if(tab==='confirmed'){
+      if(incEl2)   incEl2.innerHTML     = renderRows(confirmedIncRows,'var(--accent)');
+      if(totIncEl) totIncEl.textContent = fmt(totalConfirmedInc);
+    } else {
+      if(incEl2)   incEl2.innerHTML     = renderRows(pendingIncRows,'var(--accent)');
+      if(totIncEl) totIncEl.textContent = fmt(totalPendingInc);
+    }
+  }
+  window.setDashIncTab = setDashIncTab;
 
   // Income rows (initial render)
   var incEl = document.getElementById('dash-int-income-rows');
