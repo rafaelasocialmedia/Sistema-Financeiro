@@ -4023,19 +4023,19 @@ function renderDashIntegrated() {
     return (s.type==='income') && s.confirmedMonths.indexOf(mk2)===-1;
   }).map(function(s){ return {label: s.name, val: s.value}; });
 
-  // SAIDAS
+  // SAIDAS — usando getMonthCharges como fonte principal dos cartoes
   var confirmedExpRows = [];
 
-  // A vista credito (cartao, nao parcelado, nao recorrente)
-  var avistaTotal = txs.filter(function(t){ return t.type==='expense' && t.card && !t.purchaseId && t.source!=='recorrente'; }).reduce(function(s,t){return s+t.amount;},0);
-  if (avistaTotal > 0) confirmedExpRows.push({label:'💳 À vista crédito', val: avistaTotal});
-
-  // Parcelado (car_purchases installments)
-  var carCharges2 = getMonthCharges(currentYear, currentMonth);
-  var parceladoTotal = carCharges2.reduce(function(s,c){return s+c.installmentVal;},0);
+  // Parcelado
+  var carCharges2    = getMonthCharges(currentYear, currentMonth);
+  var parceladoTotal = carCharges2.filter(function(c){ return c.parcelas > 1; }).reduce(function(s,c){return s+c.installmentVal;},0);
   if (parceladoTotal > 0) confirmedExpRows.push({label:'📦 Parcelado', val: parceladoTotal});
 
-  // Pix / Dinheiro
+  // A vista credito (1 parcela, via cartao)
+  var avistaTotal = carCharges2.filter(function(c){ return c.parcelas === 1; }).reduce(function(s,c){return s+c.installmentVal;},0);
+  if (avistaTotal > 0) confirmedExpRows.push({label:'💳 À vista crédito', val: avistaTotal});
+
+  // Pix / Dinheiro (transactions sem cartao e sem recorrente)
   var pixTotal = txs.filter(function(t){ return t.type==='expense' && !t.card && t.source!=='recorrente'; }).reduce(function(s,t){return s+t.amount;},0);
   if (pixTotal > 0) confirmedExpRows.push({label:'📱 Pix/Dinheiro', val: pixTotal});
 
@@ -4044,10 +4044,18 @@ function renderDashIntegrated() {
     return (s.type||'expense')==='expense' && s.confirmedMonths.indexOf(mk2)!==-1;
   }).forEach(function(s){ confirmedExpRows.push({label:'🔄 '+s.name, val: s.value}); });
 
-  // Pendentes: recorrentes nao confirmados
-  var pendingExpRows = subs.filter(function(s){
+  // PENDENTES — proximo mes para cartoes + recorrentes nao confirmados
+  var pendingExpRows = [];
+  var nextM = currentMonth + 1 > 11 ? 0 : currentMonth + 1;
+  var nextY = currentMonth + 1 > 11 ? currentYear + 1 : currentYear;
+  var nextCharges    = getMonthCharges(nextY, nextM);
+  var nextParcelado  = nextCharges.filter(function(c){ return c.parcelas > 1; }).reduce(function(s,c){return s+c.installmentVal;},0);
+  var nextAvista     = nextCharges.filter(function(c){ return c.parcelas === 1; }).reduce(function(s,c){return s+c.installmentVal;},0);
+  if (nextParcelado > 0) pendingExpRows.push({label:'📦 Parcelado (próx.)', val: nextParcelado});
+  if (nextAvista    > 0) pendingExpRows.push({label:'💳 À vista (próx.)', val: nextAvista});
+  subs.filter(function(s){
     return (s.type||'expense')==='expense' && s.confirmedMonths.indexOf(mk2)===-1;
-  }).map(function(s){ return {label:'🔄 '+s.name, val: s.value}; });
+  }).map(function(s){ return {label:'🔄 '+s.name, val: s.value}; }).forEach(function(r){ pendingExpRows.push(r); });
 
   var totalConfirmedInc = confirmedIncRows.reduce(function(s,r){return s+r.val;},0);
   var totalPendingInc   = pendingIncRows.reduce(function(s,r){return s+r.val;},0);
@@ -5599,15 +5607,7 @@ function deleteCarPurchase(id) {
 // Purchases made after the closing date go to next month's bill
 // We simplify: closing = venc - 8 days (approximate)
 function getBillingMonth(purchase) {
-  var d        = new Date(purchase.date + 'T12:00:00');
-  var card     = CARDS[purchase.card];
-  var closeDay = card.venc - 8;
-  if (closeDay <= 0) closeDay = 1;
-  // If purchased after closing day → goes to next month billing
-  if (d.getDate() > closeDay) {
-    d.setMonth(d.getMonth() + 1);
-  }
-  return monthKey(d.getFullYear(), d.getMonth());
+  return cardBillingMonth(purchase.date, purchase.card);
 }
 
 // Get all installment charges for a given billing month
