@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-06-01T18:40:30.911Z",
+  "savedAt": "2026-06-04T02:37:37.344Z",
   "data": {
     "fp_cats": [
       {
@@ -742,7 +742,7 @@
         "subcat": "Reforma Hidaulica",
         "desc": "Guaraluz (💜 Nubank)",
         "date": "2026-06-10",
-        "source": "cartao",
+        "source": "recorrente",
         "card": "nubank",
         "purchaseId": 1780338846349
       },
@@ -817,6 +817,101 @@
         "source": "cartao",
         "card": "nubank",
         "purchaseId": 1780338999130
+      },
+      {
+        "id": 1780500882821,
+        "type": "expense",
+        "amount": 1164.82,
+        "cat": "Terreno",
+        "subcat": "Parcela",
+        "desc": "🔄 Parcela do terreno (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "recorrente",
+        "card": "inter",
+        "purchaseId": 1780500882820
+      },
+      {
+        "id": 1780500919042,
+        "type": "expense",
+        "amount": 230,
+        "cat": "Contas",
+        "subcat": "Luz",
+        "desc": "🔄 Luz (💜 Nubank)",
+        "date": "2026-06-10",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1780500919041
+      },
+      {
+        "id": 1780501091795,
+        "type": "expense",
+        "amount": 9.2,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1780501091794
+      },
+      {
+        "id": 1780501108092,
+        "type": "expense",
+        "amount": 13.6,
+        "cat": "Espiritualidade",
+        "subcat": "Transsporte",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1780501108091
+      },
+      {
+        "id": 1780501137451,
+        "type": "expense",
+        "amount": 15.37,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Panificadora (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1780501137450
+      },
+      {
+        "id": 1780501184759,
+        "type": "expense",
+        "amount": 8.1,
+        "cat": "Ateliê",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1780501184758
+      },
+      {
+        "id": 1780501247136,
+        "type": "expense",
+        "amount": 11.2,
+        "cat": "Ateliê",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1780501247135
+      },
+      {
+        "id": 1780501348157,
+        "type": "income",
+        "amount": 100,
+        "cat": "Freelance",
+        "subcat": "",
+        "desc": "💚 InsightZ",
+        "date": "2026-06-10",
+        "payment": "dinheiro",
+        "source": "recorrente"
       },
       {
         "id": 1780336874536,
@@ -932,7 +1027,8 @@
         "date": "2026-05-10",
         "source": "recorrente",
         "card": "inter",
-        "purchaseId": 1779322057759
+        "purchaseId": 1779322057759,
+        "payment": "nubank"
       },
       {
         "id": 1779322058693,
@@ -959,6 +1055,20 @@
         "purchaseId": 1779322342890
       }
     ],
+    "fp_dollar_entries": [
+      {
+        "id": 1780540565967,
+        "month": "2026-06",
+        "usd": 1000,
+        "ptax": 5.01,
+        "brl": 5006.5,
+        "gross": 5010,
+        "estimated": 4969.419,
+        "rate": 5.0065,
+        "diff": 37.08100000000013,
+        "notes": "mes com dolar baixo"
+      }
+    ],
     "fp_car_purchases": [
       {
         "id": 1780338305595,
@@ -983,6 +1093,17 @@
         "installmentVal": 24.9
       },
       {
+        "id": 1780500919041,
+        "card": "nubank",
+        "date": "2026-06-15",
+        "desc": "🔄 Luz",
+        "cat": "Contas",
+        "subcat": "Luz",
+        "total": 230,
+        "parcelas": 1,
+        "installmentVal": 230
+      },
+      {
         "id": 1779314903944,
         "card": "inter",
         "date": "2026-06-10",
@@ -1005,9 +1126,20 @@
         "installmentVal": 33.4
       },
       {
+        "id": 1780500882820,
+        "card": "inter",
+        "date": "2026-06-10",
+        "desc": "🔄 Parcela do terreno",
+        "cat": "Terreno",
+        "subcat": "Parcela",
+        "total": 1164.82,
+        "parcelas": 1,
+        "installmentVal": 1164.82
+      },
+      {
         "id": 1780320259589,
         "card": "nubank",
-        "date": "2026-05-30",
+        "date": "2026-05-31",
         "desc": "Lanche",
         "cat": "Alimentação",
         "subcat": "Delivery",
@@ -1060,6 +1192,50 @@
         "installmentVal": 38.8
       },
       {
+        "id": 1780501091794,
+        "card": "inter",
+        "date": "2026-05-30",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 9.2,
+        "parcelas": 1,
+        "installmentVal": 9.2
+      },
+      {
+        "id": 1780501108091,
+        "card": "inter",
+        "date": "2026-05-30",
+        "desc": "99",
+        "cat": "Espiritualidade",
+        "subcat": "Transsporte",
+        "total": 13.6,
+        "parcelas": 1,
+        "installmentVal": 13.6
+      },
+      {
+        "id": 1780501137450,
+        "card": "inter",
+        "date": "2026-05-30",
+        "desc": "Panificadora",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 15.37,
+        "parcelas": 1,
+        "installmentVal": 15.37
+      },
+      {
+        "id": 1780501184758,
+        "card": "inter",
+        "date": "2026-05-30",
+        "desc": "99",
+        "cat": "Ateliê",
+        "subcat": "",
+        "total": 8.1,
+        "parcelas": 1,
+        "installmentVal": 8.1
+      },
+      {
         "id": 1779322342890,
         "card": "bb",
         "date": "2026-05-27",
@@ -1076,6 +1252,17 @@
         "date": "2026-05-27",
         "desc": "Precisa repor o valor gasto (favorita)",
         "cat": "Transporte",
+        "subcat": "",
+        "total": 11.2,
+        "parcelas": 1,
+        "installmentVal": 11.2
+      },
+      {
+        "id": 1780501247135,
+        "card": "inter",
+        "date": "2026-05-25",
+        "desc": "99",
+        "cat": "Ateliê",
         "subcat": "",
         "total": 11.2,
         "parcelas": 1,
@@ -1560,7 +1747,8 @@
         "subcat": "Parcela",
         "card": "inter",
         "confirmedMonths": [
-          "2026-05"
+          "2026-05",
+          "2026-06"
         ]
       },
       {
@@ -1582,12 +1770,14 @@
         "name": "Luz",
         "emoji": "🔄",
         "type": "expense",
-        "value": 270,
+        "value": 230,
         "day": 15,
         "cat": "Contas",
         "subcat": "Luz",
-        "card": "inter",
-        "confirmedMonths": []
+        "card": "nubank",
+        "confirmedMonths": [
+          "2026-06"
+        ]
       },
       {
         "id": 1779322500367,
@@ -1606,12 +1796,14 @@
         "name": "InsightZ",
         "emoji": "💚",
         "type": "income",
-        "value": 150,
+        "value": 100,
         "day": 10,
         "cat": "Freelance",
         "subcat": "",
         "card": "dinheiro",
-        "confirmedMonths": []
+        "confirmedMonths": [
+          "2026-06"
+        ]
       },
       {
         "id": 1779931271216,
