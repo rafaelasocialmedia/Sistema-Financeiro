@@ -855,17 +855,17 @@
 
         <!-- Lançamentos do mês -->
         <div class="panel" style="margin-bottom:18px">
-          <div class="panel-title">
-            Lançamentos do Mês
-            <select id="car-filter" onchange="renderCartoesTable()" style="font-size:12px;padding:4px 8px">
+          <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="toggleSection('lancamentos-body')">
+            <span>Lançamentos do Mês</span>
+            <div style="display:flex;gap:8px;align-items:center"><span id="lancamentos-arrow" style="font-size:16px">▲</span><select id="car-filter" onchange="renderCartoesTable()" style="font-size:12px;padding:4px 8px">
               <option value="">Todos os cartões</option>
               <option value="inter">Inter</option>
               <option value="nubank">Nubank</option>
               <option value="bb">B.B</option>
               <option value="ml">Mercado Livre</option>
-            </select>
+            </select></div>
           </div>
-          <div class="table-wrap">
+          <div id="lancamentos-body"><div class="table-wrap">
             <table>
               <thead>
                 <tr>
@@ -882,8 +882,8 @@
       <!-- Histórico de Transações — por último -->
       <div style="margin-top:12px;border-top:2px solid var(--border);padding-top:28px;">
         <div id="tx-hist-panel" class="panel">
-          <div class="panel-title">
-            Histórico de Transações
+          <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="toggleSection('historico-body')">
+            <span>Histórico de Transações</span><span id="historico-arrow" style="font-size:16px">▲</span>
             <div style="display:flex;gap:8px;align-items:center">
               <div class="month-selector" style="margin:0">
                 <div class="month-btn" onclick="changeMonth(-1)">‹</div>
@@ -892,7 +892,7 @@
               </div>
             </div>
           </div>
-          <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <div id="historico-body"><div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
             <select id="tx-filter-type" onchange="renderTxTable()" style="flex:1;min-width:140px">
               <option value="">Todos os tipos</option>
               <option value="income">💚 Receitas</option>
@@ -916,7 +916,7 @@
               <tbody id="tx-table"></tbody>
             </table>
           </div>
-          <div id="tx-totals" style="display:flex;gap:24px;padding:12px 12px 0;font-size:13px;color:var(--text-muted);flex-wrap:wrap;"></div>
+          <div id="tx-totals" style="display:flex;gap:24px;padding:12px 12px 0;font-size:13px;color:var(--text-muted);flex-wrap:wrap;"></div></div>
         </div>
       </div>
     </div>
@@ -2443,8 +2443,18 @@ function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'
 function genId() { return 'id_'+Date.now()+'_'+Math.random().toString(36).slice(2,7); }
 
 function getMonthTx(y, m) {
-  const key = monthKey(y, m);
-  return loadKey('transactions').filter(t => t.date && t.date.startsWith(key));
+  var key = monthKey(y, m);
+  return loadKey('transactions').filter(function(t) {
+    if (!t.date) return false;
+    if (t.card && CARDS[t.card] && CARDS[t.card].close) {
+      var d = new Date(t.date + 'T12:00:00');
+      var closeDay = CARDS[t.card].close;
+      var billingDate = new Date(d);
+      if (d.getDate() > closeDay) { billingDate.setMonth(billingDate.getMonth() + 1); }
+      return monthKey(billingDate.getFullYear(), billingDate.getMonth()) === key;
+    }
+    return t.date.startsWith(key);
+  });
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -3759,9 +3769,23 @@ function renderSubscriptions() {
 }
 
 function deleteTx(id) {
-  saveKey('transactions', loadKey('transactions').filter(function(t){ return t.id !== id; }));
+  var txs  = loadKey('transactions');
+  var tx   = txs.find(function(t){ return t.id === id; });
+  saveKey('transactions', txs.filter(function(t){ return t.id !== id; }));
+  // Se era recorrente, desconfirma no mes correspondente
+  if (tx && tx.source === 'recorrente' && tx.date) {
+    var mk = tx.date.slice(0,7);
+    var subs = loadSubscriptions();
+    subs.forEach(function(s) {
+      if (tx.desc && tx.desc.indexOf(s.name) !== -1) {
+        s.confirmedMonths = s.confirmedMonths.filter(function(m){ return m !== mk; });
+      }
+    });
+    saveSubscriptions(subs);
+  }
   notify('Transação removida.');
   renderTxTable();
+  renderSubscriptions();
   renderDashboard();
 }
 
@@ -5404,10 +5428,11 @@ function renderExtraTable() {
 // CARTÕES
 // ══════════════════════════════════════════════════════════════
 var CARDS = {
-  inter:  { name:'Inter',         icon:'🏦', color:'#00b4d8', venc:10 },
-  nubank: { name:'Nubank',        icon:'💜', color:'#a29bfe', venc:10 },
-  bb:     { name:'Banco do Brasil',icon:'🟡', color:'#ffd166', venc:6  },
-  ml:     { name:'Mercado Livre', icon:'🟢', color:'#2dff8f', venc:13 }
+  // close = dia de fechamento real de cada cartao
+  inter:  { name:'Inter',         icon:'🏦', color:'#00b4d8', venc:10, close:6  },
+  nubank: { name:'Nubank',        icon:'💜', color:'#a29bfe', venc:10, close:6  },
+  bb:     { name:'Banco do Brasil',icon:'🟡', color:'#ffd166', venc:6,  close:27 },
+  ml:     { name:'Mercado Livre', icon:'🟢', color:'#2dff8f', venc:15, close:8  }
 };
 
 function loadPurchases()         { return loadKey('car_purchases', []); }
@@ -5435,9 +5460,9 @@ function deleteCarPurchase(id) {
 function getBillingMonth(purchase) {
   var d        = new Date(purchase.date + 'T12:00:00');
   var card     = CARDS[purchase.card];
-  var closeDay = card.venc - 8;
+  var closeDay = card.close || (card.venc - 8);
   if (closeDay <= 0) closeDay = 1;
-  // If purchased after closing day → goes to next month billing
+  // Se compra foi feita APOS o fechamento, vai para o mes seguinte
   if (d.getDate() > closeDay) {
     d.setMonth(d.getMonth() + 1);
   }
@@ -7002,6 +7027,14 @@ function quickPayTerreno() {
       .catch(function(err) { console.warn('SW erro:', err); });
   }
 })();
+function toggleSection(id) {
+  var body  = document.getElementById(id);
+  var arrow = document.getElementById(id.replace('-body','-arrow'));
+  if (!body) return;
+  var isOpen = body.style.display !== 'none';
+  body.style.display  = isOpen ? 'none' : '';
+  if (arrow) arrow.textContent = isOpen ? '▼' : '▲';
+}
 </script>
 </body>
 </html>
