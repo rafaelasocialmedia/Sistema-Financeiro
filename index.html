@@ -2446,13 +2446,6 @@ function getMonthTx(y, m) {
   var key = monthKey(y, m);
   return loadKey('transactions').filter(function(t) {
     if (!t.date) return false;
-    if (t.card && CARDS[t.card] && CARDS[t.card].close) {
-      var d = new Date(t.date + 'T12:00:00');
-      var closeDay = CARDS[t.card].close;
-      var billingDate = new Date(d);
-      if (d.getDate() > closeDay) { billingDate.setMonth(billingDate.getMonth() + 1); }
-      return monthKey(billingDate.getFullYear(), billingDate.getMonth()) === key;
-    }
     return t.date.startsWith(key);
   });
 }
