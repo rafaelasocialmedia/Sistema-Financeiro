@@ -1627,7 +1627,15 @@
               <input type="date" id="inv-aporte-date">
             </div>
             <div class="form-group">
-              <label>Taxa de Rendimento (% a.a.)</label>
+              <label>CDI atual (% a.a.) <span style="font-size:11px;color:var(--text-muted)">— salvo automaticamente</span></label>
+              <input type="number" id="inv-cdi-atual" placeholder="Ex: 13,75" step="0.01" min="0" oninput="calcTaxaCDI()" onchange="localStorage.setItem('fp_cdi_atual',this.value)">
+            </div>
+            <div class="form-group">
+              <label>% do CDI <span style="font-size:11px;color:var(--text-muted)">— ex: 115 para 115% CDI</span></label>
+              <input type="number" id="inv-cdi-pct" placeholder="Ex: 115" step="0.01" min="0" oninput="calcTaxaCDI()">
+            </div>
+            <div class="form-group">
+              <label>Taxa de Rendimento (% a.a.) <span style="font-size:11px;color:var(--accent)">— calculada automaticamente</span></label>
               <input type="number" id="inv-aporte-rate" placeholder="Ex: 13,5" step="0.01" min="0">
             </div>
             <div class="form-group">
@@ -5958,6 +5966,10 @@ function calcMonthSuggestion() {
 function renderInvest() {
   seedInvestIfNeeded();
   populateInvestSelects();
+  // Carregar CDI salvo
+  var cdiSalvo = localStorage.getItem('fp_cdi_atual');
+  var cdiEl = document.getElementById('inv-cdi-atual');
+  if (cdiEl && cdiSalvo) cdiEl.value = cdiSalvo;
 
   var boxes   = loadInvestBoxes();
   var aportes = loadAportes();
@@ -7027,6 +7039,14 @@ function toggleSection(id) {
   var isOpen = body.style.display !== 'none';
   body.style.display  = isOpen ? 'none' : '';
   if (arrow) arrow.textContent = isOpen ? '▼' : '▲';
+}
+function calcTaxaCDI() {
+  var cdi  = parseFloat(document.getElementById('inv-cdi-atual').value);
+  var pct  = parseFloat(document.getElementById('inv-cdi-pct').value);
+  var rate = document.getElementById('inv-aporte-rate');
+  if (cdi > 0 && pct > 0 && rate) {
+    rate.value = (cdi * pct / 100).toFixed(2);
+  }
 }
 </script>
 </body>
