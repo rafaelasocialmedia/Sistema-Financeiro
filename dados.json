@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-06-07T18:59:40.192Z",
+  "savedAt": "2026-06-07T19:29:47.450Z",
   "data": {
     "fp_cats": [
       {
@@ -275,6 +275,27 @@
           {
             "id": "id_1780336741281_3inax",
             "name": "MEI Rafa"
+          }
+        ]
+      },
+      {
+        "id": "id_1780858792451_qtsq2",
+        "name": "PET",
+        "emoji": "🐱",
+        "type": "expense",
+        "isDefault": false,
+        "subcategories": [
+          {
+            "id": "id_1780858801986_vrviv",
+            "name": "Areia"
+          },
+          {
+            "id": "id_1780858803988_is9q6",
+            "name": "Saude"
+          },
+          {
+            "id": "id_1780858811869_vl6yf",
+            "name": "Alimentação"
           }
         ]
       }
@@ -963,10 +984,21 @@
       {
         "id": 1780858652825,
         "type": "expense",
-        "amount": 4400,
+        "amount": 4278.27,
         "cat": "Lazer",
         "subcat": "",
         "desc": "Celulares",
+        "date": "2026-06-06",
+        "payment": "pix",
+        "paymentAccount": "nubank"
+      },
+      {
+        "id": 1780858827942,
+        "type": "expense",
+        "amount": 83,
+        "cat": "PET",
+        "subcat": "Areia",
+        "desc": "areia",
         "date": "2026-06-06",
         "payment": "pix",
         "paymentAccount": "nubank"
@@ -981,6 +1013,17 @@
         "date": "2026-06-05",
         "payment": "dinheiro",
         "paymentAccount": ""
+      },
+      {
+        "id": 1780859484932,
+        "type": "expense",
+        "amount": 30.56,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Dalcenteer",
+        "date": "2026-06-02",
+        "payment": "pix",
+        "paymentAccount": "nubank"
       },
       {
         "id": 1780336874536,
@@ -1736,6 +1779,36 @@
         "color": "gold",
         "goal": 5000,
         "notes": "CDB Nubank liquidez diária — 100% CDI (~13,15% a.a.)"
+      },
+      {
+        "id": "ib_id_1780860540856_9culq",
+        "name": "Conta anual",
+        "emoji": "💸",
+        "color": "purple",
+        "goal": 2000,
+        "notes": ""
+      }
+    ],
+    "fp_invest_aportes": [
+      {
+        "id": 1780860390904,
+        "boxId": "ib3",
+        "val": 4000,
+        "date": "2026-06-07",
+        "rate": 16.96,
+        "institution": "Nubank",
+        "origin": "extra_marido",
+        "notes": ""
+      },
+      {
+        "id": 1780860493283,
+        "boxId": "ib3",
+        "val": 461.81,
+        "date": "2026-06-07",
+        "rate": 16.96,
+        "institution": "Nubank",
+        "origin": "extra_marido",
+        "notes": ""
       }
     ],
     "fp_atelie_costs": [
