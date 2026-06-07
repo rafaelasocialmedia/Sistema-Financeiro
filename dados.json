@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-06-07T18:52:47.176Z",
+  "savedAt": "2026-06-07T18:59:40.192Z",
   "data": {
     "fp_cats": [
       {
@@ -950,6 +950,39 @@
         "purchaseId": 1780858362566
       },
       {
+        "id": 1780858421862,
+        "type": "income",
+        "amount": 2500,
+        "cat": "Salário",
+        "subcat": "Okeo",
+        "desc": "💚 Okeo",
+        "date": "2026-06-10",
+        "payment": "dinheiro",
+        "source": "recorrente"
+      },
+      {
+        "id": 1780858652825,
+        "type": "expense",
+        "amount": 4400,
+        "cat": "Lazer",
+        "subcat": "",
+        "desc": "Celulares",
+        "date": "2026-06-06",
+        "payment": "pix",
+        "paymentAccount": "nubank"
+      },
+      {
+        "id": 1780858605666,
+        "type": "income",
+        "amount": 9900,
+        "cat": "Freelance",
+        "subcat": "JustDancingGame",
+        "desc": "",
+        "date": "2026-06-05",
+        "payment": "dinheiro",
+        "paymentAccount": ""
+      },
+      {
         "id": 1780336874536,
         "type": "expense",
         "amount": 86.05,
@@ -959,17 +992,6 @@
         "date": "2026-06-01",
         "payment": "pix",
         "paymentAccount": "nubank"
-      },
-      {
-        "id": 1779312247447,
-        "type": "income",
-        "amount": 2500,
-        "cat": "Salário",
-        "subcat": "",
-        "desc": "Rafa",
-        "date": "2026-06-01",
-        "payment": "dinheiro",
-        "paymentAccount": ""
       },
       {
         "id": 1780336769074,
@@ -1747,7 +1769,9 @@
         "cat": "Salário",
         "subcat": "Okeo",
         "card": "dinheiro",
-        "confirmedMonths": []
+        "confirmedMonths": [
+          "2026-06"
+        ]
       },
       {
         "id": 1779314562920,
