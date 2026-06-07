@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-06-04T02:37:37.344Z",
+  "savedAt": "2026-06-07T18:52:47.176Z",
   "data": {
     "fp_cats": [
       {
@@ -914,6 +914,42 @@
         "source": "recorrente"
       },
       {
+        "id": 1780858359974,
+        "type": "expense",
+        "amount": 59.1,
+        "cat": "Terreno",
+        "subcat": "Condomínio",
+        "desc": "🔄 Condominio (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "recorrente",
+        "card": "inter",
+        "purchaseId": 1780858359973
+      },
+      {
+        "id": 1780858360786,
+        "type": "expense",
+        "amount": 99.9,
+        "cat": "Contas",
+        "subcat": "Internet",
+        "desc": "🔄 Internet (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "recorrente",
+        "card": "inter",
+        "purchaseId": 1780858360785
+      },
+      {
+        "id": 1780858362567,
+        "type": "expense",
+        "amount": 800,
+        "cat": "Moradia",
+        "subcat": "Aluguel",
+        "desc": "🏡 Aluguel (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "recorrente",
+        "card": "inter",
+        "purchaseId": 1780858362566
+      },
+      {
         "id": 1780336874536,
         "type": "expense",
         "amount": 86.05,
@@ -1619,6 +1655,39 @@
         "total": 492.48,
         "parcelas": 9,
         "installmentVal": 54.72
+      },
+      {
+        "id": 1780858359973,
+        "card": "inter",
+        "date": "2026-06-10",
+        "desc": "🔄 Condominio",
+        "cat": "Terreno",
+        "subcat": "Condomínio",
+        "total": 59.1,
+        "parcelas": 1,
+        "installmentVal": 59.1
+      },
+      {
+        "id": 1780858360785,
+        "card": "inter",
+        "date": "2026-06-10",
+        "desc": "🔄 Internet",
+        "cat": "Contas",
+        "subcat": "Internet",
+        "total": 99.9,
+        "parcelas": 1,
+        "installmentVal": 99.9
+      },
+      {
+        "id": 1780858362566,
+        "card": "inter",
+        "date": "2026-06-15",
+        "desc": "🏡 Aluguel",
+        "cat": "Moradia",
+        "subcat": "Aluguel",
+        "total": 800,
+        "parcelas": 1,
+        "installmentVal": 800
       }
     ],
     "fp_invest_boxes": [
@@ -1762,7 +1831,8 @@
         "subcat": "Internet",
         "card": "inter",
         "confirmedMonths": [
-          "2026-05"
+          "2026-05",
+          "2026-06"
         ]
       },
       {
@@ -1789,7 +1859,9 @@
         "cat": "Terreno",
         "subcat": "Condomínio",
         "card": "inter",
-        "confirmedMonths": []
+        "confirmedMonths": [
+          "2026-06"
+        ]
       },
       {
         "id": 1779322531233,
@@ -1815,7 +1887,9 @@
         "cat": "Moradia",
         "subcat": "Aluguel",
         "card": "inter",
-        "confirmedMonths": []
+        "confirmedMonths": [
+          "2026-06"
+        ]
       },
       {
         "id": 1780338303392,
