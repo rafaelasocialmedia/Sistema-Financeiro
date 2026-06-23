@@ -3037,7 +3037,7 @@ function _addCarFromUnifiedForm() {
     while (chMonth > 11) { chMonth -= 12; chYear++; }
     var vencDay = String(cardInfo.venc).padStart(2,'0');
     var txMonth = String(chMonth + 1).padStart(2,'0');
-    var txDate  = chYear + '-' + txMonth + '-' + vencDay;
+    var txDate  = i === 0 ? date : chYear + '-' + txMonth + '-' + vencDay;
     var txDesc  = desc + ' (' + cardInfo.icon + ' ' + cardInfo.name + (parc > 1 ? ' ' + (i+1) + '/' + parc : '') + ')';
     txs.push({id: purchaseId + i + 1, type: 'expense', amount: installVal, cat: cat, subcat: subcat, desc: txDesc, date: txDate, source: 'cartao', card: card, purchaseId: purchaseId});
   }
@@ -5431,7 +5431,7 @@ function renderExtraTable() {
 var CARDS = {
   // close = dia de fechamento real de cada cartao
   inter:  { name:'Inter',         icon:'🏦', color:'#00b4d8', venc:10, close:6  },
-  nubank: { name:'Nubank',        icon:'💜', color:'#a29bfe', venc:10, close:6  },
+  nubank: { name:'Nubank',        icon:'💜', color:'#a29bfe', venc:17, close:10 },
   bb:     { name:'Banco do Brasil',icon:'🟡', color:'#ffd166', venc:6,  close:27 },
   ml:     { name:'Mercado Livre', icon:'🟢', color:'#2dff8f', venc:15, close:8  }
 };
@@ -5560,7 +5560,11 @@ function renderCartoes() {
           var c         = CARDS[key];
           var cardChgs  = charges.filter(function(ch){ return ch.card===key; });
           var cardTotal = cardChgs.reduce(function(s,ch){ return s+ch.installmentVal; },0);
-          var hasChgs   = cardChgs.length > 0;
+          // Somar transacoes avulsas do cartao (source=cartao, nao recorrente)
+          var avulsaTxs = monthTxs.filter(function(t){ return t.card===key && t.source==='cartao' && t.type==='expense'; });
+          var avulsaVal = avulsaTxs.reduce(function(s,t){ return s+t.amount; },0);
+          cardTotal = cardTotal + avulsaVal;
+          var hasChgs   = cardChgs.length > 0 || avulsaTxs.length > 0;
           var days      = daysUntil(c.venc);
           var urgColor  = days <= 3 ? 'var(--red)' : days <= 7 ? 'var(--gold)' : 'var(--accent)';
 
@@ -5579,7 +5583,7 @@ function renderCartoes() {
           var recorrPendVal = recorrPend.reduce(function(s,sub){ return s+sub.value; },0);
 
           var recorrVal  = recorrConfVal + recorrPendVal;
-          var normalVal  = cardTotal - recorrConfVal;
+          var normalVal  = avulsaVal + (cardChgs.reduce(function(s,ch){ return s+ch.installmentVal; },0) - recorrConfVal);
 
           return '<div class="card" style="border-color:'+(hasChgs?c.color:'var(--border)')+';padding:16px">'
             +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'
