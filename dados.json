@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-06-07T19:29:47.450Z",
+  "savedAt": "2026-06-23T12:04:19.582Z",
   "data": {
     "fp_cats": [
       {
@@ -298,9 +298,102 @@
             "name": "Alimentação"
           }
         ]
+      },
+      {
+        "id": "id_1782165125177_b4buj",
+        "name": "Roupas",
+        "emoji": "🏷️",
+        "type": "expense",
+        "isDefault": false,
+        "subcategories": [
+          {
+            "id": "id_1782165135732_1bitd",
+            "name": "Calçados"
+          },
+          {
+            "id": "id_1782165142921_wksh2",
+            "name": "Blusas"
+          },
+          {
+            "id": "id_1782165146207_0mkce",
+            "name": "calças"
+          }
+        ]
       }
     ],
     "fp_transactions": [
+      {
+        "id": 1782165180020,
+        "type": "expense",
+        "amount": 19.9,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Calçado (💜 Nubank 10/10)",
+        "date": "2027-04-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165180010
+      },
+      {
+        "id": 1782165404300,
+        "type": "expense",
+        "amount": 19.9,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Serale (💜 Nubank 10/10)",
+        "date": "2027-04-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165404290
+      },
+      {
+        "id": 1782165180019,
+        "type": "expense",
+        "amount": 19.9,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Calçado (💜 Nubank 9/10)",
+        "date": "2027-03-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165180010
+      },
+      {
+        "id": 1782165404299,
+        "type": "expense",
+        "amount": 19.9,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Serale (💜 Nubank 9/10)",
+        "date": "2027-03-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165404290
+      },
+      {
+        "id": 1782165180018,
+        "type": "expense",
+        "amount": 19.9,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Calçado (💜 Nubank 8/10)",
+        "date": "2027-02-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165180010
+      },
+      {
+        "id": 1782165404298,
+        "type": "expense",
+        "amount": 19.9,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Serale (💜 Nubank 8/10)",
+        "date": "2027-02-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165404290
+      },
       {
         "id": 1779321938032,
         "type": "expense",
@@ -312,6 +405,30 @@
         "source": "cartao",
         "card": "inter",
         "purchaseId": 1779321938023
+      },
+      {
+        "id": 1782165180017,
+        "type": "expense",
+        "amount": 19.9,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Calçado (💜 Nubank 7/10)",
+        "date": "2027-01-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165180010
+      },
+      {
+        "id": 1782165404297,
+        "type": "expense",
+        "amount": 19.9,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Serale (💜 Nubank 7/10)",
+        "date": "2027-01-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165404290
       },
       {
         "id": 1779321938031,
@@ -326,6 +443,30 @@
         "purchaseId": 1779321938023
       },
       {
+        "id": 1782165180016,
+        "type": "expense",
+        "amount": 19.9,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Calçado (💜 Nubank 6/10)",
+        "date": "2026-12-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165180010
+      },
+      {
+        "id": 1782165404296,
+        "type": "expense",
+        "amount": 19.9,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Serale (💜 Nubank 6/10)",
+        "date": "2026-12-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165404290
+      },
+      {
         "id": 1779321938030,
         "type": "expense",
         "amount": 54.72,
@@ -336,6 +477,30 @@
         "source": "cartao",
         "card": "inter",
         "purchaseId": 1779321938023
+      },
+      {
+        "id": 1782165180015,
+        "type": "expense",
+        "amount": 19.9,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Calçado (💜 Nubank 5/10)",
+        "date": "2026-11-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165180010
+      },
+      {
+        "id": 1782165404295,
+        "type": "expense",
+        "amount": 19.9,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Serale (💜 Nubank 5/10)",
+        "date": "2026-11-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165404290
       },
       {
         "id": 1779321938029,
@@ -350,6 +515,42 @@
         "purchaseId": 1779321938023
       },
       {
+        "id": 1782165180014,
+        "type": "expense",
+        "amount": 19.9,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Calçado (💜 Nubank 4/10)",
+        "date": "2026-10-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165180010
+      },
+      {
+        "id": 1782165404294,
+        "type": "expense",
+        "amount": 19.9,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Serale (💜 Nubank 4/10)",
+        "date": "2026-10-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165404290
+      },
+      {
+        "id": 1782165434739,
+        "type": "expense",
+        "amount": 89.975,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Roupa(rafa) (💜 Nubank 4/4)",
+        "date": "2026-10-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165434735
+      },
+      {
         "id": 1779321938028,
         "type": "expense",
         "amount": 54.72,
@@ -362,6 +563,42 @@
         "purchaseId": 1779321938023
       },
       {
+        "id": 1782165180013,
+        "type": "expense",
+        "amount": 19.9,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Calçado (💜 Nubank 3/10)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165180010
+      },
+      {
+        "id": 1782165404293,
+        "type": "expense",
+        "amount": 19.9,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Serale (💜 Nubank 3/10)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165404290
+      },
+      {
+        "id": 1782165434738,
+        "type": "expense",
+        "amount": 89.975,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Roupa(rafa) (💜 Nubank 3/4)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165434735
+      },
+      {
         "id": 1779321938027,
         "type": "expense",
         "amount": 54.72,
@@ -372,6 +609,42 @@
         "source": "cartao",
         "card": "inter",
         "purchaseId": 1779321938023
+      },
+      {
+        "id": 1782165180012,
+        "type": "expense",
+        "amount": 19.9,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Calçado (💜 Nubank 2/10)",
+        "date": "2026-08-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165180010
+      },
+      {
+        "id": 1782165404292,
+        "type": "expense",
+        "amount": 19.9,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Serale (💜 Nubank 2/10)",
+        "date": "2026-08-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165404290
+      },
+      {
+        "id": 1782165434737,
+        "type": "expense",
+        "amount": 89.975,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Roupa(rafa) (💜 Nubank 2/4)",
+        "date": "2026-08-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165434735
       },
       {
         "id": 1779314903945,
@@ -396,6 +669,315 @@
         "source": "cartao",
         "card": "inter",
         "purchaseId": 1779321938023
+      },
+      {
+        "id": 1780864973777,
+        "type": "expense",
+        "amount": 11.2,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1780864973776
+      },
+      {
+        "id": 1780864989339,
+        "type": "expense",
+        "amount": 11.1,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1780864989338
+      },
+      {
+        "id": 1780865093109,
+        "type": "expense",
+        "amount": 15.7,
+        "cat": "Espiritualidade",
+        "subcat": "Transsporte",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1780865093108
+      },
+      {
+        "id": 1781276488083,
+        "type": "expense",
+        "amount": 118.86,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Comida(carne) (💜 Nubank)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1781276488082
+      },
+      {
+        "id": 1781276567500,
+        "type": "expense",
+        "amount": 24.65,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Comida (💜 Nubank)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1781276567499
+      },
+      {
+        "id": 1782164926212,
+        "type": "expense",
+        "amount": 197.91,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "Farmacia (💜 Nubank)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782164926211
+      },
+      {
+        "id": 1782164954159,
+        "type": "expense",
+        "amount": 24.65,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Mercado (💜 Nubank)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782164954158
+      },
+      {
+        "id": 1782164998203,
+        "type": "expense",
+        "amount": 109.7,
+        "cat": "PET",
+        "subcat": "Alimentação",
+        "desc": "Ração (💜 Nubank)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782164998202
+      },
+      {
+        "id": 1782165060871,
+        "type": "expense",
+        "amount": 78.7,
+        "cat": "Educação",
+        "subcat": "",
+        "desc": "Curso (💜 Nubank)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165060870
+      },
+      {
+        "id": 1782165094956,
+        "type": "expense",
+        "amount": 145.88,
+        "cat": "Alimentação",
+        "subcat": "Restaurante",
+        "desc": "Jantar (💜 Nubank)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165094955
+      },
+      {
+        "id": 1782165180011,
+        "type": "expense",
+        "amount": 19.9,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Calçado (💜 Nubank 1/10)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165180010
+      },
+      {
+        "id": 1782165404291,
+        "type": "expense",
+        "amount": 19.9,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Serale (💜 Nubank 1/10)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165404290
+      },
+      {
+        "id": 1782165434736,
+        "type": "expense",
+        "amount": 89.975,
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "desc": "Roupa(rafa) (💜 Nubank 1/4)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1782165434735
+      },
+      {
+        "id": 1782165954846,
+        "type": "expense",
+        "amount": 11.8,
+        "cat": "Alimentação",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1782165954845
+      },
+      {
+        "id": 1782166007781,
+        "type": "expense",
+        "amount": 7.6,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1782166007780
+      },
+      {
+        "id": 1782166018799,
+        "type": "expense",
+        "amount": 13.2,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1782166018798
+      },
+      {
+        "id": 1782166028102,
+        "type": "expense",
+        "amount": 9.6,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1782166028101
+      },
+      {
+        "id": 1782166052899,
+        "type": "expense",
+        "amount": 9.1,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1782166052898
+      },
+      {
+        "id": 1782166061864,
+        "type": "expense",
+        "amount": 24.6,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1782166061863
+      },
+      {
+        "id": 1782166078601,
+        "type": "expense",
+        "amount": 9.4,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1782166078600
+      },
+      {
+        "id": 1782166088308,
+        "type": "expense",
+        "amount": 8.3,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1782166088307
+      },
+      {
+        "id": 1782166119759,
+        "type": "expense",
+        "amount": 9.4,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1782166119758
+      },
+      {
+        "id": 1782166125804,
+        "type": "expense",
+        "amount": 10.4,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-07-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1782166125803
+      },
+      {
+        "id": 1781632174981,
+        "type": "expense",
+        "amount": 371.97,
+        "cat": "PET",
+        "subcat": "Saude",
+        "desc": "Consulta e remedio",
+        "date": "2026-06-15",
+        "payment": "pix",
+        "paymentAccount": "nubank"
+      },
+      {
+        "id": 1781632268048,
+        "type": "expense",
+        "amount": 371.97,
+        "cat": "PET",
+        "subcat": "Saude",
+        "desc": "consulta",
+        "date": "2026-06-15",
+        "payment": "pix",
+        "paymentAccount": "nubank"
+      },
+      {
+        "id": 1781276578205,
+        "type": "expense",
+        "amount": 10,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Comida",
+        "date": "2026-06-12",
+        "payment": "dinheiro",
+        "paymentAccount": ""
       },
       {
         "id": 1779314766282,
@@ -684,18 +1266,6 @@
         "purchaseId": 1780338193054
       },
       {
-        "id": 1780338305596,
-        "type": "expense",
-        "amount": 49.99,
-        "cat": "Armazenamento",
-        "subcat": "Drive",
-        "desc": "☁️ Drive (💜 Nubank)",
-        "date": "2026-06-10",
-        "source": "recorrente",
-        "card": "nubank",
-        "purchaseId": 1780338305595
-      },
-      {
         "id": 1780338336824,
         "type": "expense",
         "amount": 29.9,
@@ -732,18 +1302,6 @@
         "purchaseId": 1780338371963
       },
       {
-        "id": 1780338482061,
-        "type": "expense",
-        "amount": 24.9,
-        "cat": "Entretenimento",
-        "subcat": "Crunchirol",
-        "desc": "❤ Crunchyroll (💜 Nubank)",
-        "date": "2026-06-10",
-        "source": "recorrente",
-        "card": "nubank",
-        "purchaseId": 1780338482060
-      },
-      {
         "id": 1780338510228,
         "type": "expense",
         "amount": 93.86,
@@ -778,18 +1336,6 @@
         "source": "cartao",
         "card": "nubank",
         "purchaseId": 1780338877578
-      },
-      {
-        "id": 1780338917034,
-        "type": "expense",
-        "amount": 33.4,
-        "cat": "Saúde",
-        "subcat": "",
-        "desc": "❤ Cartao de todos (💜 Nubank)",
-        "date": "2026-06-10",
-        "source": "recorrente",
-        "card": "nubank",
-        "purchaseId": 1780338917033
       },
       {
         "id": 1780338931049,
@@ -850,18 +1396,6 @@
         "source": "recorrente",
         "card": "inter",
         "purchaseId": 1780500882820
-      },
-      {
-        "id": 1780500919042,
-        "type": "expense",
-        "amount": 230,
-        "cat": "Contas",
-        "subcat": "Luz",
-        "desc": "🔄 Luz (💜 Nubank)",
-        "date": "2026-06-10",
-        "source": "recorrente",
-        "card": "nubank",
-        "purchaseId": 1780500919041
       },
       {
         "id": 1780501091795,
@@ -982,6 +1516,66 @@
         "source": "recorrente"
       },
       {
+        "id": 1781276534138,
+        "type": "expense",
+        "amount": 33.4,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "❤ Cartao de todos (💜 Nubank)",
+        "date": "2026-06-10",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1781276534137
+      },
+      {
+        "id": 1782164860204,
+        "type": "expense",
+        "amount": 49.99,
+        "cat": "Armazenamento",
+        "subcat": "Drive",
+        "desc": "☁️ Drive (💜 Nubank)",
+        "date": "2026-06-10",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1782164860203
+      },
+      {
+        "id": 1782164862341,
+        "type": "expense",
+        "amount": 24.9,
+        "cat": "Entretenimento",
+        "subcat": "Crunchirol",
+        "desc": "❤ Crunchyroll (💜 Nubank)",
+        "date": "2026-06-10",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1782164862340
+      },
+      {
+        "id": 1782165863941,
+        "type": "expense",
+        "amount": 139.8,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "🔄 Academia(rafa) (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "recorrente",
+        "card": "inter",
+        "purchaseId": 1782165863940
+      },
+      {
+        "id": 1782165865561,
+        "type": "expense",
+        "amount": 139.8,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "🔄 Academia(kelvin) (🏦 Inter)",
+        "date": "2026-06-10",
+        "source": "recorrente",
+        "card": "inter",
+        "purchaseId": 1782165865560
+      },
+      {
         "id": 1780858652825,
         "type": "expense",
         "amount": 4278.27,
@@ -1002,6 +1596,30 @@
         "date": "2026-06-06",
         "payment": "pix",
         "paymentAccount": "nubank"
+      },
+      {
+        "id": 1782165534799,
+        "type": "expense",
+        "amount": 35.45,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "DalSantos (🟡 Banco do Brasil)",
+        "date": "2026-06-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1782165534798
+      },
+      {
+        "id": 1782165563550,
+        "type": "expense",
+        "amount": 127.78,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "Farmacia (🟡 Banco do Brasil)",
+        "date": "2026-06-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1782165563549
       },
       {
         "id": 1780858605666,
@@ -1172,7 +1790,29 @@
     ],
     "fp_car_purchases": [
       {
-        "id": 1780338305595,
+        "id": 1782165534798,
+        "card": "bb",
+        "date": "2026-07-01",
+        "desc": "DalSantos",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 35.45,
+        "parcelas": 1,
+        "installmentVal": 35.45
+      },
+      {
+        "id": 1782165563549,
+        "card": "bb",
+        "date": "2026-07-01",
+        "desc": "Farmacia",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 127.78,
+        "parcelas": 1,
+        "installmentVal": 127.78
+      },
+      {
+        "id": 1782164860203,
         "card": "nubank",
         "date": "2026-06-27",
         "desc": "☁️ Drive",
@@ -1183,7 +1823,7 @@
         "installmentVal": 49.99
       },
       {
-        "id": 1780338482060,
+        "id": 1782164862340,
         "card": "nubank",
         "date": "2026-06-21",
         "desc": "❤ Crunchyroll",
@@ -1194,15 +1834,213 @@
         "installmentVal": 24.9
       },
       {
-        "id": 1780500919041,
+        "id": 1782166119758,
+        "card": "inter",
+        "date": "2026-06-20",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 9.4,
+        "parcelas": 1,
+        "installmentVal": 9.4
+      },
+      {
+        "id": 1782166125803,
+        "card": "inter",
+        "date": "2026-06-20",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 10.4,
+        "parcelas": 1,
+        "installmentVal": 10.4
+      },
+      {
+        "id": 1782165094955,
+        "card": "nubank",
+        "date": "2026-06-17",
+        "desc": "Jantar",
+        "cat": "Alimentação",
+        "subcat": "Restaurante",
+        "total": 145.88,
+        "parcelas": 1,
+        "installmentVal": 145.88
+      },
+      {
+        "id": 1782165180010,
+        "card": "nubank",
+        "date": "2026-06-17",
+        "desc": "Calçado",
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "total": 199,
+        "parcelas": 10,
+        "installmentVal": 19.9
+      },
+      {
+        "id": 1782165404290,
+        "card": "nubank",
+        "date": "2026-06-17",
+        "desc": "Serale",
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "total": 199,
+        "parcelas": 10,
+        "installmentVal": 19.9
+      },
+      {
+        "id": 1782165434735,
+        "card": "nubank",
+        "date": "2026-06-17",
+        "desc": "Roupa(rafa)",
+        "cat": "Roupas",
+        "subcat": "Calçados",
+        "total": 359.9,
+        "parcelas": 4,
+        "installmentVal": 89.975
+      },
+      {
+        "id": 1780858362566,
+        "card": "inter",
+        "date": "2026-06-15",
+        "desc": "🏡 Aluguel",
+        "cat": "Moradia",
+        "subcat": "Aluguel",
+        "total": 800,
+        "parcelas": 1,
+        "installmentVal": 800
+      },
+      {
+        "id": 1782165060870,
         "card": "nubank",
         "date": "2026-06-15",
-        "desc": "🔄 Luz",
-        "cat": "Contas",
-        "subcat": "Luz",
-        "total": 230,
+        "desc": "Curso",
+        "cat": "Educação",
+        "subcat": "",
+        "total": 78.7,
         "parcelas": 1,
-        "installmentVal": 230
+        "installmentVal": 78.7
+      },
+      {
+        "id": 1782166078600,
+        "card": "inter",
+        "date": "2026-06-15",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 9.4,
+        "parcelas": 1,
+        "installmentVal": 9.4
+      },
+      {
+        "id": 1782166088307,
+        "card": "inter",
+        "date": "2026-06-15",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 8.3,
+        "parcelas": 1,
+        "installmentVal": 8.3
+      },
+      {
+        "id": 1782166052898,
+        "card": "inter",
+        "date": "2026-06-14",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 9.1,
+        "parcelas": 1,
+        "installmentVal": 9.1
+      },
+      {
+        "id": 1782166061863,
+        "card": "inter",
+        "date": "2026-06-14",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 24.6,
+        "parcelas": 1,
+        "installmentVal": 24.6
+      },
+      {
+        "id": 1782164998202,
+        "card": "nubank",
+        "date": "2026-06-13",
+        "desc": "Ração",
+        "cat": "PET",
+        "subcat": "Alimentação",
+        "total": 109.7,
+        "parcelas": 1,
+        "installmentVal": 109.7
+      },
+      {
+        "id": 1782166007780,
+        "card": "inter",
+        "date": "2026-06-13",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 7.6,
+        "parcelas": 1,
+        "installmentVal": 7.6
+      },
+      {
+        "id": 1782166018798,
+        "card": "inter",
+        "date": "2026-06-13",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 13.2,
+        "parcelas": 1,
+        "installmentVal": 13.2
+      },
+      {
+        "id": 1782166028101,
+        "card": "inter",
+        "date": "2026-06-13",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 9.6,
+        "parcelas": 1,
+        "installmentVal": 9.6
+      },
+      {
+        "id": 1781276488082,
+        "card": "nubank",
+        "date": "2026-06-12",
+        "desc": "Comida(carne)",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 118.86,
+        "parcelas": 1,
+        "installmentVal": 118.86
+      },
+      {
+        "id": 1781276567499,
+        "card": "nubank",
+        "date": "2026-06-12",
+        "desc": "Comida",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 24.65,
+        "parcelas": 1,
+        "installmentVal": 24.65
+      },
+      {
+        "id": 1782164954158,
+        "card": "nubank",
+        "date": "2026-06-11",
+        "desc": "Mercado",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 24.65,
+        "parcelas": 1,
+        "installmentVal": 24.65
       },
       {
         "id": 1779314903944,
@@ -1216,17 +2054,6 @@
         "installmentVal": 685.64
       },
       {
-        "id": 1780338917033,
-        "card": "nubank",
-        "date": "2026-06-10",
-        "desc": "❤ Cartao de todos",
-        "cat": "Saúde",
-        "subcat": "",
-        "total": 33.4,
-        "parcelas": 1,
-        "installmentVal": 33.4
-      },
-      {
         "id": 1780500882820,
         "card": "inter",
         "date": "2026-06-10",
@@ -1238,9 +2065,130 @@
         "installmentVal": 1164.82
       },
       {
+        "id": 1780858359973,
+        "card": "inter",
+        "date": "2026-06-10",
+        "desc": "🔄 Condominio",
+        "cat": "Terreno",
+        "subcat": "Condomínio",
+        "total": 59.1,
+        "parcelas": 1,
+        "installmentVal": 59.1
+      },
+      {
+        "id": 1780858360785,
+        "card": "inter",
+        "date": "2026-06-10",
+        "desc": "🔄 Internet",
+        "cat": "Contas",
+        "subcat": "Internet",
+        "total": 99.9,
+        "parcelas": 1,
+        "installmentVal": 99.9
+      },
+      {
+        "id": 1781276534137,
+        "card": "nubank",
+        "date": "2026-06-10",
+        "desc": "❤ Cartao de todos",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 33.4,
+        "parcelas": 1,
+        "installmentVal": 33.4
+      },
+      {
+        "id": 1782164926211,
+        "card": "nubank",
+        "date": "2026-06-10",
+        "desc": "Farmacia",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 197.91,
+        "parcelas": 1,
+        "installmentVal": 197.91
+      },
+      {
+        "id": 1782165863940,
+        "card": "inter",
+        "date": "2026-06-10",
+        "desc": "🔄 Academia(rafa)",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 139.8,
+        "parcelas": 1,
+        "installmentVal": 139.8
+      },
+      {
+        "id": 1782165865560,
+        "card": "inter",
+        "date": "2026-06-10",
+        "desc": "🔄 Academia(kelvin)",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 139.8,
+        "parcelas": 1,
+        "installmentVal": 139.8
+      },
+      {
+        "id": 1782165954845,
+        "card": "inter",
+        "date": "2026-06-10",
+        "desc": "99",
+        "cat": "Alimentação",
+        "subcat": "",
+        "total": 11.8,
+        "parcelas": 1,
+        "installmentVal": 11.8
+      },
+      {
+        "id": 1780864905850,
+        "card": "inter",
+        "date": "2026-06-07",
+        "desc": "99",
+        "cat": "Espiritualidade",
+        "subcat": "Transsporte",
+        "total": 15.7,
+        "parcelas": 1,
+        "installmentVal": 15.7
+      },
+      {
+        "id": 1780864973776,
+        "card": "inter",
+        "date": "2026-06-07",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 11.2,
+        "parcelas": 1,
+        "installmentVal": 11.2
+      },
+      {
+        "id": 1780864989338,
+        "card": "inter",
+        "date": "2026-06-07",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 11.1,
+        "parcelas": 1,
+        "installmentVal": 11.1
+      },
+      {
+        "id": 1780865093108,
+        "card": "inter",
+        "date": "2026-06-07",
+        "desc": "99",
+        "cat": "Espiritualidade",
+        "subcat": "Transsporte",
+        "total": 15.7,
+        "parcelas": 1,
+        "installmentVal": 15.7
+      },
+      {
         "id": 1780320259589,
         "card": "nubank",
-        "date": "2026-05-31",
+        "date": "2026-05-30",
         "desc": "Lanche",
         "cat": "Alimentação",
         "subcat": "Delivery",
@@ -1720,39 +2668,6 @@
         "total": 492.48,
         "parcelas": 9,
         "installmentVal": 54.72
-      },
-      {
-        "id": 1780858359973,
-        "card": "inter",
-        "date": "2026-06-10",
-        "desc": "🔄 Condominio",
-        "cat": "Terreno",
-        "subcat": "Condomínio",
-        "total": 59.1,
-        "parcelas": 1,
-        "installmentVal": 59.1
-      },
-      {
-        "id": 1780858360785,
-        "card": "inter",
-        "date": "2026-06-10",
-        "desc": "🔄 Internet",
-        "cat": "Contas",
-        "subcat": "Internet",
-        "total": 99.9,
-        "parcelas": 1,
-        "installmentVal": 99.9
-      },
-      {
-        "id": 1780858362566,
-        "card": "inter",
-        "date": "2026-06-15",
-        "desc": "🏡 Aluguel",
-        "cat": "Moradia",
-        "subcat": "Aluguel",
-        "total": 800,
-        "parcelas": 1,
-        "installmentVal": 800
       }
     ],
     "fp_invest_boxes": [
@@ -1791,6 +2706,16 @@
     ],
     "fp_invest_aportes": [
       {
+        "id": 1780951288571,
+        "boxId": "ib2",
+        "val": 1075.97,
+        "date": "2026-06-08",
+        "rate": 0,
+        "institution": "",
+        "origin": "extra_marido",
+        "notes": ""
+      },
+      {
         "id": 1780860390904,
         "boxId": "ib3",
         "val": 4000,
@@ -1807,6 +2732,16 @@
         "date": "2026-06-07",
         "rate": 16.96,
         "institution": "Nubank",
+        "origin": "extra_marido",
+        "notes": ""
+      },
+      {
+        "id": 1780951184629,
+        "boxId": "ib2",
+        "val": 2000,
+        "date": "2026-06-07",
+        "rate": 15.41,
+        "institution": "CDB Nubank",
         "origin": "extra_marido",
         "notes": ""
       }
@@ -1884,7 +2819,8 @@
         "card": "inter",
         "confirmedMonths": [
           "2026-06",
-          "2026-05"
+          "2026-05",
+          "2026-07"
         ]
       },
       {
@@ -1899,7 +2835,8 @@
         "card": "inter",
         "confirmedMonths": [
           "2026-06",
-          "2026-05"
+          "2026-05",
+          "2026-07"
         ]
       },
       {
@@ -1937,7 +2874,7 @@
         "name": "Luz",
         "emoji": "🔄",
         "type": "expense",
-        "value": 230,
+        "value": 305.9,
         "day": 15,
         "cat": "Contas",
         "subcat": "Luz",
@@ -1999,7 +2936,8 @@
         "subcat": "Drive",
         "card": "nubank",
         "confirmedMonths": [
-          "2026-06"
+          "2026-06",
+          "2026-07"
         ]
       },
       {
@@ -2013,7 +2951,8 @@
         "subcat": "Crunchirol",
         "card": "nubank",
         "confirmedMonths": [
-          "2026-06"
+          "2026-06",
+          "2026-07"
         ]
       },
       {
@@ -2027,7 +2966,8 @@
         "subcat": "",
         "card": "nubank",
         "confirmedMonths": [
-          "2026-06"
+          "2026-06",
+          "2026-07"
         ]
       }
     ]
