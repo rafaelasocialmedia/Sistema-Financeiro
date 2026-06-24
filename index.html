@@ -1573,8 +1573,8 @@
       <div class="two-col">
         <!-- Nova caixinha -->
         <div class="panel">
-          <div class="panel-title">+ Nova Caixinha</div>
-          <div class="form-grid">
+          <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="toggleSection('inv-nova-body')"><span>+ Nova Caixinha</span><span id="inv-nova-arrow">▼</span></div>
+          <div id="inv-nova-body" style="display:none"><div class="form-grid">
             <div class="form-group full">
               <label>Nome</label>
               <input type="text" id="inv-box-name" placeholder="Ex: Reserva de Emergência, Meta da Casa...">
@@ -1607,13 +1607,13 @@
             <div class="form-group full">
               <button class="btn btn-primary" style="width:100%" onclick="addInvestBox()">+ Criar Caixinha</button>
             </div>
-          </div>
+          </div></div>
         </div>
 
         <!-- Novo aporte -->
         <div class="panel">
-          <div class="panel-title">💰 Registrar Aporte</div>
-          <div class="form-grid">
+          <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="toggleSection('inv-aporte-body')"><span>💰 Registrar Aporte</span><span id="inv-aporte-arrow">▼</span></div>
+          <div id="inv-aporte-body" style="display:none"><div class="form-grid">
             <div class="form-group full">
               <label>Caixinha</label>
               <select id="inv-aporte-box"></select>
@@ -1660,19 +1660,22 @@
             <div class="form-group full">
               <button class="btn btn-primary" style="width:100%" onclick="addAporte()">+ Registrar Aporte</button>
             </div>
-          </div>
+          </div></div>
         </div>
       </div>
 
       <!-- Histórico de aportes -->
       <div class="panel">
-        <div class="panel-title">
-          Histórico de Aportes
-          <select id="inv-filter-box" onchange="renderInvestHistory()" style="font-size:12px;padding:4px 8px">
-            <option value="">Todas as caixinhas</option>
-          </select>
+        <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;flex-wrap:wrap;gap:8px" onclick="toggleSection('inv-hist-body')">
+          <span>Histórico de Aportes</span>
+          <div style="display:flex;gap:8px;align-items:center" onclick="event.stopPropagation()">
+            <select id="inv-filter-box" onchange="renderInvestHistory()" style="font-size:12px;padding:4px 8px">
+              <option value="">Todas as caixinhas</option>
+            </select>
+            <span id="inv-hist-arrow">▲</span>
+          </div>
         </div>
-        <div class="table-wrap">
+        <div id="inv-hist-body"><div class="table-wrap">
           <table>
             <thead>
               <tr>
@@ -1688,7 +1691,7 @@
             </thead>
             <tbody id="inv-history"></tbody>
           </table>
-        </div>
+        </div></div>
       </div>
     </div>
 
@@ -5559,62 +5562,32 @@ function renderCartoes() {
       + Object.keys(CARDS).map(function(key){
           var c         = CARDS[key];
           var cardChgs  = charges.filter(function(ch){ return ch.card===key; });
-          var cardTotal = cardChgs.reduce(function(s,ch){ return s+ch.installmentVal; },0);
-          // Somar transacoes avulsas do cartao (source=cartao, nao recorrente)
+          var cardChgsVal = cardChgs.reduce(function(s,ch){ return s+ch.installmentVal; },0);
+          // Transacoes avulsas do cartao
           var avulsaTxs = monthTxs.filter(function(t){ return t.card===key && t.source==='cartao' && t.type==='expense'; });
           var avulsaVal = avulsaTxs.reduce(function(s,t){ return s+t.amount; },0);
-          cardTotal = cardTotal + avulsaVal;
-          var hasChgs   = cardChgs.length > 0 || avulsaTxs.length > 0;
-          var days      = daysUntil(c.venc);
-          var urgColor  = days <= 3 ? 'var(--red)' : days <= 7 ? 'var(--gold)' : 'var(--accent)';
-
-          // Separar recorrentes dos normais (confirmados + pendentes)
-          var subs = loadSubscriptions();
-          var mk   = currentYear+'-'+String(currentMonth+1).padStart(2,'0');
-
-          // Recorrentes confirmados via cartão
+          // Recorrentes confirmados via cartao
           var recorrConfirm = monthTxs.filter(function(t){ return t.card===key && t.source==='recorrente'; });
           var recorrConfVal = recorrConfirm.reduce(function(s,t){ return s+t.amount; },0);
-
-          // Recorrentes pendentes deste cartão
+          // Recorrentes pendentes deste cartao
+          var subs = loadSubscriptions();
+          var mk = monthKey(currentYear, currentMonth);
           var recorrPend = subs.filter(function(s){
             return (s.type||'expense')==='expense' && s.card===key && s.confirmedMonths.indexOf(mk)===-1;
           });
           var recorrPendVal = recorrPend.reduce(function(s,sub){ return s+sub.value; },0);
+          // Total da fatura = avulso + parcelado + recorrentes confirmados
+          var cardTotal = avulsaVal + cardChgsVal + recorrConfVal;
+          var normalVal = avulsaVal + cardChgsVal;
+          var hasChgs   = cardTotal > 0;
 
-          var recorrVal  = recorrConfVal + recorrPendVal;
-          var normalVal  = avulsaVal + (cardChgs.reduce(function(s,ch){ return s+ch.installmentVal; },0) - recorrConfVal);
-
-          return '<div class="card" style="border-color:'+(hasChgs?c.color:'var(--border)')+';padding:16px">'
-            +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'
-              +'<div style="display:flex;align-items:center;gap:8px">'
-                +'<span style="font-size:20px">'+c.icon+'</span>'
-                +'<span style="font-weight:700;font-size:14px">'+c.name+'</span>'
-              +'</div>'
-              +'<span style="font-size:11px;color:'+urgColor+';font-weight:600;background:rgba(0,0,0,.2);padding:3px 8px;border-radius:20px">'+days+'d</span>'
-            +'</div>'
-            +'<div style="font-family:var(--font-num);color:'+(hasChgs?'var(--red)':'var(--text-muted)')+';font-size:20px;font-weight:700;margin-bottom:6px">'+fmt(cardTotal)+'</div>'
-            +(recorrVal>0
-              ?'<div style="border-top:1px solid var(--border);padding-top:6px;margin-bottom:6px">'
-                +'<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px">'
-                  +'<span style="color:var(--text-muted)">💳 Gastos normais</span>'
-                  +'<span style="font-family:var(--font-num);color:var(--red)">'+fmt(normalVal)+'</span>'
-                +'</div>'
-                +'<div style="display:flex;justify-content:space-between;font-size:11px">'
-                  +'<span style="color:var(--text-muted)">🔄 Recorrentes'+(recorrPendVal>0?' <span style="color:var(--gold);font-size:10px">('+recorrPend.length+' pendente'+(recorrPend.length!==1?'s':'')+')</span>':'')+'</span>'
-                  +'<span style="font-family:var(--font-num);color:var(--purple)">'+fmt(recorrVal)+'</span>'
-                +'</div>'
-              +'</div>'
-              :'')
-            +'<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted)">'
-              +'<span>'+cardChgs.length+' lançamento'+(cardChgs.length!==1?'s':'')+'</span>'
-              +'<span>Vence dia '+c.venc+'</span>'
-            +'</div>'
-          +'</div>';
+          var days     = daysUntil(c.venc);
+          var urgColor = days <= 3 ? 'var(--red)' : days <= 7 ? 'var(--gold)' : 'var(--accent)';
+          var mk       = monthKey(currentYear, currentMonth);
+          return '<div class="card" style="border-color:'+(hasChgs?c.color:'var(--border)')+';padding:16px">'            +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'              +'<div style="display:flex;align-items:center;gap:8px">'                +'<span style="font-size:20px">'+c.icon+'</span>'                +'<span style="font-weight:700;font-size:14px">'+c.name+'</span>'              +'</div>'              +'<span style="font-size:11px;color:'+urgColor+';font-weight:600;background:rgba(0,0,0,.2);padding:3px 8px;border-radius:20px">'+days+'d</span>'            +'</div>'            +'<div style="font-family:var(--font-num);color:'+(hasChgs?'var(--red)':'var(--text-muted)')+';font-size:20px;font-weight:700;margin-bottom:6px">'+fmt(cardTotal)+'</div>'            +'<div style="border-top:1px solid var(--border);padding-top:6px;margin-bottom:6px">'              +(normalVal>0?'<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span style="color:var(--text-muted)">\u{1F4B3} Gastos normais</span><span style="font-family:var(--font-num);color:var(--red)">'+fmt(normalVal)+'</span></div>':'')              +(recorrConfVal>0?'<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span style="color:var(--text-muted)">\uD83D\uDD04 Recorrentes</span><span style="font-family:var(--font-num);color:var(--purple)">'+fmt(recorrConfVal)+'</span></div>':'')              +(recorrPendVal>0?'<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span style="color:var(--gold)">\u23F3 Pendentes ('+recorrPend.length+')</span><span style="font-family:var(--font-num);color:var(--gold)">'+fmt(recorrPendVal)+'</span></div>':'')            +'</div>'            +'<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted)">'              +'<span>'+(avulsaTxs.length+cardChgs.length)+' lan\u00E7amento'+((avulsaTxs.length+cardChgs.length)!==1?'s':'')+'</span>'              +'<span>Vence dia '+c.venc+'</span>'            +'</div>'          +'</div>';
         }).join('')
       + '</div>';
   }
-
   renderCartoesTable();
 }
 
@@ -6089,10 +6062,7 @@ function renderInvest() {
               +'📅 Projeção c/ juros: <strong style="color:'+color+'">~'+projMonths+' meses</strong>'
               +(avgRate>0?' ('+avgRate.toFixed(1)+'% a.a. médio)':'')+'</div>'
             :'')
-          +'<div style="margin-top:10px;font-size:12px;color:var(--text-muted)">'
-            +boxAportes.length+' aporte'+(boxAportes.length!==1?'s':'')+' registrado'+(boxAportes.length!==1?'s':'')
-          +'</div>'
-          +'</div>';
++(function(){            var si = getSaldoInfo(b.id, invested, avgRate);            if (!si) return '<div style="margin-top:8px"><button class="btn btn-sm" style="font-size:11px;padding:4px 10px" onclick="registrarSaldo(\''+b.id+'\')">📊 Registrar Saldo Hoje</button></div>';            var diff = si.rendReal - si.rendEstimado;            var diffColor = diff >= 0 ? 'var(--accent)' : 'var(--red)';            return '<div style="margin-top:10px;padding:8px;background:var(--card);border-radius:6px;font-size:12px">'              +'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--text-muted)">📊 Saldo em '+si.ultimo.date+'</span><strong style="color:var(--accent)">'+fmt(si.ultimo.valor)+'</strong></div>'              +'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--text-muted)">📈 Rend. real</span><span style="color:'+(si.rendReal>=0?'var(--accent)':'var(--red)')+'">'+fmt(si.rendReal)+'</span></div>'              +(si.rendEstimado>0?'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--text-muted)">📐 Rend. estimado</span><span style="color:var(--blue)">'+fmt(si.rendEstimado)+'</span></div>':'')              +(si.rendEstimado>0?'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--text-muted)">⚖️ Diferença</span><span style="color:'+diffColor+'">'+(diff>=0?'+':'')+fmt(diff)+'</span></div>':'')              +(si.iof>0?'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--gold)">⚠️ IOF se resgatar</span><span style="color:var(--gold)">-'+fmt(si.iof)+'</span></div>':'')              +'<button class="btn btn-sm" style="font-size:11px;padding:4px 10px;margin-top:4px;width:100%" onclick="registrarSaldo(\''+b.id+'\')">📊 Atualizar Saldo</button>'            +'</div>';          })()          +'<div style="margin-top:6px;font-size:12px;color:var(--text-muted)">'            +boxAportes.length+' aporte'+(boxAportes.length!==1?'s':'')+' registrado'+(boxAportes.length!==1?'s':'')          +'</div>'          +'</div>';
       }).join('')
     + '</div>';
 
@@ -7051,6 +7021,80 @@ function calcTaxaCDI() {
   if (cdi > 0 && pct > 0 && rate) {
     rate.value = (cdi * pct / 100).toFixed(2);
   }
+}
+function loadSaldos()  { return loadKey('invest_saldos', []); }
+function saveSaldos(v) { saveKey('invest_saldos', v); }
+
+function registrarSaldo(boxId) {
+  var box = loadInvestBoxes().find(function(b){ return b.id===boxId; });
+  if (!box) return;
+  var existing = document.getElementById('saldo-modal');
+  if (existing) existing.remove();
+  var modal = document.createElement('div');
+  modal.id = 'saldo-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:999;display:flex;align-items:center;justify-content:center;padding:16px';
+  var inner = document.createElement('div');
+  inner.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;width:100%;max-width:340px';
+  var today = new Date().toISOString().slice(0,10);
+  inner.innerHTML = [
+    '<div style="font-size:16px;font-weight:700;margin-bottom:16px">' + box.emoji + ' ' + box.name + '<br>',
+    '<span style="font-size:12px;color:var(--text-muted);font-weight:400">Registrar saldo de hoje</span></div>',
+    '<label style="font-size:12px;color:var(--text-muted)">Data</label>',
+    '<input id="saldo-modal-date" type="date" value="' + today + '" style="width:100%;box-sizing:border-box;margin:6px 0 12px;padding:10px;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--text)">',
+    '<label style="font-size:12px;color:var(--text-muted)">Valor atual (R$)</label>',
+    '<input id="saldo-modal-val" type="number" step="0.01" min="0" placeholder="0,00" style="width:100%;box-sizing:border-box;margin:6px 0 16px;padding:10px;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:16px">',
+    '<div style="display:flex;gap:8px">',
+    '<button id="saldo-cancel-btn" style="flex:1;padding:10px;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--text);cursor:pointer">Cancelar</button>',
+    '<button id="saldo-save-btn" style="flex:2;padding:10px;background:var(--accent);border:none;border-radius:8px;color:var(--bg);font-weight:700;cursor:pointer">Salvar</button>',
+    '</div>'
+  ].join('');
+  modal.appendChild(inner);
+  document.body.appendChild(modal);
+  document.getElementById('saldo-cancel-btn').onclick = function(){ modal.remove(); };
+  document.getElementById('saldo-save-btn').onclick = function(){ confirmarSaldo(boxId); };
+  document.getElementById('saldo-modal-val').focus();
+}
+
+function confirmarSaldo(boxId) {
+  var val  = parseFloat(document.getElementById('saldo-modal-val').value);
+  var date = document.getElementById('saldo-modal-date').value;
+  if (isNaN(val) || val < 0 || !date) { notify('Preencha o valor e a data!', true); return; }
+  var saldos = loadSaldos();
+  saldos.push({ id: Date.now(), boxId: boxId, date: date, valor: val });
+  saveSaldos(saldos);
+  document.getElementById('saldo-modal').remove();
+  renderInvest();
+  notify('Saldo registrado!');
+}
+
+function getSaldoInfo(boxId, totalAportado, taxaAnual) {
+  var saldos = loadSaldos().filter(function(s){ return s.boxId===boxId; }).sort(function(a,b){ return a.date>b.date?1:-1; });
+  if (!saldos.length) return null;
+  var ultimo = saldos[saldos.length-1];
+  var rendReal = ultimo.valor - totalAportado;
+  // Estimado: calcular com base na taxa e data do primeiro aporte
+  var aportes = loadAportes().filter(function(a){ return a.boxId===boxId; });
+  var rendEstimado = 0;
+  if (taxaAnual > 0) {
+    aportes.forEach(function(a) {
+      var dias = Math.max(0, (new Date(ultimo.date) - new Date(a.date)) / 86400000);
+      var taxaDiaria = Math.pow(1 + taxaAnual/100, 1/365) - 1;
+      rendEstimado += a.val * (Math.pow(1 + taxaDiaria, dias) - 1);
+    });
+  }
+  // IOF: aplica se algum aporte tem menos de 30 dias
+  var hoje = new Date();
+  var iof = 0;
+  var IOF_TABLE = [0.96,0.93,0.90,0.86,0.83,0.80,0.76,0.73,0.70,0.66,0.63,0.60,0.56,0.53,0.50,0.46,0.43,0.40,0.36,0.33,0.30,0.26,0.23,0.20,0.16,0.13,0.10,0.06,0.03,0];
+  aportes.forEach(function(a) {
+    var dias = Math.floor((hoje - new Date(a.date)) / 86400000);
+    if (dias < 30) {
+      var taxaDiaria = Math.pow(1 + (taxaAnual||0)/100, 1/365) - 1;
+      var rendAporte = a.val * (Math.pow(1 + taxaDiaria, dias) - 1);
+      iof += rendAporte * (IOF_TABLE[dias] || 0);
+    }
+  });
+  return { ultimo: ultimo, rendReal: rendReal, rendEstimado: rendEstimado, iof: iof, saldos: saldos };
 }
 </script>
 </body>
