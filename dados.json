@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-06-30T13:21:20.482Z",
+  "savedAt": "2026-06-30T13:23:10.063Z",
   "data": {
     "fp_cats": [
       {
@@ -2029,17 +2029,6 @@
         "total": 24.65,
         "parcelas": 1,
         "installmentVal": 24.65
-      },
-      {
-        "id": 1779314903944,
-        "card": "inter",
-        "date": "2026-06-10",
-        "desc": "IPTU",
-        "cat": "Terreno",
-        "subcat": "IPTU",
-        "total": 685.64,
-        "parcelas": 1,
-        "installmentVal": 685.64
       },
       {
         "id": 1780500882820,
