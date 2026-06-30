@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-06-23T12:04:19.582Z",
+  "savedAt": "2026-06-30T13:21:20.482Z",
   "data": {
     "fp_cats": [
       {
@@ -645,18 +645,6 @@
         "source": "cartao",
         "card": "nubank",
         "purchaseId": 1782165434735
-      },
-      {
-        "id": 1779314903945,
-        "type": "expense",
-        "amount": 685.64,
-        "cat": "Terreno",
-        "subcat": "IPTU",
-        "desc": "IPTU (🏦 Inter)",
-        "date": "2026-07-10",
-        "source": "cartao",
-        "card": "inter",
-        "purchaseId": 1779314903944
       },
       {
         "id": 1779321938026,
