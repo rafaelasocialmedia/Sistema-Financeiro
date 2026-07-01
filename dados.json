@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-06-30T13:23:10.063Z",
+  "savedAt": "2026-07-01T12:22:35.994Z",
   "data": {
     "fp_cats": [
       {
@@ -935,6 +935,18 @@
         "purchaseId": 1782166125803
       },
       {
+        "id": 1782840722395,
+        "type": "expense",
+        "amount": 166.13,
+        "cat": "Moradia",
+        "subcat": "",
+        "desc": "Compra de armazenamento (🟢 Mercado Livre)",
+        "date": "2026-06-30",
+        "source": "cartao",
+        "card": "ml",
+        "purchaseId": 1782840722394
+      },
+      {
         "id": 1781632174981,
         "type": "expense",
         "amount": 371.97,
@@ -1798,6 +1810,17 @@
         "total": 127.78,
         "parcelas": 1,
         "installmentVal": 127.78
+      },
+      {
+        "id": 1782840722394,
+        "card": "ml",
+        "date": "2026-06-30",
+        "desc": "Compra de armazenamento",
+        "cat": "Moradia",
+        "subcat": "",
+        "total": 166.13,
+        "parcelas": 1,
+        "installmentVal": 166.13
       },
       {
         "id": 1782164860203,
