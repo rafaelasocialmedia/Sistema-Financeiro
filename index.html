@@ -501,21 +501,26 @@
       <!-- Estimativa do mês -->
       <div class="panel" id="dash-estimativa" style="margin-bottom:18px;border-color:var(--blue)">
         <div class="panel-title" style="color:var(--blue)">📊 Estimativa do Mês</div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px">
           <div>
             <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">💚 Confirmado</div>
             <div style="font-family:var(--font-num);font-size:18px;font-weight:700;color:var(--accent)" id="est-confirmed">R$ 0,00</div>
             <div style="font-size:11px;color:var(--text-muted);margin-top:3px">receitas lançadas</div>
           </div>
           <div>
-            <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">⏳ A confirmar</div>
+            <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">⏳ Receita a confirmar</div>
             <div style="font-family:var(--font-num);font-size:18px;font-weight:700;color:var(--gold)" id="est-pending">R$ 0,00</div>
             <div style="font-size:11px;color:var(--text-muted);margin-top:3px">recorrentes pendentes</div>
           </div>
           <div>
-            <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">🔴 Saídas fixas</div>
+            <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">🔴 Despesas confirmadas</div>
             <div style="font-family:var(--font-num);font-size:18px;font-weight:700;color:var(--red)" id="est-expenses">R$ 0,00</div>
-            <div style="font-size:11px;color:var(--text-muted);margin-top:3px">despesas + recorrentes</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:3px">já lançadas no mês</div>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">⏳ Despesa a confirmar</div>
+            <div style="font-family:var(--font-num);font-size:18px;font-weight:700;color:var(--gold)" id="est-pending-exp">R$ 0,00</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:3px">recorrentes pendentes</div>
           </div>
           <div>
             <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">✨ Estimativa</div>
@@ -3040,7 +3045,9 @@ function _addCarFromUnifiedForm() {
     while (chMonth > 11) { chMonth -= 12; chYear++; }
     var vencDay = String(cardInfo.venc).padStart(2,'0');
     var txMonth = String(chMonth + 1).padStart(2,'0');
-    var txDate  = i === 0 ? date : chYear + '-' + txMonth + '-' + vencDay;
+    // Todas as parcelas (incluindo a 1a/avulso) usam a data de vencimento da fatura,
+    // pra bater com getMonthCharges(). A data real da compra fica preservada em car_purchases.date
+    var txDate  = chYear + '-' + txMonth + '-' + vencDay;
     var txDesc  = desc + ' (' + cardInfo.icon + ' ' + cardInfo.name + (parc > 1 ? ' ' + (i+1) + '/' + parc : '') + ')';
     txs.push({id: purchaseId + i + 1, type: 'expense', amount: installVal, cat: cat, subcat: subcat, desc: txDesc, date: txDate, source: 'cartao', card: card, purchaseId: purchaseId});
   }
@@ -4865,9 +4872,10 @@ function renderEstimativa() {
   // Estimativa = confirmado + a confirmar - total saídas
   var result = confirmed + pending - totalExp;
 
-  var elConf = document.getElementById('est-confirmed'); if (elConf) elConf.textContent = fmt(confirmed);
-  var elPend = document.getElementById('est-pending');   if (elPend) elPend.textContent = fmt(pending);
-  var elExp  = document.getElementById('est-expenses');  if (elExp)  elExp.textContent  = fmt(totalExp);
+  var elConf = document.getElementById('est-confirmed');    if (elConf) elConf.textContent = fmt(confirmed);
+  var elPend = document.getElementById('est-pending');      if (elPend) elPend.textContent = fmt(pending);
+  var elExp  = document.getElementById('est-expenses');     if (elExp)  elExp.textContent  = fmt(expenses);
+  var elPExp = document.getElementById('est-pending-exp');  if (elPExp) elPExp.textContent = fmt(pendingExp);
   var elRes  = document.getElementById('est-result');
   if (elRes) {
     elRes.textContent = fmt(result);
@@ -5459,15 +5467,15 @@ function deleteCarPurchase(id) {
 }
 
 // Returns which billing month a purchase falls into for a given card
-// Purchases made after the closing date go to next month's bill
-// We simplify: closing = venc - 8 days (approximate)
+// Purchases made no ou apos o dia de fechamento vao para a fatura seguinte
+// Ex: Inter fecha dia 6 -> compras de 06/06 a 05/07 caem na fatura de julho
 function getBillingMonth(purchase) {
   var d        = new Date(purchase.date + 'T12:00:00');
   var card     = CARDS[purchase.card];
   var closeDay = card.close || (card.venc - 8);
   if (closeDay <= 0) closeDay = 1;
-  // Se compra foi feita APOS o fechamento, vai para o mes seguinte
-  if (d.getDate() > closeDay) {
+  // Se compra foi feita NO DIA do fechamento ou depois, vai para o mes seguinte
+  if (d.getDate() >= closeDay) {
     d.setMonth(d.getMonth() + 1);
   }
   return monthKey(d.getFullYear(), d.getMonth());
@@ -5561,14 +5569,20 @@ function renderCartoes() {
     faturasEl.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">'
       + Object.keys(CARDS).map(function(key){
           var c         = CARDS[key];
+          // cardChgs (via getMonthCharges/car_purchases) já é a fonte única e completa
+          // da fatura do mês: inclui avulso, parcelado E recorrentes confirmados
+          // (confirmSubscription também grava em car_purchases). Não somar de novo
+          // a partir de transactions, senão duplica o valor.
           var cardChgs  = charges.filter(function(ch){ return ch.card===key; });
-          var cardChgsVal = cardChgs.reduce(function(s,ch){ return s+ch.installmentVal; },0);
-          // Transacoes avulsas do cartao
-          var avulsaTxs = monthTxs.filter(function(t){ return t.card===key && t.source==='cartao' && t.type==='expense'; });
-          var avulsaVal = avulsaTxs.reduce(function(s,t){ return s+t.amount; },0);
-          // Recorrentes confirmados via cartao
-          var recorrConfirm = monthTxs.filter(function(t){ return t.card===key && t.source==='recorrente'; });
-          var recorrConfVal = recorrConfirm.reduce(function(s,t){ return s+t.amount; },0);
+          // Recorrentes confirmados via cartao: identificados pelas transações source='recorrente',
+          // usados só para separar o purchaseId na exibição (não para somar valor de novo)
+          var recorrConfirm   = monthTxs.filter(function(t){ return t.card===key && t.source==='recorrente'; });
+          var recorrPurchaseIds = {};
+          recorrConfirm.forEach(function(t){ recorrPurchaseIds[t.purchaseId] = true; });
+          var recorrChgs = cardChgs.filter(function(ch){ return recorrPurchaseIds[ch.purchaseId]; });
+          var normalChgs = cardChgs.filter(function(ch){ return !recorrPurchaseIds[ch.purchaseId]; });
+          var recorrConfVal = recorrChgs.reduce(function(s,ch){ return s+ch.installmentVal; },0);
+          var normalVal     = normalChgs.reduce(function(s,ch){ return s+ch.installmentVal; },0);
           // Recorrentes pendentes deste cartao
           var subs = loadSubscriptions();
           var mk = monthKey(currentYear, currentMonth);
@@ -5576,15 +5590,14 @@ function renderCartoes() {
             return (s.type||'expense')==='expense' && s.card===key && s.confirmedMonths.indexOf(mk)===-1;
           });
           var recorrPendVal = recorrPend.reduce(function(s,sub){ return s+sub.value; },0);
-          // Total da fatura = avulso + parcelado + recorrentes confirmados
-          var cardTotal = avulsaVal + cardChgsVal + recorrConfVal;
-          var normalVal = avulsaVal + cardChgsVal;
+          // Total da fatura = soma direta de cardChgs (sem duplicar)
+          var cardTotal = normalVal + recorrConfVal;
           var hasChgs   = cardTotal > 0;
 
           var days     = daysUntil(c.venc);
           var urgColor = days <= 3 ? 'var(--red)' : days <= 7 ? 'var(--gold)' : 'var(--accent)';
           var mk       = monthKey(currentYear, currentMonth);
-          return '<div class="card" style="border-color:'+(hasChgs?c.color:'var(--border)')+';padding:16px">'            +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'              +'<div style="display:flex;align-items:center;gap:8px">'                +'<span style="font-size:20px">'+c.icon+'</span>'                +'<span style="font-weight:700;font-size:14px">'+c.name+'</span>'              +'</div>'              +'<span style="font-size:11px;color:'+urgColor+';font-weight:600;background:rgba(0,0,0,.2);padding:3px 8px;border-radius:20px">'+days+'d</span>'            +'</div>'            +'<div style="font-family:var(--font-num);color:'+(hasChgs?'var(--red)':'var(--text-muted)')+';font-size:20px;font-weight:700;margin-bottom:6px">'+fmt(cardTotal)+'</div>'            +'<div style="border-top:1px solid var(--border);padding-top:6px;margin-bottom:6px">'              +(normalVal>0?'<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span style="color:var(--text-muted)">\u{1F4B3} Gastos normais</span><span style="font-family:var(--font-num);color:var(--red)">'+fmt(normalVal)+'</span></div>':'')              +(recorrConfVal>0?'<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span style="color:var(--text-muted)">\uD83D\uDD04 Recorrentes</span><span style="font-family:var(--font-num);color:var(--purple)">'+fmt(recorrConfVal)+'</span></div>':'')              +(recorrPendVal>0?'<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span style="color:var(--gold)">\u23F3 Pendentes ('+recorrPend.length+')</span><span style="font-family:var(--font-num);color:var(--gold)">'+fmt(recorrPendVal)+'</span></div>':'')            +'</div>'            +'<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted)">'              +'<span>'+(avulsaTxs.length+cardChgs.length)+' lan\u00E7amento'+((avulsaTxs.length+cardChgs.length)!==1?'s':'')+'</span>'              +'<span>Vence dia '+c.venc+'</span>'            +'</div>'          +'</div>';
+          return '<div class="card" style="border-color:'+(hasChgs?c.color:'var(--border)')+';padding:16px">'            +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'              +'<div style="display:flex;align-items:center;gap:8px">'                +'<span style="font-size:20px">'+c.icon+'</span>'                +'<span style="font-weight:700;font-size:14px">'+c.name+'</span>'              +'</div>'              +'<span style="font-size:11px;color:'+urgColor+';font-weight:600;background:rgba(0,0,0,.2);padding:3px 8px;border-radius:20px">'+days+'d</span>'            +'</div>'            +'<div style="font-family:var(--font-num);color:'+(hasChgs?'var(--red)':'var(--text-muted)')+';font-size:20px;font-weight:700;margin-bottom:6px">'+fmt(cardTotal)+'</div>'            +'<div style="border-top:1px solid var(--border);padding-top:6px;margin-bottom:6px">'              +(normalVal>0?'<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span style="color:var(--text-muted)">\u{1F4B3} Gastos normais</span><span style="font-family:var(--font-num);color:var(--red)">'+fmt(normalVal)+'</span></div>':'')              +(recorrConfVal>0?'<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span style="color:var(--text-muted)">\uD83D\uDD04 Recorrentes</span><span style="font-family:var(--font-num);color:var(--purple)">'+fmt(recorrConfVal)+'</span></div>':'')              +(recorrPendVal>0?'<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span style="color:var(--gold)">\u23F3 Pendentes ('+recorrPend.length+')</span><span style="font-family:var(--font-num);color:var(--gold)">'+fmt(recorrPendVal)+'</span></div>':'')            +'</div>'            +'<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted)">'              +'<span>'+cardChgs.length+' lan\u00E7amento'+(cardChgs.length!==1?'s':'')+'</span>'              +'<span>Vence dia '+c.venc+'</span>'            +'</div>'          +'</div>';
         }).join('')
       + '</div>';
   }
@@ -6952,6 +6965,43 @@ function quickPayTerreno() {
       });
     });
     if (changed) saveKey('transactions', txs);
+  })();
+
+  // Recalcular datas de fatura dos lançamentos de cartão já existentes,
+  // usando a lógica corrigida de fechamento (getBillingMonth). Idempotente:
+  // só regrava se a data calculada for diferente da já salva.
+  (function migrateCardBillingDates() {
+    var purchases = loadPurchases();
+    if (!purchases.length) return;
+    var txs     = loadKey('transactions');
+    var txById  = {};
+    txs.forEach(function(t){ txById[t.id] = t; });
+    var changed = false;
+    purchases.forEach(function(p) {
+      var cardInfo = CARDS[p.card];
+      if (!cardInfo) return;
+      var billingStart = getBillingMonth(p);
+      var startParts    = billingStart.split('-');
+      var startYear     = parseInt(startParts[0]);
+      var startMonth    = parseInt(startParts[1]) - 1;
+      var vencDay       = String(cardInfo.venc).padStart(2,'0');
+      for (var i = 0; i < p.parcelas; i++) {
+        var chMonth = startMonth + i;
+        var chYear  = startYear;
+        while (chMonth > 11) { chMonth -= 12; chYear++; }
+        var txMonth     = String(chMonth + 1).padStart(2,'0');
+        var correctDate = chYear + '-' + txMonth + '-' + vencDay;
+        var t = txById[p.id + i + 1];
+        if (t && t.date !== correctDate) {
+          t.date  = correctDate;
+          changed = true;
+        }
+      }
+    });
+    if (changed) {
+      txs.sort(function(a,b){ return b.date.localeCompare(a.date); });
+      saveKey('transactions', txs);
+    }
   })();
 
   // Forçar layout mobile via JS — compatível com Samsung Internet
