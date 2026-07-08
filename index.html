@@ -1624,6 +1624,7 @@
               <select id="inv-aporte-tipo" onchange="toggleAporteTipoFields()">
                 <option value="real">💰 Aporte real (dinheiro novo)</option>
                 <option value="rendimento">📈 Rendimento (juros já creditados)</option>
+                <option value="resgate">🔻 Resgate (retirei da caixinha)</option>
               </select>
             </div>
             <div class="form-group full">
@@ -1692,6 +1693,7 @@
             <button class="pay-mode-btn active" id="finv-todos"       onclick="setInvHistTab('')">📋 Todos</button>
             <button class="pay-mode-btn"        id="finv-real"        onclick="setInvHistTab('real')">💰 Aportes</button>
             <button class="pay-mode-btn"        id="finv-rendimento"  onclick="setInvHistTab('rendimento')">📈 Rendimentos</button>
+            <button class="pay-mode-btn"        id="finv-resgate"     onclick="setInvHistTab('resgate')">🔻 Resgates</button>
           </div>
           <div class="table-wrap">
           <table>
@@ -5951,7 +5953,7 @@ function addAporte() {
   var boxId       = document.getElementById('inv-aporte-box').value;
   var val         = parseFloat(document.getElementById('inv-aporte-val').value);
   var date        = document.getElementById('inv-aporte-date').value;
-  var rate        = tipo === 'rendimento' ? 0 : (parseFloat(document.getElementById('inv-aporte-rate').value) || 0);
+  var rate        = (tipo === 'rendimento' || tipo === 'resgate') ? 0 : (parseFloat(document.getElementById('inv-aporte-rate').value) || 0);
   var institution = document.getElementById('inv-aporte-institution').value.trim();
   var origin      = document.getElementById('inv-aporte-origin').value;
   var notes       = document.getElementById('inv-aporte-notes').value.trim();
@@ -5973,15 +5975,15 @@ function addAporte() {
   document.getElementById('inv-aporte-rate').value        = '';
   document.getElementById('inv-aporte-institution').value = '';
   document.getElementById('inv-aporte-notes').value       = '';
-  notify(tipo === 'rendimento' ? '✓ Rendimento registrado!' : '✓ Aporte registrado!');
+  notify(tipo === 'rendimento' ? '✓ Rendimento registrado!' : tipo === 'resgate' ? '✓ Resgate registrado!' : '✓ Aporte registrado!');
   renderInvest();
 }
 
-// Esconde campos de taxa/CDI/origem quando o lançamento é um rendimento
-// (já é valor realizado, não precisa de projeção nem de origem de renda)
+// Esconde campos de taxa/CDI/origem quando o lançamento é rendimento ou resgate
+// (não precisam de projeção nem de origem de renda)
 function toggleAporteTipoFields() {
   var tipo = document.getElementById('inv-aporte-tipo').value;
-  var isRend = tipo === 'rendimento';
+  var isRend = tipo === 'rendimento' || tipo === 'resgate';
   ['inv-aporte-cdi-group','inv-aporte-cdipct-group','inv-aporte-rate-group','inv-aporte-origin-group'].forEach(function(id){
     var el = document.getElementById(id);
     if (el) el.style.display = isRend ? 'none' : '';
@@ -6032,17 +6034,19 @@ function renderInvest() {
   var aportes = loadAportes();
 
   // Summary — soma o saldo real de cada caixinha usando a mesma lógica do card individual:
-  // se a caixinha já tem rendimento lançado manualmente, soma direto (sem projetar juros de
-  // novo); senão, usa a projeção por fórmula. Evita duplicar juros no total geral.
+  // se a caixinha já tem rendimento ou resgate lançado manualmente, soma direto (sem projetar
+  // juros de novo); senão, usa a projeção por fórmula. Evita duplicar juros no total geral.
   var totalInvested = 0, totalReal = 0;
   boxes.forEach(function(b) {
-    var boxAportesB  = aportes.filter(function(a){ return a.boxId===b.id; });
-    var realAportesB = boxAportesB.filter(function(a){ return a.tipo !== 'rendimento'; });
-    var rendEntriesB = boxAportesB.filter(function(a){ return a.tipo === 'rendimento'; });
-    var investedB    = realAportesB.reduce(function(s,a){ return s+a.val; },0);
-    var rendRealB    = rendEntriesB.reduce(function(s,a){ return s+a.val; },0);
-    var balanceB      = rendEntriesB.length > 0
-      ? investedB + rendRealB
+    var boxAportesB   = aportes.filter(function(a){ return a.boxId===b.id; });
+    var realAportesB  = boxAportesB.filter(function(a){ return a.tipo !== 'rendimento' && a.tipo !== 'resgate'; });
+    var rendEntriesB  = boxAportesB.filter(function(a){ return a.tipo === 'rendimento'; });
+    var resgateEntriesB = boxAportesB.filter(function(a){ return a.tipo === 'resgate'; });
+    var investedB     = realAportesB.reduce(function(s,a){ return s+a.val; },0);
+    var rendRealB     = rendEntriesB.reduce(function(s,a){ return s+a.val; },0);
+    var resgateB      = resgateEntriesB.reduce(function(s,a){ return s+a.val; },0);
+    var balanceB      = (rendEntriesB.length > 0 || resgateEntriesB.length > 0)
+      ? investedB + rendRealB - resgateB
       : realAportesB.reduce(function(s,a){ return s+calcAporteValue(a); },0);
     totalInvested += investedB;
     totalReal     += balanceB;
@@ -6088,15 +6092,17 @@ function renderInvest() {
   boxesEl.innerHTML = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">'
     + boxes.map(function(b){
         var boxAportes    = aportes.filter(function(a){ return a.boxId===b.id; });
-        var realAportes   = boxAportes.filter(function(a){ return a.tipo !== 'rendimento'; });
+        var realAportes   = boxAportes.filter(function(a){ return a.tipo !== 'rendimento' && a.tipo !== 'resgate'; });
         var rendEntries   = boxAportes.filter(function(a){ return a.tipo === 'rendimento'; });
+        var resgateEntries= boxAportes.filter(function(a){ return a.tipo === 'resgate'; });
         var invested      = realAportes.reduce(function(s,a){ return s+a.val; },0);
         var totalRendReal = rendEntries.reduce(function(s,a){ return s+a.val; },0);
-        // Se há rendimentos lançados manualmente, o saldo é a soma direta (ledger) —
+        var totalResgate  = resgateEntries.reduce(function(s,a){ return s+a.val; },0);
+        // Se há rendimentos ou resgates lançados manualmente, o saldo é a soma direta (ledger) —
         // sem projetar juros de novo em cima dos aportes reais, senão duplica.
-        // Sem rendimentos lançados, mantém a projeção por fórmula (comportamento antigo).
-        var realBalance   = rendEntries.length > 0
-          ? invested + totalRendReal
+        // Sem nenhum dos dois lançado, mantém a projeção por fórmula (comportamento antigo).
+        var realBalance   = (rendEntries.length > 0 || resgateEntries.length > 0)
+          ? invested + totalRendReal - totalResgate
           : realAportes.reduce(function(s,a){ return s+calcAporteValue(a); },0);
         var totalInterest = realBalance - invested;
         var pct           = b.goal > 0 ? Math.min(100,(realBalance/b.goal)*100) : 0;
@@ -6163,8 +6169,8 @@ function renderInvest() {
               +(avgRate>0?' ('+avgRate.toFixed(1)+'% a.a. médio)':'')+'</div>'
             :'')
 +(function(){
-            var si = rendEntries.length > 0
-              ? getLedgerInfo(realAportes, totalRendReal, avgRate)
+            var si = (rendEntries.length > 0 || resgateEntries.length > 0)
+              ? getLedgerInfo(realAportes, totalRendReal, avgRate, totalResgate)
               : getSaldoInfo(b.id, invested, avgRate);
             if (!si) return '<div style="margin-top:8px"><button class="btn btn-sm" style="font-size:11px;padding:4px 10px" onclick="registrarSaldo(\''+b.id+'\')">📊 Registrar Saldo Hoje</button></div>';
             var diff = si.rendReal - si.rendEstimado;
@@ -6172,11 +6178,12 @@ function renderInvest() {
             return '<div style="margin-top:10px;padding:8px;background:var(--card);border-radius:6px;font-size:12px">'
               +(si.ultimo?'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--text-muted)">📊 Saldo em '+si.ultimo.date+'</span><strong style="color:var(--accent)">'+fmt(si.ultimo.valor)+'</strong></div>':'')
               +'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--text-muted)">📈 Rend. real</span><span style="color:'+(si.rendReal>=0?'var(--accent)':'var(--red)')+'">'+fmt(si.rendReal)+'</span></div>'
+              +(si.resgatado>0?'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--text-muted)">🔻 Resgatado</span><span style="color:var(--red)">-'+fmt(si.resgatado)+'</span></div>':'')
               +(si.rendEstimado>0?'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--text-muted)">📐 Rend. estimado</span><span style="color:var(--blue)">'+fmt(si.rendEstimado)+'</span></div>':'')
               +(si.rendEstimado>0?'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--text-muted)">⚖️ Diferença</span><span style="color:'+diffColor+'">'+(diff>=0?'+':'')+fmt(diff)+'</span></div>':'')
               +(si.iof>0?'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--gold)">⚠️ IOF se resgatar</span><span style="color:var(--gold)">-'+fmt(si.iof)+'</span></div>':'')
               +(si.ir>0?'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--gold)">🧾 IR estimado</span><span style="color:var(--gold)">-'+fmt(si.ir)+'</span></div>':'')
-              +(rendEntries.length===0?'<button class="btn btn-sm" style="font-size:11px;padding:4px 10px;margin-top:4px;width:100%" onclick="registrarSaldo(\''+b.id+'\')">📊 Atualizar Saldo</button>':'')
+              +(rendEntries.length===0&&resgateEntries.length===0?'<button class="btn btn-sm" style="font-size:11px;padding:4px 10px;margin-top:4px;width:100%" onclick="registrarSaldo(\''+b.id+'\')">📊 Atualizar Saldo</button>':'')
             +'</div>';
           })()
           +'<div style="margin-top:6px;font-size:12px;color:var(--text-muted)">'
@@ -6192,7 +6199,7 @@ function renderInvest() {
 var currentInvHistTab = '';
 function setInvHistTab(tipo) {
   currentInvHistTab = tipo;
-  ['todos','real','rendimento'].forEach(function(id){
+  ['todos','real','rendimento','resgate'].forEach(function(id){
     var btn = document.getElementById('finv-'+id);
     if (btn) btn.classList.toggle('active', (id === 'todos' ? '' : id) === tipo);
   });
@@ -6205,9 +6212,11 @@ function renderInvestHistory() {
   var filterBox= document.getElementById('inv-filter-box') ? document.getElementById('inv-filter-box').value : '';
   var filtered = filterBox ? aportes.filter(function(a){ return a.boxId===filterBox; }) : aportes;
   if (currentInvHistTab === 'real') {
-    filtered = filtered.filter(function(a){ return a.tipo !== 'rendimento'; });
+    filtered = filtered.filter(function(a){ return a.tipo !== 'rendimento' && a.tipo !== 'resgate'; });
   } else if (currentInvHistTab === 'rendimento') {
     filtered = filtered.filter(function(a){ return a.tipo === 'rendimento'; });
+  } else if (currentInvHistTab === 'resgate') {
+    filtered = filtered.filter(function(a){ return a.tipo === 'resgate'; });
   }
 
   var tbody = document.getElementById('inv-history');
@@ -6221,16 +6230,18 @@ function renderInvestHistory() {
     var bName        = box ? box.emoji+' '+box.name : '—';
     var color        = box ? INV_COLORS[box.color] : 'var(--accent)';
     var isRend       = a.tipo === 'rendimento';
+    var isResgate    = a.tipo === 'resgate';
+    var tipoLabel    = isResgate ? '🔻 Resgate' : isRend ? '📈 Rendimento' : '💰 Aporte';
     var currentVal   = calcAporteValue(a);
     var interest     = currentVal - a.val;
     return '<tr>'
       +'<td style="font-family:var(--font-num)">'+fmtDate(a.date)+'</td>'
       +'<td style="color:'+color+'">'+bName+'</td>'
-      +'<td style="font-size:12px">'+(isRend?'📈 Rendimento':'💰 Aporte')+'</td>'
-      +'<td style="font-size:13px;color:var(--text-muted)">'+(isRend?'—':(ORIGIN_LABELS[a.origin]||a.origin))+'</td>'
+      +'<td style="font-size:12px">'+tipoLabel+'</td>'
+      +'<td style="font-size:13px;color:var(--text-muted)">'+((isRend||isResgate)?'—':(ORIGIN_LABELS[a.origin]||a.origin))+'</td>'
       +'<td style="font-size:12px;color:var(--text-muted)">'+escHtml(a.institution||'—')+'</td>'
       +'<td style="font-family:var(--font-num);color:var(--text-muted)">'+(a.rate?a.rate.toFixed(2)+'% a.a.':'—')+'</td>'
-      +'<td class="amount-pos">'+fmt(a.val)+'</td>'
+      +'<td class="'+(isResgate?'amount-neg':'amount-pos')+'">'+(isResgate?'-':'')+fmt(a.val)+'</td>'
       +'<td style="font-family:var(--font-num);color:var(--accent)">'+fmt(currentVal)
         +(interest>0?'<div style="font-size:10px;color:var(--accent)">+'+fmt(interest)+' juros</div>':'')+'</td>'
       +'<td><button class="btn btn-ghost btn-sm" onclick="openEditAporteModal('+a.id+')" title="Editar">✏️</button><button class="btn btn-danger btn-sm" onclick="deleteAporte('+a.id+')">✕</button></td>'
@@ -7128,6 +7139,30 @@ function quickPayTerreno() {
     }
   })();
 
+  // Concilia "Assinaturas & Recorrentes": se um mês está marcado como confirmado
+  // (sub.confirmedMonths) mas não existe transação correspondente no histórico
+  // (por causa de um bug antigo, exclusão manual, etc.), desfaz só aquela
+  // confirmação — sem apagar a assinatura — pra ela voltar a aparecer como
+  // pendente e poder ser relançada normalmente. Roda a cada carregamento,
+  // idempotente (não muda nada se já estiver tudo consistente).
+  (function migrateReconcileSubscriptions() {
+    var subs = loadSubscriptions();
+    if (!subs.length) return;
+    var txs = loadKey('transactions');
+    var changed = false;
+    subs.forEach(function(s) {
+      var before = s.confirmedMonths.length;
+      s.confirmedMonths = s.confirmedMonths.filter(function(mk) {
+        return txs.some(function(t) {
+          return t.source === 'recorrente' && t.date && t.date.slice(0,7) === mk
+            && t.desc && t.desc.indexOf(s.name) !== -1;
+        });
+      });
+      if (s.confirmedMonths.length !== before) changed = true;
+    });
+    if (changed) saveSubscriptions(subs);
+  })();
+
   // Forçar layout mobile via JS — compatível com Samsung Internet
   (function applyMobileLayout() {
     var isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
@@ -7298,7 +7333,8 @@ function getSaldoInfo(boxId, totalAportado, taxaAnual) {
 // Versão do resumo (Rend. real / estimado / IOF / IR) para quem usa o modelo novo de
 // "Aporte real" + "Rendimento" (ledger), em vez de "Registrar Saldo" manual.
 // rendReal vem direto da soma dos lançamentos tipo=rendimento (exato, sem fórmula).
-function getLedgerInfo(realAportes, totalRendReal, taxaAnual) {
+function getLedgerInfo(realAportes, totalRendReal, taxaAnual, totalResgate) {
+  totalResgate = totalResgate || 0;
   var hoje = new Date();
   var rendEstimado = 0;
   realAportes.forEach(function(a) {
@@ -7326,7 +7362,7 @@ function getLedgerInfo(realAportes, totalRendReal, taxaAnual) {
       ir += rendAporte * aliquotaIR;
     }
   });
-  return { rendReal: totalRendReal, rendEstimado: rendEstimado, iof: iof, ir: ir };
+  return { rendReal: totalRendReal, resgatado: totalResgate, rendEstimado: rendEstimado, iof: iof, ir: ir };
 }
 </script>
 </body>
