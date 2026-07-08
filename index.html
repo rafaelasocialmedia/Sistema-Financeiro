@@ -1578,7 +1578,7 @@
       <div class="two-col">
         <!-- Nova caixinha -->
         <div class="panel">
-          <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="toggleSection('inv-nova-body')"><span>+ Nova Caixinha</span><span id="inv-nova-arrow">▼</span></div>
+          <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="toggleInvestFormSection('inv-nova-body')"><span>+ Nova Caixinha</span><span id="inv-nova-arrow">▼</span></div>
           <div id="inv-nova-body" style="display:none"><div class="form-grid">
             <div class="form-group full">
               <label>Nome</label>
@@ -1617,8 +1617,15 @@
 
         <!-- Novo aporte -->
         <div class="panel">
-          <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="toggleSection('inv-aporte-body')"><span>💰 Registrar Aporte</span><span id="inv-aporte-arrow">▼</span></div>
+          <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="toggleInvestFormSection('inv-aporte-body')"><span>💰 Registrar Aporte</span><span id="inv-aporte-arrow">▼</span></div>
           <div id="inv-aporte-body" style="display:none"><div class="form-grid">
+            <div class="form-group full">
+              <label>Tipo de Lançamento</label>
+              <select id="inv-aporte-tipo" onchange="toggleAporteTipoFields()">
+                <option value="real">💰 Aporte real (dinheiro novo)</option>
+                <option value="rendimento">📈 Rendimento (juros já creditados)</option>
+              </select>
+            </div>
             <div class="form-group full">
               <label>Caixinha</label>
               <select id="inv-aporte-box"></select>
@@ -1631,15 +1638,15 @@
               <label>Data</label>
               <input type="date" id="inv-aporte-date">
             </div>
-            <div class="form-group">
+            <div class="form-group" id="inv-aporte-cdi-group">
               <label>CDI atual (% a.a.) <span style="font-size:11px;color:var(--text-muted)">— salvo automaticamente</span></label>
               <input type="number" id="inv-cdi-atual" placeholder="Ex: 13,75" step="0.01" min="0" oninput="calcTaxaCDI()" onchange="localStorage.setItem('fp_cdi_atual',this.value)">
             </div>
-            <div class="form-group">
+            <div class="form-group" id="inv-aporte-cdipct-group">
               <label>% do CDI <span style="font-size:11px;color:var(--text-muted)">— ex: 115 para 115% CDI</span></label>
               <input type="number" id="inv-cdi-pct" placeholder="Ex: 115" step="0.01" min="0" oninput="calcTaxaCDI()">
             </div>
-            <div class="form-group">
+            <div class="form-group" id="inv-aporte-rate-group">
               <label>Taxa de Rendimento (% a.a.) <span style="font-size:11px;color:var(--accent)">— calculada automaticamente</span></label>
               <input type="number" id="inv-aporte-rate" placeholder="Ex: 13,5" step="0.01" min="0">
             </div>
@@ -1647,7 +1654,7 @@
               <label>Onde está investido</label>
               <input type="text" id="inv-aporte-institution" placeholder="Ex: CDB Nubank, CDB Banco X...">
             </div>
-            <div class="form-group full">
+            <div class="form-group full" id="inv-aporte-origin-group">
               <label>Origem</label>
               <select id="inv-aporte-origin">
                 <option value="salario_dela">💼 Salário (você)</option>
@@ -1680,16 +1687,23 @@
             <span id="inv-hist-arrow">▲</span>
           </div>
         </div>
-        <div id="inv-hist-body"><div class="table-wrap">
+        <div id="inv-hist-body">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px" onclick="event.stopPropagation()">
+            <button class="pay-mode-btn active" id="finv-todos"       onclick="setInvHistTab('')">📋 Todos</button>
+            <button class="pay-mode-btn"        id="finv-real"        onclick="setInvHistTab('real')">💰 Aportes</button>
+            <button class="pay-mode-btn"        id="finv-rendimento"  onclick="setInvHistTab('rendimento')">📈 Rendimentos</button>
+          </div>
+          <div class="table-wrap">
           <table>
             <thead>
               <tr>
                 <th>Data</th>
                 <th>Caixinha</th>
+                <th>Tipo</th>
                 <th>Origem</th>
                 <th>Onde está</th>
                 <th>Taxa</th>
-                <th>Aportado</th>
+                <th>Valor</th>
                 <th>Valor Atual</th>
                 <th></th>
               </tr>
@@ -3692,8 +3706,11 @@ function confirmSubscription(subId) {
   sub.confirmedMonths.push(mk);
   saveSubscriptions(subs);
 
-  var today   = new Date();
-  var dateStr = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(sub.day).padStart(2,'0');
+  // Usa o mês que está sendo navegado na tela (currentYear/currentMonth), não a data real do sistema —
+  // senão o lançamento cai num mês diferente do que foi marcado como confirmado
+  var refYear  = currentYear;
+  var refMonth = currentMonth; // 0-indexed
+  var dateStr = refYear + '-' + String(refMonth+1).padStart(2,'0') + '-' + String(sub.day).padStart(2,'0');
   var txs     = loadKey('transactions');
 
   if (sub.type === 'income') {
@@ -3706,8 +3723,8 @@ function confirmSubscription(subId) {
       var purchases  = loadPurchases();
       purchases.push({ id: purchaseId, card: sub.card, date: dateStr, desc: sub.emoji+' '+sub.name, cat: sub.cat, subcat: sub.subcat||'', total: sub.value, parcelas: 1, installmentVal: sub.value });
       savePurchases(purchases);
-      var mStr = String(today.getMonth()+1).padStart(2,'0');
-      txs.push({ id: purchaseId+1, type:'expense', amount:sub.value, cat:sub.cat, subcat:sub.subcat||'', desc:sub.emoji+' '+sub.name+' ('+cardInfo.icon+' '+cardInfo.name+')', date:today.getFullYear()+'-'+mStr+'-'+String(cardInfo.venc).padStart(2,'0'), source:'recorrente', card:sub.card, purchaseId:purchaseId });
+      var mStr = String(refMonth+1).padStart(2,'0');
+      txs.push({ id: purchaseId+1, type:'expense', amount:sub.value, cat:sub.cat, subcat:sub.subcat||'', desc:sub.emoji+' '+sub.name+' ('+cardInfo.icon+' '+cardInfo.name+')', date:refYear+'-'+mStr+'-'+String(cardInfo.venc).padStart(2,'0'), source:'recorrente', card:sub.card, purchaseId:purchaseId });
     } else {
       txs.push({ id: Date.now(), type:'expense', amount:sub.value, cat:sub.cat, subcat:sub.subcat||'', desc:sub.emoji+' '+sub.name, date:dateStr, payment:sub.card, source:'recorrente' });
     }
@@ -3725,6 +3742,36 @@ function deleteSubscription(subId) {
   saveSubscriptions(loadSubscriptions().filter(function(s){ return s.id != subId; }));
   notify('Removido.');
   renderSubscriptions();
+}
+
+// Desfaz a confirmação de uma recorrente no mês atual: remove a transação lançada
+// e libera a assinatura pra aparecer como pendente de novo (sem apagar o cadastro dela)
+function undoConfirmSubscription(subId) {
+  var mk   = curMonthKey();
+  var subs = loadSubscriptions();
+  var sub  = subs.find(function(s){ return s.id === subId; });
+  if (!sub) return;
+  if (sub.confirmedMonths.indexOf(mk) === -1) return;
+
+  sub.confirmedMonths = sub.confirmedMonths.filter(function(m){ return m !== mk; });
+  saveSubscriptions(subs);
+
+  var txs = loadKey('transactions');
+  var alvo = txs.find(function(t){
+    return t.source === 'recorrente' && t.date && t.date.slice(0,7) === mk
+      && t.desc && t.desc.indexOf(sub.name) !== -1;
+  });
+  if (alvo) {
+    txs = txs.filter(function(t){ return t.id !== alvo.id; });
+    saveKey('transactions', txs);
+    if (alvo.purchaseId) {
+      savePurchases(loadPurchases().filter(function(p){ return p.id !== alvo.purchaseId; }));
+    }
+  }
+  notify('↩️ "'+sub.name+'" liberado pra lançar de novo.');
+  renderSubscriptions();
+  renderTxTable();
+  renderDashboard();
 }
 
 function renderSubscriptions() {
@@ -3756,7 +3803,7 @@ function renderSubscriptions() {
       else if (CARDS[sub.card])   cardLabel  = CARDS[sub.card].icon + ' ' + CARDS[sub.card].name;
     }
     var confirmBtn = isConfirmed
-      ? '<button class="sub-confirm-btn confirmed" disabled>✓ '+(isIncome?'Recebido':'Confirmado')+'</button>'
+      ? '<button class="sub-confirm-btn confirmed" onclick="undoConfirmSubscription('+sub.id+')" title="Clique para desfazer e lançar de novo">✓ '+(isIncome?'Recebido':'Confirmado')+' ↩️</button>'
       : '<button class="sub-confirm-btn pending" onclick="confirmSubscription('+sub.id+')">'+(isIncome?'✓ Confirmar recebimento':'✓ Confirmar débito')+'</button>';
     var color = isIncome ? 'var(--accent)' : 'var(--red)';
     return '<div class="sub-card" style="'+(isConfirmed?'opacity:.6':'')+';">'
@@ -3783,7 +3830,7 @@ function deleteTx(id) {
   var txs  = loadKey('transactions');
   var tx   = txs.find(function(t){ return t.id === id; });
   saveKey('transactions', txs.filter(function(t){ return t.id !== id; }));
-  // Se era recorrente, desconfirma no mes correspondente
+  // Se era recorrente, desconfirma no mes correspondente e limpa a compra vinculada (se houver)
   if (tx && tx.source === 'recorrente' && tx.date) {
     var mk = tx.date.slice(0,7);
     var subs = loadSubscriptions();
@@ -3793,6 +3840,9 @@ function deleteTx(id) {
       }
     });
     saveSubscriptions(subs);
+    if (tx.purchaseId) {
+      savePurchases(loadPurchases().filter(function(p){ return p.id !== tx.purchaseId; }));
+    }
   }
   notify('Transação removida.');
   renderTxTable();
@@ -3988,7 +4038,11 @@ function renderDashIntegrated() {
   totalIncome = Math.max(income, salIncome + dolIncome + extraIncome);
 
   // Build expense rows
-  var txExpense   = txs.filter(function(t){return t.type==='expense' && t.source!=='cartao';}).reduce(function(s,t){return s+t.amount;},0);
+  // Exclui qualquer transação já representada em car_purchases (tem purchaseId) —
+  // isso cobre tanto compras de cartão (source='cartao') quanto recorrentes
+  // confirmadas que caem no cartão (source='recorrente' com purchaseId), evitando
+  // contar a mesma compra duas vezes (uma em txExpense, outra em carTotal)
+  var txExpense   = txs.filter(function(t){return t.type==='expense' && !t.purchaseId;}).reduce(function(s,t){return s+t.amount;},0);
   var expenseRows = [];
   if (txExpense > 0) expenseRows.push({label:'📋 Despesas gerais', val: txExpense});
   if (carTotal > 0)  expenseRows.push({label:'💳 Cartões', val: carTotal});
@@ -5876,6 +5930,7 @@ function deleteInvestBox(id) {
 
 // Calculates current value of a single aporte with compound interest
 function calcAporteValue(aporte) {
+  if (aporte.tipo === 'rendimento') return aporte.val; // já é valor realizado, não projeta de novo
   var principal = aporte.val;
   var rate      = aporte.rate || 0; // annual rate %
   if (!rate) return principal;      // no rate = no interest calculation
@@ -5892,23 +5947,24 @@ function calcAporteValue(aporte) {
 }
 
 function addAporte() {
+  var tipo        = document.getElementById('inv-aporte-tipo') ? document.getElementById('inv-aporte-tipo').value : 'real';
   var boxId       = document.getElementById('inv-aporte-box').value;
   var val         = parseFloat(document.getElementById('inv-aporte-val').value);
   var date        = document.getElementById('inv-aporte-date').value;
-  var rate        = parseFloat(document.getElementById('inv-aporte-rate').value) || 0;
+  var rate        = tipo === 'rendimento' ? 0 : (parseFloat(document.getElementById('inv-aporte-rate').value) || 0);
   var institution = document.getElementById('inv-aporte-institution').value.trim();
   var origin      = document.getElementById('inv-aporte-origin').value;
   var notes       = document.getElementById('inv-aporte-notes').value.trim();
 
   if (!boxId)          return notify('Escolha uma caixinha', true);
-  if (!val || val <= 0)return notify('Informe o valor do aporte', true);
+  if (!val || val <= 0)return notify('Informe o valor', true);
   if (!date)           return notify('Informe a data', true);
 
   var aportes = loadAportes();
   aportes.push({
     id: Date.now(), boxId: boxId, val: val, date: date,
     rate: rate, institution: institution,
-    origin: origin, notes: notes
+    origin: origin, notes: notes, tipo: tipo
   });
   aportes.sort(function(a,b){ return b.date.localeCompare(a.date); });
   saveAportes(aportes);
@@ -5917,8 +5973,19 @@ function addAporte() {
   document.getElementById('inv-aporte-rate').value        = '';
   document.getElementById('inv-aporte-institution').value = '';
   document.getElementById('inv-aporte-notes').value       = '';
-  notify('✓ Aporte registrado!');
+  notify(tipo === 'rendimento' ? '✓ Rendimento registrado!' : '✓ Aporte registrado!');
   renderInvest();
+}
+
+// Esconde campos de taxa/CDI/origem quando o lançamento é um rendimento
+// (já é valor realizado, não precisa de projeção nem de origem de renda)
+function toggleAporteTipoFields() {
+  var tipo = document.getElementById('inv-aporte-tipo').value;
+  var isRend = tipo === 'rendimento';
+  ['inv-aporte-cdi-group','inv-aporte-cdipct-group','inv-aporte-rate-group','inv-aporte-origin-group'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.style.display = isRend ? 'none' : '';
+  });
 }
 
 function deleteAporte(id) {
@@ -5964,10 +6031,22 @@ function renderInvest() {
   var boxes   = loadInvestBoxes();
   var aportes = loadAportes();
 
-  // Summary — use real balance with interest
-  var allAportes    = loadAportes();
-  var totalInvested = allAportes.reduce(function(s,a){ return s+a.val; },0);
-  var totalReal     = allAportes.reduce(function(s,a){ return s+calcAporteValue(a); },0);
+  // Summary — soma o saldo real de cada caixinha usando a mesma lógica do card individual:
+  // se a caixinha já tem rendimento lançado manualmente, soma direto (sem projetar juros de
+  // novo); senão, usa a projeção por fórmula. Evita duplicar juros no total geral.
+  var totalInvested = 0, totalReal = 0;
+  boxes.forEach(function(b) {
+    var boxAportesB  = aportes.filter(function(a){ return a.boxId===b.id; });
+    var realAportesB = boxAportesB.filter(function(a){ return a.tipo !== 'rendimento'; });
+    var rendEntriesB = boxAportesB.filter(function(a){ return a.tipo === 'rendimento'; });
+    var investedB    = realAportesB.reduce(function(s,a){ return s+a.val; },0);
+    var rendRealB    = rendEntriesB.reduce(function(s,a){ return s+a.val; },0);
+    var balanceB      = rendEntriesB.length > 0
+      ? investedB + rendRealB
+      : realAportesB.reduce(function(s,a){ return s+calcAporteValue(a); },0);
+    totalInvested += investedB;
+    totalReal     += balanceB;
+  });
   var totalGoal     = boxes.reduce(function(s,b){ return s+b.goal; },0);
   var totalPct      = totalGoal > 0 ? Math.min(100,(totalReal/totalGoal)*100) : 0;
 
@@ -6009,8 +6088,16 @@ function renderInvest() {
   boxesEl.innerHTML = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">'
     + boxes.map(function(b){
         var boxAportes    = aportes.filter(function(a){ return a.boxId===b.id; });
-        var invested      = boxAportes.reduce(function(s,a){ return s+a.val; },0);
-        var realBalance   = boxAportes.reduce(function(s,a){ return s+calcAporteValue(a); },0);
+        var realAportes   = boxAportes.filter(function(a){ return a.tipo !== 'rendimento'; });
+        var rendEntries   = boxAportes.filter(function(a){ return a.tipo === 'rendimento'; });
+        var invested      = realAportes.reduce(function(s,a){ return s+a.val; },0);
+        var totalRendReal = rendEntries.reduce(function(s,a){ return s+a.val; },0);
+        // Se há rendimentos lançados manualmente, o saldo é a soma direta (ledger) —
+        // sem projetar juros de novo em cima dos aportes reais, senão duplica.
+        // Sem rendimentos lançados, mantém a projeção por fórmula (comportamento antigo).
+        var realBalance   = rendEntries.length > 0
+          ? invested + totalRendReal
+          : realAportes.reduce(function(s,a){ return s+calcAporteValue(a); },0);
         var totalInterest = realBalance - invested;
         var pct           = b.goal > 0 ? Math.min(100,(realBalance/b.goal)*100) : 0;
         var remaining     = Math.max(0, b.goal - realBalance);
@@ -6019,7 +6106,7 @@ function renderInvest() {
         var done          = pct >= 100;
 
         // Projection with compound interest
-        var lastAportes = boxAportes.slice(-3);
+        var lastAportes = realAportes.slice(-3);
         var avgAporte   = lastAportes.length > 0
           ? lastAportes.reduce(function(s,a){return s+a.val;},0)/lastAportes.length : 0;
         var avgRate     = lastAportes.length > 0
@@ -6075,10 +6162,40 @@ function renderInvest() {
               +'📅 Projeção c/ juros: <strong style="color:'+color+'">~'+projMonths+' meses</strong>'
               +(avgRate>0?' ('+avgRate.toFixed(1)+'% a.a. médio)':'')+'</div>'
             :'')
-+(function(){            var si = getSaldoInfo(b.id, invested, avgRate);            if (!si) return '<div style="margin-top:8px"><button class="btn btn-sm" style="font-size:11px;padding:4px 10px" onclick="registrarSaldo(\''+b.id+'\')">📊 Registrar Saldo Hoje</button></div>';            var diff = si.rendReal - si.rendEstimado;            var diffColor = diff >= 0 ? 'var(--accent)' : 'var(--red)';            return '<div style="margin-top:10px;padding:8px;background:var(--card);border-radius:6px;font-size:12px">'              +'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--text-muted)">📊 Saldo em '+si.ultimo.date+'</span><strong style="color:var(--accent)">'+fmt(si.ultimo.valor)+'</strong></div>'              +'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--text-muted)">📈 Rend. real</span><span style="color:'+(si.rendReal>=0?'var(--accent)':'var(--red)')+'">'+fmt(si.rendReal)+'</span></div>'              +(si.rendEstimado>0?'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--text-muted)">📐 Rend. estimado</span><span style="color:var(--blue)">'+fmt(si.rendEstimado)+'</span></div>':'')              +(si.rendEstimado>0?'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--text-muted)">⚖️ Diferença</span><span style="color:'+diffColor+'">'+(diff>=0?'+':'')+fmt(diff)+'</span></div>':'')              +(si.iof>0?'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--gold)">⚠️ IOF se resgatar</span><span style="color:var(--gold)">-'+fmt(si.iof)+'</span></div>':'')              +'<button class="btn btn-sm" style="font-size:11px;padding:4px 10px;margin-top:4px;width:100%" onclick="registrarSaldo(\''+b.id+'\')">📊 Atualizar Saldo</button>'            +'</div>';          })()          +'<div style="margin-top:6px;font-size:12px;color:var(--text-muted)">'            +boxAportes.length+' aporte'+(boxAportes.length!==1?'s':'')+' registrado'+(boxAportes.length!==1?'s':'')          +'</div>'          +'</div>';
++(function(){
+            var si = rendEntries.length > 0
+              ? getLedgerInfo(realAportes, totalRendReal, avgRate)
+              : getSaldoInfo(b.id, invested, avgRate);
+            if (!si) return '<div style="margin-top:8px"><button class="btn btn-sm" style="font-size:11px;padding:4px 10px" onclick="registrarSaldo(\''+b.id+'\')">📊 Registrar Saldo Hoje</button></div>';
+            var diff = si.rendReal - si.rendEstimado;
+            var diffColor = diff >= 0 ? 'var(--accent)' : 'var(--red)';
+            return '<div style="margin-top:10px;padding:8px;background:var(--card);border-radius:6px;font-size:12px">'
+              +(si.ultimo?'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--text-muted)">📊 Saldo em '+si.ultimo.date+'</span><strong style="color:var(--accent)">'+fmt(si.ultimo.valor)+'</strong></div>':'')
+              +'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--text-muted)">📈 Rend. real</span><span style="color:'+(si.rendReal>=0?'var(--accent)':'var(--red)')+'">'+fmt(si.rendReal)+'</span></div>'
+              +(si.rendEstimado>0?'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--text-muted)">📐 Rend. estimado</span><span style="color:var(--blue)">'+fmt(si.rendEstimado)+'</span></div>':'')
+              +(si.rendEstimado>0?'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--text-muted)">⚖️ Diferença</span><span style="color:'+diffColor+'">'+(diff>=0?'+':'')+fmt(diff)+'</span></div>':'')
+              +(si.iof>0?'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--gold)">⚠️ IOF se resgatar</span><span style="color:var(--gold)">-'+fmt(si.iof)+'</span></div>':'')
+              +(si.ir>0?'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--gold)">🧾 IR estimado</span><span style="color:var(--gold)">-'+fmt(si.ir)+'</span></div>':'')
+              +(rendEntries.length===0?'<button class="btn btn-sm" style="font-size:11px;padding:4px 10px;margin-top:4px;width:100%" onclick="registrarSaldo(\''+b.id+'\')">📊 Atualizar Saldo</button>':'')
+            +'</div>';
+          })()
+          +'<div style="margin-top:6px;font-size:12px;color:var(--text-muted)">'
+            +boxAportes.length+' lançamento'+(boxAportes.length!==1?'s':'')+' registrado'+(boxAportes.length!==1?'s':'')
+          +'</div>'
+          +'</div>';
       }).join('')
     + '</div>';
 
+  renderInvestHistory();
+}
+
+var currentInvHistTab = '';
+function setInvHistTab(tipo) {
+  currentInvHistTab = tipo;
+  ['todos','real','rendimento'].forEach(function(id){
+    var btn = document.getElementById('finv-'+id);
+    if (btn) btn.classList.toggle('active', (id === 'todos' ? '' : id) === tipo);
+  });
   renderInvestHistory();
 }
 
@@ -6087,10 +6204,15 @@ function renderInvestHistory() {
   var boxes    = loadInvestBoxes();
   var filterBox= document.getElementById('inv-filter-box') ? document.getElementById('inv-filter-box').value : '';
   var filtered = filterBox ? aportes.filter(function(a){ return a.boxId===filterBox; }) : aportes;
+  if (currentInvHistTab === 'real') {
+    filtered = filtered.filter(function(a){ return a.tipo !== 'rendimento'; });
+  } else if (currentInvHistTab === 'rendimento') {
+    filtered = filtered.filter(function(a){ return a.tipo === 'rendimento'; });
+  }
 
   var tbody = document.getElementById('inv-history');
   if (!filtered.length) {
-    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">💰</div>Nenhum aporte registrado ainda</div></td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9"><div class="empty-state"><div class="empty-icon">💰</div>Nada encontrado</div></td></tr>';
     return;
   }
 
@@ -6098,12 +6220,14 @@ function renderInvestHistory() {
     var box          = boxes.find(function(b){ return b.id===a.boxId; });
     var bName        = box ? box.emoji+' '+box.name : '—';
     var color        = box ? INV_COLORS[box.color] : 'var(--accent)';
+    var isRend       = a.tipo === 'rendimento';
     var currentVal   = calcAporteValue(a);
     var interest     = currentVal - a.val;
     return '<tr>'
       +'<td style="font-family:var(--font-num)">'+fmtDate(a.date)+'</td>'
       +'<td style="color:'+color+'">'+bName+'</td>'
-      +'<td style="font-size:13px;color:var(--text-muted)">'+(ORIGIN_LABELS[a.origin]||a.origin)+'</td>'
+      +'<td style="font-size:12px">'+(isRend?'📈 Rendimento':'💰 Aporte')+'</td>'
+      +'<td style="font-size:13px;color:var(--text-muted)">'+(isRend?'—':(ORIGIN_LABELS[a.origin]||a.origin))+'</td>'
       +'<td style="font-size:12px;color:var(--text-muted)">'+escHtml(a.institution||'—')+'</td>'
       +'<td style="font-family:var(--font-num);color:var(--text-muted)">'+(a.rate?a.rate.toFixed(2)+'% a.a.':'—')+'</td>'
       +'<td class="amount-pos">'+fmt(a.val)+'</td>'
@@ -7064,6 +7188,18 @@ function toggleSection(id) {
   body.style.display  = isOpen ? 'none' : '';
   if (arrow) arrow.textContent = isOpen ? '▼' : '▲';
 }
+
+// Nova Caixinha e Registrar Aporte funcionam como acordeão: abrir uma fecha a outra
+function toggleInvestFormSection(id) {
+  var otherId = id === 'inv-nova-body' ? 'inv-aporte-body' : 'inv-nova-body';
+  var otherBody = document.getElementById(otherId);
+  if (otherBody && otherBody.style.display !== 'none') {
+    otherBody.style.display = 'none';
+    var otherArrow = document.getElementById(otherId.replace('-body','-arrow'));
+    if (otherArrow) otherArrow.textContent = '▼';
+  }
+  toggleSection(id);
+}
 function calcTaxaCDI() {
   var cdi  = parseFloat(document.getElementById('inv-cdi-atual').value);
   var pct  = parseFloat(document.getElementById('inv-cdi-pct').value);
@@ -7123,7 +7259,7 @@ function getSaldoInfo(boxId, totalAportado, taxaAnual) {
   var ultimo = saldos[saldos.length-1];
   var rendReal = ultimo.valor - totalAportado;
   // Estimado: calcular com base na taxa e data do primeiro aporte
-  var aportes = loadAportes().filter(function(a){ return a.boxId===boxId; });
+  var aportes = loadAportes().filter(function(a){ return a.boxId===boxId && a.tipo !== 'rendimento'; });
   var rendEstimado = 0;
   if (taxaAnual > 0) {
     aportes.forEach(function(a) {
@@ -7144,7 +7280,53 @@ function getSaldoInfo(boxId, totalAportado, taxaAnual) {
       iof += rendAporte * (IOF_TABLE[dias] || 0);
     }
   });
-  return { ultimo: ultimo, rendReal: rendReal, rendEstimado: rendEstimado, iof: iof, saldos: saldos };
+  // IR: tabela regressiva de renda fixa (incide sobre o rendimento de cada aporte)
+  // até 180 dias: 22,5% | 181-360: 20% | 361-720: 17,5% | acima de 720: 15%
+  var ir = 0;
+  aportes.forEach(function(a) {
+    var dias = Math.floor((hoje - new Date(a.date)) / 86400000);
+    var taxaDiaria = Math.pow(1 + (taxaAnual||0)/100, 1/365) - 1;
+    var rendAporte = a.val * (Math.pow(1 + taxaDiaria, dias) - 1);
+    if (rendAporte > 0) {
+      var aliquotaIR = dias <= 180 ? 0.225 : dias <= 360 ? 0.20 : dias <= 720 ? 0.175 : 0.15;
+      ir += rendAporte * aliquotaIR;
+    }
+  });
+  return { ultimo: ultimo, rendReal: rendReal, rendEstimado: rendEstimado, iof: iof, ir: ir, saldos: saldos };
+}
+
+// Versão do resumo (Rend. real / estimado / IOF / IR) para quem usa o modelo novo de
+// "Aporte real" + "Rendimento" (ledger), em vez de "Registrar Saldo" manual.
+// rendReal vem direto da soma dos lançamentos tipo=rendimento (exato, sem fórmula).
+function getLedgerInfo(realAportes, totalRendReal, taxaAnual) {
+  var hoje = new Date();
+  var rendEstimado = 0;
+  realAportes.forEach(function(a) {
+    var dias = Math.max(0, (hoje - new Date(a.date)) / 86400000);
+    var taxaDiaria = Math.pow(1 + (taxaAnual||0)/100, 1/365) - 1;
+    rendEstimado += a.val * (Math.pow(1 + taxaDiaria, dias) - 1);
+  });
+  var IOF_TABLE = [0.96,0.93,0.90,0.86,0.83,0.80,0.76,0.73,0.70,0.66,0.63,0.60,0.56,0.53,0.50,0.46,0.43,0.40,0.36,0.33,0.30,0.26,0.23,0.20,0.16,0.13,0.10,0.06,0.03,0];
+  var iof = 0;
+  realAportes.forEach(function(a) {
+    var dias = Math.floor((hoje - new Date(a.date)) / 86400000);
+    if (dias < 30) {
+      var taxaDiaria = Math.pow(1 + (taxaAnual||0)/100, 1/365) - 1;
+      var rendAporte = a.val * (Math.pow(1 + taxaDiaria, dias) - 1);
+      iof += rendAporte * (IOF_TABLE[dias] || 0);
+    }
+  });
+  var ir = 0;
+  realAportes.forEach(function(a) {
+    var dias = Math.floor((hoje - new Date(a.date)) / 86400000);
+    var taxaDiaria = Math.pow(1 + (taxaAnual||0)/100, 1/365) - 1;
+    var rendAporte = a.val * (Math.pow(1 + taxaDiaria, dias) - 1);
+    if (rendAporte > 0) {
+      var aliquotaIR = dias <= 180 ? 0.225 : dias <= 360 ? 0.20 : dias <= 720 ? 0.175 : 0.15;
+      ir += rendAporte * aliquotaIR;
+    }
+  });
+  return { rendReal: totalRendReal, rendEstimado: rendEstimado, iof: iof, ir: ir };
 }
 </script>
 </body>
