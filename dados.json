@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-07-08T11:32:40.674Z",
+  "savedAt": "2026-07-16T13:48:42.135Z",
   "data": {
     "fp_cats": [
       {
@@ -599,6 +599,18 @@
         "purchaseId": 1782165434735
       },
       {
+        "id": 1784208773711,
+        "type": "expense",
+        "amount": 33.4,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "❤ Cartao de todos (💜 Nubank)",
+        "date": "2026-09-17",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1784208773710
+      },
+      {
         "id": 1779321938028,
         "type": "expense",
         "amount": 54.72,
@@ -609,6 +621,30 @@
         "source": "cartao",
         "card": "inter",
         "purchaseId": 1779321938023
+      },
+      {
+        "id": 1784209571466,
+        "type": "expense",
+        "amount": 483.42,
+        "cat": "Educação",
+        "subcat": "Ingles",
+        "desc": "Aula+ material (rafa) (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1784209571465
+      },
+      {
+        "id": 1784209606110,
+        "type": "expense",
+        "amount": 483.43,
+        "cat": "Educação",
+        "subcat": "Ingles",
+        "desc": "Aula + Material(kelvin) (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1784209606109
       },
       {
         "id": 1782165180012,
@@ -647,6 +683,54 @@
         "purchaseId": 1782165434735
       },
       {
+        "id": 1784208806508,
+        "type": "expense",
+        "amount": 79.23,
+        "cat": "Lazer",
+        "subcat": "",
+        "desc": "Ifood (💜 Nubank)",
+        "date": "2026-08-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1784208806507
+      },
+      {
+        "id": 1784208860456,
+        "type": "expense",
+        "amount": 19.95,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Supermercado DalSantos (💜 Nubank)",
+        "date": "2026-08-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1784208860455
+      },
+      {
+        "id": 1784208883633,
+        "type": "expense",
+        "amount": 28.57,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Supermercado Dalsantos (💜 Nubank)",
+        "date": "2026-08-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1784208883632
+      },
+      {
+        "id": 1784208969061,
+        "type": "expense",
+        "amount": 36.99,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Superpao (💜 Nubank)",
+        "date": "2026-08-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1784208969060
+      },
+      {
         "id": 1779321938027,
         "type": "expense",
         "amount": 54.72,
@@ -669,6 +753,102 @@
         "source": "cartao",
         "card": "inter",
         "purchaseId": 1783361080465
+      },
+      {
+        "id": 1784209669945,
+        "type": "expense",
+        "amount": 8.3,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-08-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1784209669944
+      },
+      {
+        "id": 1784209686107,
+        "type": "expense",
+        "amount": 8.7,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-08-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1784209686106
+      },
+      {
+        "id": 1782165534799,
+        "type": "expense",
+        "amount": 35.45,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "DalSantos (🟡 Banco do Brasil)",
+        "date": "2026-08-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1782165534798
+      },
+      {
+        "id": 1782165563550,
+        "type": "expense",
+        "amount": 127.78,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "Farmacia (🟡 Banco do Brasil)",
+        "date": "2026-08-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1782165563549
+      },
+      {
+        "id": 1784209100987,
+        "type": "expense",
+        "amount": 17,
+        "cat": "Espiritualidade",
+        "subcat": "Artigos religiosos",
+        "desc": "Velas (🟡 Banco do Brasil)",
+        "date": "2026-08-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1784209100986
+      },
+      {
+        "id": 1784209147170,
+        "type": "expense",
+        "amount": 160,
+        "cat": "Lazer",
+        "subcat": "",
+        "desc": "Capinha de celular (🟡 Banco do Brasil)",
+        "date": "2026-08-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1784209147169
+      },
+      {
+        "id": 1784209182877,
+        "type": "expense",
+        "amount": 94.26,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "DalSantos (🟡 Banco do Brasil)",
+        "date": "2026-08-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1784209182876
+      },
+      {
+        "id": 1784209343751,
+        "type": "expense",
+        "amount": 78.11,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Dalcenter comida (🟡 Banco do Brasil)",
+        "date": "2026-08-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1784209343750
       },
       {
         "id": 1781276488083,
@@ -1132,30 +1312,6 @@
         "date": "2026-07-10",
         "payment": "dinheiro",
         "source": "recorrente"
-      },
-      {
-        "id": 1782165534799,
-        "type": "expense",
-        "amount": 35.45,
-        "cat": "Alimentação",
-        "subcat": "Mercado",
-        "desc": "DalSantos (🟡 Banco do Brasil)",
-        "date": "2026-07-06",
-        "source": "cartao",
-        "card": "bb",
-        "purchaseId": 1782165534798
-      },
-      {
-        "id": 1782165563550,
-        "type": "expense",
-        "amount": 127.78,
-        "cat": "Saúde",
-        "subcat": "",
-        "desc": "Farmacia (🟡 Banco do Brasil)",
-        "date": "2026-07-06",
-        "source": "cartao",
-        "card": "bb",
-        "purchaseId": 1782165563549
       },
       {
         "id": 1783090865148,
@@ -1892,6 +2048,149 @@
     ],
     "fp_car_purchases": [
       {
+        "id": 1784208773710,
+        "card": "nubank",
+        "date": "2026-08-10",
+        "desc": "❤ Cartao de todos",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 33.4,
+        "parcelas": 1,
+        "installmentVal": 33.4
+      },
+      {
+        "id": 1784209147169,
+        "card": "bb",
+        "date": "2026-08-04",
+        "desc": "Capinha de celular",
+        "cat": "Lazer",
+        "subcat": "",
+        "total": 160,
+        "parcelas": 1,
+        "installmentVal": 160
+      },
+      {
+        "id": 1784209100986,
+        "card": "bb",
+        "date": "2026-08-01",
+        "desc": "Velas",
+        "cat": "Espiritualidade",
+        "subcat": "Artigos religiosos",
+        "total": 17,
+        "parcelas": 1,
+        "installmentVal": 17
+      },
+      {
+        "id": 1782165534798,
+        "card": "bb",
+        "date": "2026-08-01",
+        "desc": "DalSantos",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 35.45,
+        "parcelas": 1,
+        "installmentVal": 35.45
+      },
+      {
+        "id": 1782165563549,
+        "card": "bb",
+        "date": "2026-08-01",
+        "desc": "Farmacia",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 127.78,
+        "parcelas": 1,
+        "installmentVal": 127.78
+      },
+      {
+        "id": 1784209182876,
+        "card": "bb",
+        "date": "2026-08-01",
+        "desc": "DalSantos",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 94.26,
+        "parcelas": 1,
+        "installmentVal": 94.26
+      },
+      {
+        "id": 1784209343750,
+        "card": "bb",
+        "date": "2026-08-01",
+        "desc": "Dalcenter comida",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 78.11,
+        "parcelas": 1,
+        "installmentVal": 78.11
+      },
+      {
+        "id": 1784208969060,
+        "card": "nubank",
+        "date": "2026-07-15",
+        "desc": "Superpao",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 36.99,
+        "parcelas": 1,
+        "installmentVal": 36.99
+      },
+      {
+        "id": 1784208806507,
+        "card": "nubank",
+        "date": "2026-07-12",
+        "desc": "Ifood",
+        "cat": "Lazer",
+        "subcat": "",
+        "total": 79.23,
+        "parcelas": 1,
+        "installmentVal": 79.23
+      },
+      {
+        "id": 1784208860455,
+        "card": "nubank",
+        "date": "2026-07-12",
+        "desc": "Supermercado DalSantos",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 19.95,
+        "parcelas": 1,
+        "installmentVal": 19.95
+      },
+      {
+        "id": 1784209669944,
+        "card": "inter",
+        "date": "2026-07-12",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 8.3,
+        "parcelas": 1,
+        "installmentVal": 8.3
+      },
+      {
+        "id": 1784209686106,
+        "card": "inter",
+        "date": "2026-07-12",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 8.7,
+        "parcelas": 1,
+        "installmentVal": 8.7
+      },
+      {
+        "id": 1784208883632,
+        "card": "nubank",
+        "date": "2026-07-11",
+        "desc": "Supermercado Dalsantos",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 28.57,
+        "parcelas": 1,
+        "installmentVal": 28.57
+      },
+      {
         "id": 1783093313347,
         "card": "inter",
         "date": "2026-07-10",
@@ -1914,6 +2213,28 @@
         "installmentVal": 139.8
       },
       {
+        "id": 1784209571465,
+        "card": "inter",
+        "date": "2026-07-09",
+        "desc": "Aula+ material (rafa)",
+        "cat": "Educação",
+        "subcat": "Ingles",
+        "total": 483.42,
+        "parcelas": 1,
+        "installmentVal": 483.42
+      },
+      {
+        "id": 1784209606109,
+        "card": "inter",
+        "date": "2026-07-09",
+        "desc": "Aula + Material(kelvin)",
+        "cat": "Educação",
+        "subcat": "Ingles",
+        "total": 483.43,
+        "parcelas": 1,
+        "installmentVal": 483.43
+      },
+      {
         "id": 1783361080465,
         "card": "inter",
         "date": "2026-07-06",
@@ -1923,28 +2244,6 @@
         "total": 297.23,
         "parcelas": 1,
         "installmentVal": 297.23
-      },
-      {
-        "id": 1782165534798,
-        "card": "bb",
-        "date": "2026-07-01",
-        "desc": "DalSantos",
-        "cat": "Alimentação",
-        "subcat": "Mercado",
-        "total": 35.45,
-        "parcelas": 1,
-        "installmentVal": 35.45
-      },
-      {
-        "id": 1782165563549,
-        "card": "bb",
-        "date": "2026-07-01",
-        "desc": "Farmacia",
-        "cat": "Saúde",
-        "subcat": "",
-        "total": 127.78,
-        "parcelas": 1,
-        "installmentVal": 127.78
       },
       {
         "id": 1782840722394,
@@ -2849,12 +3148,89 @@
     ],
     "fp_invest_aportes": [
       {
+        "id": 1784043406223,
+        "boxId": "ib3",
+        "val": 27.29,
+        "date": "2026-07-14",
+        "rate": 0,
+        "institution": "",
+        "origin": "extra_marido",
+        "notes": "",
+        "tipo": "rendimento"
+      },
+      {
+        "id": 1784043458673,
+        "boxId": "ib2",
+        "val": 17.08,
+        "date": "2026-07-14",
+        "rate": 0,
+        "institution": "",
+        "origin": "extra_marido",
+        "notes": "",
+        "tipo": "rendimento"
+      },
+      {
+        "id": 1784043496281,
+        "boxId": "ib_id_1783089690987_x68ue",
+        "val": 2.71,
+        "date": "2026-07-14",
+        "rate": 0,
+        "institution": "",
+        "origin": "extra_marido",
+        "notes": "",
+        "tipo": "rendimento"
+      },
+      {
+        "id": 1784205561220,
+        "boxId": "ib3",
+        "val": 543.83,
+        "date": "2026-07-14",
+        "rate": 16.96,
+        "institution": "Caixinha turbo",
+        "origin": "extra_marido",
+        "notes": "Cheguei no limite do aporte da caxinha,",
+        "tipo": "real"
+      },
+      {
         "id": 1783509167546,
         "boxId": "ib_id_1783089690987_x68ue",
         "val": 500,
         "date": "2026-07-08",
         "rate": 14.75,
         "institution": "Nubank caixinha",
+        "origin": "extra_marido",
+        "notes": "",
+        "tipo": "real"
+      },
+      {
+        "id": 1783510723645,
+        "boxId": "ib2",
+        "val": 1067.08,
+        "date": "2026-07-08",
+        "rate": 0,
+        "institution": "caixinha",
+        "origin": "salario_dela",
+        "notes": "",
+        "tipo": "resgate"
+      },
+      {
+        "id": 1783510809280,
+        "boxId": "ib2",
+        "val": 1067.08,
+        "date": "2026-07-08",
+        "rate": 15.49,
+        "institution": "Caixinha",
+        "origin": "outro",
+        "notes": "Reaporte",
+        "tipo": "real"
+      },
+      {
+        "id": 1783510927390,
+        "boxId": "ib_id_1783089690987_x68ue",
+        "val": 2.45,
+        "date": "2026-07-08",
+        "rate": 14.75,
+        "institution": "Caixinha",
         "origin": "extra_marido",
         "notes": "",
         "tipo": "real"
@@ -2958,8 +3334,7 @@
         "card": "dinheiro",
         "confirmedMonths": [
           "2026-06",
-          "2026-07",
-          "2026-08"
+          "2026-07"
         ]
       },
       {
@@ -2986,7 +3361,6 @@
         "card": "inter",
         "confirmedMonths": [
           "2026-06",
-          "2026-05",
           "2026-07"
         ]
       },
@@ -3002,7 +3376,6 @@
         "card": "inter",
         "confirmedMonths": [
           "2026-06",
-          "2026-05",
           "2026-07"
         ]
       },
@@ -3017,7 +3390,6 @@
         "subcat": "Parcela",
         "card": "inter",
         "confirmedMonths": [
-          "2026-05",
           "2026-06"
         ]
       },
@@ -3032,9 +3404,7 @@
         "subcat": "Internet",
         "card": "inter",
         "confirmedMonths": [
-          "2026-05",
-          "2026-06",
-          "2026-08"
+          "2026-06"
         ]
       },
       {
@@ -3047,9 +3417,7 @@
         "cat": "Contas",
         "subcat": "Luz",
         "card": "nubank",
-        "confirmedMonths": [
-          "2026-06"
-        ]
+        "confirmedMonths": []
       },
       {
         "id": 1779322500367,
@@ -3061,10 +3429,7 @@
         "cat": "Terreno",
         "subcat": "Condomínio",
         "card": "inter",
-        "confirmedMonths": [
-          "2026-06",
-          "2026-08"
-        ]
+        "confirmedMonths": []
       },
       {
         "id": 1779322531233,
@@ -3078,8 +3443,7 @@
         "card": "dinheiro",
         "confirmedMonths": [
           "2026-06",
-          "2026-07",
-          "2026-08"
+          "2026-07"
         ]
       },
       {
@@ -3092,9 +3456,7 @@
         "cat": "Moradia",
         "subcat": "Aluguel",
         "card": "inter",
-        "confirmedMonths": [
-          "2026-06"
-        ]
+        "confirmedMonths": []
       },
       {
         "id": 1780338303392,
@@ -3107,9 +3469,7 @@
         "subcat": "Drive",
         "card": "nubank",
         "confirmedMonths": [
-          "2026-06",
-          "2026-07",
-          "2026-08"
+          "2026-07"
         ]
       },
       {
@@ -3123,9 +3483,7 @@
         "subcat": "Crunchirol",
         "card": "nubank",
         "confirmedMonths": [
-          "2026-06",
-          "2026-07",
-          "2026-08"
+          "2026-07"
         ]
       },
       {
@@ -3139,9 +3497,7 @@
         "subcat": "",
         "card": "nubank",
         "confirmedMonths": [
-          "2026-06",
-          "2026-07",
-          "2026-08"
+          "2026-07"
         ]
       }
     ]
