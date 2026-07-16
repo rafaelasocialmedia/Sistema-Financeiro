@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-07-16T13:49:55.101Z",
+  "savedAt": "2026-07-16T23:23:56.397Z",
   "data": {
     "fp_cats": [
       {
@@ -611,6 +611,18 @@
         "purchaseId": 1784208773710
       },
       {
+        "id": 1784234673246,
+        "type": "expense",
+        "amount": 319.87,
+        "cat": "Contas",
+        "subcat": "Luz",
+        "desc": "🔄 Luz (💜 Nubank)",
+        "date": "2026-09-17",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1784234673245
+      },
+      {
         "id": 1779321938028,
         "type": "expense",
         "amount": 54.72,
@@ -621,30 +633,6 @@
         "source": "cartao",
         "card": "inter",
         "purchaseId": 1779321938023
-      },
-      {
-        "id": 1784209571466,
-        "type": "expense",
-        "amount": 483.42,
-        "cat": "Educação",
-        "subcat": "Ingles",
-        "desc": "Aula+ material (rafa) (🏦 Inter)",
-        "date": "2026-09-10",
-        "source": "cartao",
-        "card": "inter",
-        "purchaseId": 1784209571465
-      },
-      {
-        "id": 1784209606110,
-        "type": "expense",
-        "amount": 483.43,
-        "cat": "Educação",
-        "subcat": "Ingles",
-        "desc": "Aula + Material(kelvin) (🏦 Inter)",
-        "date": "2026-09-10",
-        "source": "cartao",
-        "card": "inter",
-        "purchaseId": 1784209606109
       },
       {
         "id": 1782165180012,
@@ -729,6 +717,30 @@
         "source": "cartao",
         "card": "nubank",
         "purchaseId": 1784208969060
+      },
+      {
+        "id": 1784209571466,
+        "type": "expense",
+        "amount": 483.42,
+        "cat": "Educação",
+        "subcat": "Ingles",
+        "desc": "Aula+ material (rafa) (🏦 Inter)",
+        "date": "2026-08-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1784209571465
+      },
+      {
+        "id": 1784209606110,
+        "type": "expense",
+        "amount": 483.43,
+        "cat": "Educação",
+        "subcat": "Ingles",
+        "desc": "Aula + Material(kelvin) (🏦 Inter)",
+        "date": "2026-08-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1784209606109
       },
       {
         "id": 1779321938027,
@@ -3102,6 +3114,17 @@
         "total": 492.48,
         "parcelas": 9,
         "installmentVal": 54.72
+      },
+      {
+        "id": 1784234673245,
+        "card": "nubank",
+        "date": "2026-08-15",
+        "desc": "🔄 Luz",
+        "cat": "Contas",
+        "subcat": "Luz",
+        "total": 319.87,
+        "parcelas": 1,
+        "installmentVal": 319.87
       }
     ],
     "fp_invest_boxes": [
@@ -3412,7 +3435,7 @@
         "name": "Luz",
         "emoji": "🔄",
         "type": "expense",
-        "value": 305.9,
+        "value": 319.87,
         "day": 15,
         "cat": "Contas",
         "subcat": "Luz",
