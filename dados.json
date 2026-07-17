@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-07-16T23:23:56.397Z",
+  "savedAt": "2026-07-17T10:24:34.100Z",
   "data": {
     "fp_cats": [
       {
@@ -2030,6 +2030,26 @@
         "source": "cartao",
         "card": "inter",
         "purchaseId": 1779321938023
+      },
+      {
+        "id": 1784283577252,
+        "type": "expense",
+        "amount": 1164.82,
+        "cat": "Terreno",
+        "subcat": "Parcela",
+        "desc": "Parcela terreno 43/180",
+        "date": "2026-07-17",
+        "source": "terreno"
+      },
+      {
+        "id": 1784283610096,
+        "type": "expense",
+        "amount": 1164.82,
+        "cat": "Terreno",
+        "subcat": "Parcela",
+        "desc": "Parcela terreno 44/180",
+        "date": "2026-07-17",
+        "source": "terreno"
       }
     ],
     "fp_dollar_entries": [
@@ -2058,6 +2078,14 @@
         "notes": ""
       }
     ],
+    "fp_terreno": {
+      "installment": 1164.82,
+      "total": 180,
+      "paid": 44,
+      "readjustMonth": 9,
+      "notes": "",
+      "readjustHistory": []
+    },
     "fp_car_purchases": [
       {
         "id": 1784208773710,
@@ -3170,6 +3198,39 @@
       }
     ],
     "fp_invest_aportes": [
+      {
+        "id": 1784283703142,
+        "boxId": "ib3",
+        "val": 32.77,
+        "date": "2026-07-17",
+        "rate": 0,
+        "institution": "CDB 115%",
+        "origin": "salario_dela",
+        "notes": "",
+        "tipo": "rendimento"
+      },
+      {
+        "id": 1784283768437,
+        "boxId": "ib2",
+        "val": 22.21,
+        "date": "2026-07-17",
+        "rate": 0,
+        "institution": "100% CDI",
+        "origin": "salario_dela",
+        "notes": "",
+        "tipo": "rendimento"
+      },
+      {
+        "id": 1784283822836,
+        "boxId": "ib_id_1783089690987_x68ue",
+        "val": 3.87,
+        "date": "2026-07-17",
+        "rate": 0,
+        "institution": "100%",
+        "origin": "salario_dela",
+        "notes": "",
+        "tipo": "rendimento"
+      },
       {
         "id": 1784043406223,
         "boxId": "ib3",
