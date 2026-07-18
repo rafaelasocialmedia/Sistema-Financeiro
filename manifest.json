@@ -2,7 +2,7 @@
   "name": "FinPro — Sistema Financeiro",
   "short_name": "FinPro",
   "description": "Sistema Financeiro Pessoal",
-  "start_url": "./Financeirofinal.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#050d1a",
   "theme_color": "#2dff8f",
