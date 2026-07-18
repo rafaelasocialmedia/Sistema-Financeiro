@@ -28,7 +28,8 @@
       --radius:12px; --radius-sm:8px;
     }
     *{margin:0;padding:0;box-sizing:border-box;}
-    body{font-family:var(--font-ui);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+    html{overflow-x:hidden;max-width:100vw;}
+    body{font-family:var(--font-ui);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;max-width:100vw;}
     body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 50%,rgba(45,255,143,.04) 0%,transparent 55%),radial-gradient(ellipse at 85% 15%,rgba(0,180,216,.04) 0%,transparent 55%);pointer-events:none;z-index:0;}
     .app{display:flex;min-height:100vh;position:relative;z-index:1;}
 
@@ -74,7 +75,7 @@
     .card-change{font-size:12px;color:var(--text-muted);margin-top:5px;}
 
     /* LAYOUTS */
-    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;align-items:start;}
 
     /* PANELS */
     .panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:18px;}
@@ -186,6 +187,12 @@
     .is-mobile .main{margin-left:0!important;padding:12px 10px!important;padding-bottom:80px!important;}
     .is-mobile .cards-grid{grid-template-columns:1fr 1fr!important;gap:8px!important;}
     .is-mobile #dash-estimativa>div{grid-template-columns:1fr 1fr!important;gap:8px!important;}
+    .is-mobile #dash-dollar-row{grid-template-columns:1fr!important;}
+    .is-mobile #dash-int-grid{grid-template-columns:1fr!important;}
+    .is-mobile #anual-months-grid{grid-template-columns:1fr 1fr!important;gap:8px!important;}
+    .is-mobile #anual-month-detail-grid{grid-template-columns:1fr 1fr!important;gap:6px!important;}
+    .is-mobile .ter-progress-grid{grid-template-columns:1fr!important;}
+    .is-mobile .invest-boxes-grid{grid-template-columns:1fr!important;}
     .is-mobile .form-group{min-width:0!important;flex:1 1 calc(50% - 8px)!important;}
     .is-mobile .form-group.full{flex:1 1 100%!important;grid-column:1!important;}
     .is-mobile .form-group select,
@@ -501,7 +508,7 @@
       <!-- Estimativa do mês -->
       <div class="panel" id="dash-estimativa" style="margin-bottom:18px;border-color:var(--blue)">
         <div class="panel-title" style="color:var(--blue)">📊 Estimativa do Mês</div>
-        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px">
+        <div id="dash-est-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px">
           <div>
             <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">💚 Confirmado</div>
             <div style="font-family:var(--font-num);font-size:18px;font-weight:700;color:var(--accent)" id="est-confirmed">R$ 0,00</div>
@@ -548,7 +555,7 @@
       </div>
 
       <!-- Dollar summary row -->
-      <div style="display:grid;grid-template-columns:1fr 3fr;gap:14px;margin-bottom:24px">
+      <div id="dash-dollar-row" style="display:grid;grid-template-columns:1fr 3fr;gap:14px;margin-bottom:24px">
         <div class="card" id="dash-dollar-card" style="cursor:pointer" onclick="navigate('dollar')">
           <div class="card-label">💵 Dólar (último)</div>
           <div class="card-value" style="font-size:14px;color:var(--text-dim)">Sem dados</div>
@@ -568,7 +575,7 @@
           📊 Visão Real do Mês
           <span style="font-size:12px;font-weight:400;color:var(--text-muted)" id="dash-int-period"></span>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px">
+        <div id="dash-int-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px">
           <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px">
             <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">💚 Entradas</div>
             <div id="dash-int-income-rows"></div>
@@ -1233,7 +1240,8 @@
       <div class="two-col">
         <!-- Edit panel -->
         <div class="panel">
-          <div class="panel-title">⚙️ Atualizar Dados</div>
+          <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="toggleSection('ter-edit-body')"><span>⚙️ Atualizar Dados</span><span id="ter-edit-arrow">▲</span></div>
+          <div id="ter-edit-body">
           <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px">
             Atualize o valor da parcela todo setembro após o reajuste pelo IPCA.
           </div>
@@ -1269,11 +1277,13 @@
               <button class="btn btn-primary" style="width:100%" onclick="saveTerreno()">💾 Salvar</button>
             </div>
           </div>
+          </div>
         </div>
 
         <!-- Readjustment history -->
         <div class="panel">
-          <div class="panel-title">📋 Histórico de Reajustes</div>
+          <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="toggleSection('ter-readj-body')"><span>📋 Histórico de Reajustes</span><span id="ter-readj-arrow">▲</span></div>
+          <div id="ter-readj-body">
           <div id="ter-history-list">
             <div class="empty-state" style="padding:20px">
               <div class="empty-icon" style="font-size:24px">📋</div>
@@ -1289,6 +1299,7 @@
               <input type="number" id="ter-rj-value" placeholder="Nova parcela R$" step="0.01" style="flex:1;min-width:120px">
               <button class="btn btn-success btn-sm" onclick="addTerrenoReadjust()">+ Adicionar</button>
             </div>
+          </div>
           </div>
         </div>
       </div>
@@ -1984,7 +1995,7 @@
       <!-- Detalhe do mês -->
       <div class="panel" id="anual-month-detail" style="display:none;border-color:var(--accent)">
         <div class="panel-title" id="anual-month-detail-title" style="color:var(--accent)"></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div id="anual-month-detail-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
           <div style="padding:10px;background:var(--surface);border-radius:var(--radius-sm)">
             <div style="font-size:11px;color:var(--text-muted)">💚 Receitas</div>
             <div style="font-family:var(--font-num);color:var(--accent);font-weight:700" id="anual-md-rec"></div>
@@ -3846,10 +3857,22 @@ function deleteTx(id) {
       savePurchases(loadPurchases().filter(function(p){ return p.id !== tx.purchaseId; }));
     }
   }
-  notify('Transação removida.');
+  // Se era uma parcela do terreno lançada pelo "Marcar como paga", desconta do contador
+  // automaticamente — evita o contador ficar desincronizado quando uma parcela duplicada é apagada
+  var terrenoMsg = null;
+  if (tx && tx.terrenoPaidRef) {
+    var d = loadTerreno();
+    if (d.paid > 0) {
+      d.paid--;
+      saveTerreno_data(d);
+      terrenoMsg = 'Transação removida — contador de parcelas do terreno ajustado para '+d.paid+'.';
+    }
+  }
+  notify(terrenoMsg || 'Transação removida.');
   renderTxTable();
   renderSubscriptions();
   renderDashboard();
+  if (document.getElementById('ter-paid') && typeof renderTerreno === 'function') renderTerreno();
 }
 
 var currentTxSourceFilter = '';
@@ -5189,7 +5212,7 @@ function renderTerMetaAnual() {
   var pctA      = Math.min(100, anoMeta.antecip>0 ? Math.round(antPagas/anoMeta.antecip*100) : 100);
   var reajustes = loadKey('ter_readjusts', []);
   var proxReaj  = reajustes.length ? reajustes[reajustes.length-1] : null;
-  el.innerHTML = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">'
+  el.innerHTML = '<div class="ter-progress-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">'
     +'<div style="background:var(--surface);border-radius:var(--radius-sm);padding:12px">'
       +'<div style="font-size:11px;color:var(--text-muted);margin-bottom:6px">📅 Parcelas Normais</div>'
       +'<div style="font-family:var(--font-num);font-weight:700;color:var(--blue)">'+normPagas+' / '+anoMeta.normais+'</div>'
@@ -6089,7 +6112,7 @@ function renderInvest() {
     return;
   }
 
-  boxesEl.innerHTML = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">'
+  boxesEl.innerHTML = '<div class="invest-boxes-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">'
     + boxes.map(function(b){
         var boxAportes    = aportes.filter(function(a){ return a.boxId===b.id; });
         var realAportes   = boxAportes.filter(function(a){ return a.tipo !== 'rendimento' && a.tipo !== 'resgate'; });
@@ -7042,22 +7065,33 @@ function renderTerrenoAlert() {
           +'</div>'
         +'</div>'
       +'</div>'
-      +'<button class="btn btn-success btn-sm" onclick="quickPayTerreno()">✓ Marcar como paga</button>'
+      +'<button class="btn btn-success btn-sm" onclick="quickPayTerreno(event)">✓ Marcar como paga</button>'
       +'</div>';
   } else {
     alertEl.style.display = 'none';
   }
 }
 
-function quickPayTerreno() {
+function quickPayTerreno(ev) {
   var d = loadTerreno();
   if (d.paid >= d.total) return notify('Todas as parcelas já foram pagas!', true);
+  if (!confirm('Confirma o pagamento da parcela '+(d.paid+1)+'/'+d.total+' (R$ '+d.installment.toFixed(2).replace('.',',')+')?\n\nSe já confirmou essa parcela pela assinatura "Parcela do terreno", NÃO clique aqui de novo — senão conta em dobro.')) return;
+
+  // Trava o botão por alguns segundos pra evitar clique duplo acidental
+  var btn = ev && ev.target ? ev.target.closest('button') : null;
+  if (btn) {
+    if (btn.disabled) return; // já foi clicado, ignora cliques repetidos
+    btn.disabled = true;
+    setTimeout(function(){ btn.disabled = false; }, 3000);
+  }
+
   d.paid++;
   saveTerreno_data(d);
   var now     = new Date();
   var todayStr = now.toISOString().split('T')[0];
   var txs = loadKey('transactions');
-  txs.push({id:Date.now(), type:'expense', amount:d.installment, cat:'Terreno', subcat:'Parcela', desc:'Parcela terreno '+d.paid+'/'+d.total, date:todayStr, source:'terreno'});
+  var txId = Date.now();
+  txs.push({id:txId, type:'expense', amount:d.installment, cat:'Terreno', subcat:'Parcela', desc:'Parcela terreno '+d.paid+'/'+d.total, date:todayStr, source:'terreno', terrenoPaidRef:true});
   saveKey('transactions', txs);
   notify('✓ Parcela '+d.paid+'/'+d.total+' paga e lançada nas transações!');
   renderDashboard();
