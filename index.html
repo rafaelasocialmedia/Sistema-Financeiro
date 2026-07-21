@@ -5041,21 +5041,16 @@ function renderDashAportes() {
     return;
   }
 
-  // Calcular aporte sugerido por caixinha
-  // Baseado na meta e no quanto falta dividido pelos meses restantes do ano
-  var now         = new Date();
-  var monthsLeft  = Math.max(1, 12 - now.getMonth());
-  var rows        = [];
-  var totalSuger  = 0;
+  // Mostra apenas quanto falta para cada meta (sem sugerir valor mensal —
+  // isso dependeria de um prazo real, que a caixinha não tem hoje)
+  var rows = [];
 
   boxes.forEach(function(b) {
     var acumulado = aportes.filter(function(a){ return a.boxId==b.id; }).reduce(function(s,a){ return s+(a.val||a.value||0); },0);
     var goal      = b.goal || 0;
     if (goal <= 0 || acumulado >= goal) return; // pula concluídas ou sem meta
     var falta     = goal - acumulado;
-    var sugerido  = Math.ceil(falta / monthsLeft);
-    totalSuger   += sugerido;
-    rows.push({ emoji: b.emoji, name: b.name, sugerido: sugerido, falta: falta, goal: goal, acumulado: acumulado });
+    rows.push({ emoji: b.emoji, name: b.name, falta: falta, goal: goal, acumulado: acumulado });
   });
 
   if (!rows.length) {
@@ -5071,18 +5066,16 @@ function renderDashAportes() {
             +'<span style="font-size:20px">'+r.emoji+'</span>'
             +'<div>'
               +'<div style="font-size:13px;font-weight:600">'+escHtml(r.name)+'</div>'
-              +'<div style="font-size:11px;color:var(--text-muted)">'+pct+'% concluído · falta '+fmt(r.falta)+'</div>'
+              +'<div style="font-size:11px;color:var(--text-muted)">'+pct+'% concluído</div>'
             +'</div>'
           +'</div>'
-          +'<div style="font-family:var(--font-num);font-weight:700;color:var(--purple);font-size:15px">'+fmt(r.sugerido)+'</div>'
+          +'<div style="text-align:right">'
+            +'<div style="font-family:var(--font-num);font-weight:700;color:var(--purple);font-size:15px">'+fmt(r.falta)+'</div>'
+            +'<div style="font-size:10px;color:var(--text-dim)">falta</div>'
+          +'</div>'
         +'</div>';
       }).join('')
-    +'</div>'
-    +'<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:rgba(162,155,254,0.1);border-radius:var(--radius-sm);border:1px solid rgba(162,155,254,0.3)">'
-      +'<span style="font-size:13px;color:var(--text-muted)">Total a guardar este mês</span>'
-      +'<span style="font-family:var(--font-num);font-weight:700;color:var(--purple);font-size:16px">'+fmt(totalSuger)+'</span>'
-    +'</div>'
-    +'<div style="font-size:11px;color:var(--text-dim);margin-top:8px">* Baseado nos meses restantes do ano ('+monthsLeft+' meses)</div>';
+    +'</div>';
 }
 
 function renderDashDollarCard() {
@@ -7223,6 +7216,22 @@ function quickPayTerreno(ev) {
       '.sub-card-right{width:100%!important;justify-content:space-between!important;}',
       '#dash-estimativa>div{grid-template-columns:1fr 1fr!important;gap:8px!important;}',
       '.panel{padding:14px!important;} .panel-title{font-size:13px!important;}',
+      // Sincronizado com o CSS .is-mobile — campos com min-width fixo (Lançamento Rápido, filtros)
+      '[style*="min-width:130px"],[style*="min-width: 130px"],[style*="min-width:120px"],[style*="min-width:140px"],[style*="min-width:160px"],[style*="min-width:180px"]{min-width:0!important;}',
+      '[style*="flex:0 0"]{flex:1 1 calc(50% - 8px)!important;min-width:0!important;}',
+      '.form-group input,.form-group select,.form-group textarea{min-width:0!important;width:100%!important;box-sizing:border-box!important;}',
+      '.form-group.full{grid-column:1!important;}',
+      // Linhas rótulo:valor não podem estourar a largura da tela — quebra em 2 linhas se precisar
+      '[style*="justify-content:space-between"]{flex-wrap:wrap!important;row-gap:2px!important;}',
+      // Grids específicos que ainda não tinham cobertura nessa lista
+      '#dash-dollar-row{grid-template-columns:1fr!important;}',
+      '#dash-int-grid{grid-template-columns:1fr!important;}',
+      '#dash-est-grid{grid-template-columns:1fr 1fr!important;}',
+      '.invest-boxes-grid{grid-template-columns:1fr!important;}',
+      '.ter-progress-grid{grid-template-columns:1fr!important;}',
+      '#anual-months-grid{grid-template-columns:1fr 1fr!important;}',
+      '#anual-month-detail-grid{grid-template-columns:1fr 1fr!important;}',
+      '.panel{overflow:hidden!important;}',
     ].join('');
     document.head.appendChild(style);
   })();
