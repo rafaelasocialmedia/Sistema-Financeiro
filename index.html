@@ -7113,8 +7113,14 @@ function quickPayTerreno(ev) {
   populateFilterCatSelect();
   populateCarCatSelect();
   populateQlCatSelect();
+
+  // Layout mobile roda ANTES de qualquer migração de dados — assim o visual do
+  // celular nunca fica bloqueado se alguma migração abaixo der erro com dados antigos
+  try { applyMobileLayout(); } catch(e) { console.error('applyMobileLayout falhou:', e); }
+
   // Migrar transações antigas — marcar recorrentes pelo nome das assinaturas
   (function migrateOldTx() {
+   try {
     var subs = loadSubscriptions();
     if (!subs.length) return;
     var txs     = loadKey('transactions');
@@ -7128,12 +7134,14 @@ function quickPayTerreno(ev) {
       });
     });
     if (changed) saveKey('transactions', txs);
+   } catch(e) { console.error('migrateOldTx falhou:', e); }
   })();
 
   // Recalcular datas de fatura dos lançamentos de cartão já existentes,
   // usando a lógica corrigida de fechamento (getBillingMonth). Idempotente:
   // só regrava se a data calculada for diferente da já salva.
   (function migrateCardBillingDates() {
+   try {
     var purchases = loadPurchases();
     if (!purchases.length) return;
     var txs     = loadKey('transactions');
@@ -7165,6 +7173,7 @@ function quickPayTerreno(ev) {
       txs.sort(function(a,b){ return b.date.localeCompare(a.date); });
       saveKey('transactions', txs);
     }
+   } catch(e) { console.error('migrateCardBillingDates falhou:', e); }
   })();
 
   // Concilia "Assinaturas & Recorrentes": se um mês está marcado como confirmado
@@ -7174,6 +7183,7 @@ function quickPayTerreno(ev) {
   // pendente e poder ser relançada normalmente. Roda a cada carregamento,
   // idempotente (não muda nada se já estiver tudo consistente).
   (function migrateReconcileSubscriptions() {
+   try {
     var subs = loadSubscriptions();
     if (!subs.length) return;
     var txs = loadKey('transactions');
@@ -7189,10 +7199,13 @@ function quickPayTerreno(ev) {
       if (s.confirmedMonths.length !== before) changed = true;
     });
     if (changed) saveSubscriptions(subs);
+   } catch(e) { console.error('migrateReconcileSubscriptions falhou:', e); }
   })();
 
   // Forçar layout mobile via JS — compatível com Samsung Internet
-  (function applyMobileLayout() {
+  // (chamada explicitamente mais acima, antes das migrações — função é "hoisted" então
+  // pode ficar declarada aqui embaixo sem problema)
+  function applyMobileLayout() {
     var isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
     if (!isMobile) return;
     var style = document.createElement('style');
@@ -7234,10 +7247,11 @@ function quickPayTerreno(ev) {
       '.panel{overflow:hidden!important;}',
     ].join('');
     document.head.appendChild(style);
-  })();
+  }
 
   // Migrar subcategorias do Terreno
   (function migrateTerrenoSubcats() {
+   try {
     var cats = getCats();
     var ter  = cats.find(function(c){ return c.name === 'Terreno'; });
     if (!ter) return;
@@ -7250,9 +7264,10 @@ function quickPayTerreno(ev) {
       }
     });
     if (changed) saveKey('cats', cats);
+   } catch(e) { console.error('migrateTerrenoSubcats falhou:', e); }
   })();
 
-  renderDashboard();
+  try { renderDashboard(); } catch(e) { console.error('renderDashboard falhou:', e); }
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js')
       .then(function(reg) { console.log('✅ SW registrado:', reg.scope); })
