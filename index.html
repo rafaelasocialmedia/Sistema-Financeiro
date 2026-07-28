@@ -13,7 +13,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="FinPro">
   <link rel="manifest" href="manifest.json">
-  <title>FinPro — Sistema Financeiro</title>
+  <title>Sistema Financeiro</title>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -325,6 +325,34 @@
 
       /* Estimativa grid mobile */
       #dash-estimativa > div { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+
+      /* Regras abaixo antes só existiam via JS (applyMobileLayout / .is-mobile).
+         Movidas para cá (CSS puro) para não depender de detecção de navegador. */
+      #dash-dollar-row { grid-template-columns: 1fr !important; }
+      #dash-int-grid { grid-template-columns: 1fr !important; }
+      #anual-months-grid { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+      #anual-month-detail-grid { grid-template-columns: 1fr 1fr !important; gap: 6px !important; }
+      .invest-boxes-grid { grid-template-columns: 1fr !important; }
+      .ter-progress-grid { grid-template-columns: 1fr !important; }
+      .panel { overflow: hidden !important; }
+
+      .form-group { min-width: 0 !important; flex: 1 1 calc(50% - 8px) !important; }
+      .form-group.full { flex: 1 1 100% !important; grid-column: 1 !important; }
+      .form-group select,
+      .form-group input,
+      .form-group textarea { min-width: 0 !important; width: 100% !important; box-sizing: border-box !important; }
+      [style*="flex:0 0"] { flex: 1 1 calc(50% - 8px) !important; min-width: 0 !important; }
+      [style*="min-width:130px"],
+      [style*="min-width: 130px"],
+      [style*="min-width:120px"],
+      [style*="min-width:140px"],
+      [style*="min-width:160px"],
+      [style*="min-width:180px"] { min-width: 0 !important; }
+      [style*="justify-content:space-between"] { flex-wrap: wrap !important; row-gap: 2px !important; }
+
+      /* Rede de segurança: nada deve ficar mais largo que a tela */
+      * { max-width: 100%; }
+      img, svg { max-width: 100%; height: auto; }
     }
 
     @media (max-width: 400px) {
@@ -387,8 +415,8 @@
   <!-- SIDEBAR -->
   <nav class="sidebar">
     <div class="logo">
-      <div class="logo-title">$ FINPRO</div>
-      <div class="logo-sub">Sistema Financeiro Pessoal</div>
+      <div class="logo-title">Sistema Financeiro</div>
+      <div class="logo-sub">Controle financeiro pessoal</div>
     </div>
     <div class="nav">
       <div class="nav-item active" onclick="navigate('dashboard')"><span class="nav-icon">📊</span><span>Dashboard</span></div>
