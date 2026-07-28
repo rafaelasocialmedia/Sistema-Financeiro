@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-07-17T10:24:34.100Z",
+  "savedAt": "2026-07-28T09:36:01.569Z",
   "data": {
     "fp_cats": [
       {
@@ -3169,8 +3169,9 @@
         "name": "Meta da Casa",
         "emoji": "🏠",
         "color": "accent",
-        "goal": 250000,
-        "notes": "Prefixado 13,86% a.a. — vencimento Jan/2029"
+        "goal": 50000,
+        "notes": "Prefixado 13,86% a.a. — vencimento Jan/2029",
+        "rate": 0
       },
       {
         "id": "ib3",
