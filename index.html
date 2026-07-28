@@ -177,14 +177,9 @@
 
     /* ══════════ RESPONSIVO MOBILE ══════════ */
     /* MOBILE — via classe JS (compatível com todos os navegadores mobile) */
-    .is-mobile .sidebar{width:100%!important;height:auto!important;position:fixed!important;bottom:0!important;top:auto!important;left:0!important;right:0!important;flex-direction:row!important;padding:0!important;border-right:none!important;border-top:1px solid var(--border)!important;z-index:200!important;overflow-x:auto!important;display:flex!important;}
-    .is-mobile .logo,.is-mobile .sidebar-footer{display:none!important;}
-    .is-mobile .nav{display:flex!important;flex-direction:row!important;width:100%!important;}
-    .is-mobile .nav-item{flex-direction:column!important;gap:2px!important;padding:6px 4px!important;font-size:9px!important;border-left:none!important;border-top:3px solid transparent!important;flex:1!important;min-width:44px!important;text-align:center!important;justify-content:center!important;display:flex!important;align-items:center!important;}
-    .is-mobile .nav-item.active{border-left-color:transparent!important;border-top-color:var(--accent)!important;}
-    .is-mobile .nav-icon{font-size:20px!important;}
-    .is-mobile .nav-item span{font-size:9px!important;}
-    .is-mobile .main{margin-left:0!important;padding:12px 10px!important;padding-bottom:80px!important;}
+    /* Sidebar/nav no mobile agora é menu-gaveta — regras únicas dentro de @media (max-width:768px) mais abaixo,
+       para não duplicar em 3 lugares diferentes (isso foi a causa do bug anterior de cards cortados). */
+    .is-mobile .main{margin-left:0!important;padding:16px 12px!important;padding-bottom:24px!important;}
     .is-mobile .cards-grid{grid-template-columns:1fr 1fr!important;gap:8px!important;}
     .is-mobile #dash-estimativa>div{grid-template-columns:1fr 1fr!important;gap:8px!important;}
     .is-mobile #dash-dollar-row{grid-template-columns:1fr!important;}
@@ -227,62 +222,49 @@
     .is-mobile .panel{padding:14px!important;}
 
     @media (max-width: 768px) {
+      /* Menu vira uma gaveta (drawer) escondida, aberta pelo botão hambúrguer */
       .sidebar {
-        width: 100% !important;
-        height: auto !important;
-        position: fixed !important;
-        bottom: 0 !important;
-        top: auto !important;
-        left: 0 !important;
-        right: 0 !important;
-        flex-direction: row !important;
-        padding: 0 !important;
-        border-right: none !important;
-        border-top: 1px solid var(--border) !important;
-        z-index: 200 !important;
-        overflow-x: auto !important;
+        transform: translateX(-100%) !important;
+        transition: transform .25s ease !important;
+        width: min(78vw, 280px) !important;
+        max-width: 280px !important;
+        z-index: 300 !important;
+        box-shadow: 2px 0 24px rgba(0,0,0,.4) !important;
+      }
+      .sidebar.open { transform: translateX(0) !important; }
+
+      .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.55);
+        z-index: 290;
+      }
+      .sidebar-overlay.open { display: block; }
+
+      .mobile-menu-btn {
         display: flex !important;
+        position: fixed;
+        top: 14px;
+        left: 14px;
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        color: var(--text);
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        z-index: 260;
+        cursor: pointer;
       }
-      .logo { display: none !important; }
-      .sidebar-footer { display: none !important; }
-      .nav {
-        display: -webkit-box !important;
-        display: -webkit-flex !important;
-        display: flex !important;
-        -webkit-flex-direction: row !important;
-        flex-direction: row !important;
-        width: 100% !important;
-      }
-      .nav-item {
-        -webkit-flex-direction: column !important;
-        flex-direction: column !important;
-        gap: 3px !important;
-        padding: 8px 6px !important;
-        font-size: 10px !important;
-        border-left: none !important;
-        border-top: 3px solid transparent !important;
-        -webkit-flex: 1 !important;
-        flex: 1 !important;
-        min-width: 50px !important;
-        text-align: center !important;
-        -webkit-justify-content: center !important;
-        justify-content: center !important;
-        display: -webkit-box !important;
-        display: -webkit-flex !important;
-        display: flex !important;
-        -webkit-align-items: center !important;
-        align-items: center !important;
-      }
-      .nav-item.active {
-        border-left-color: transparent !important;
-        border-top-color: var(--accent) !important;
-      }
-      .nav-icon { font-size: 18px !important; }
 
       .main {
         margin-left: 0 !important;
         padding: 16px 12px !important;
-        padding-bottom: 85px !important;
+        padding-top: 68px !important;
+        padding-bottom: 24px !important;
       }
 
       .cards-grid {
@@ -357,7 +339,7 @@
 
     @media (max-width: 400px) {
       .cards-grid { grid-template-columns: 1fr !important; }
-      .main { padding: 12px 8px !important; padding-bottom: 85px !important; }
+      .main { padding: 68px 8px 24px !important; }
       #dash-estimativa > div { grid-template-columns: 1fr !important; }
     }
     .sub-tabs{display:flex;gap:4px;margin-bottom:24px;background:var(--surface);padding:6px;border-radius:var(--radius);border:1px solid var(--border);}
@@ -412,8 +394,12 @@
 <body>
 <div class="app">
 
+  <!-- Botão hambúrguer (visível só no mobile) e overlay de fundo do menu-gaveta -->
+  <div class="mobile-menu-btn" style="display:none" onclick="toggleMobileMenu()" id="mobile-menu-btn">☰</div>
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeMobileMenu()"></div>
+
   <!-- SIDEBAR -->
-  <nav class="sidebar">
+  <nav class="sidebar" id="sidebar">
     <div class="logo">
       <div class="logo-title">Sistema Financeiro</div>
       <div class="logo-sub">Controle financeiro pessoal</div>
@@ -2539,7 +2525,17 @@ function notify(msg, isErr) {
 // ══════════════════════════════════════════════════════════════
 // NAVIGATION
 // ══════════════════════════════════════════════════════════════
+function toggleMobileMenu() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('open');
+}
+function closeMobileMenu() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('open');
+}
+
 function navigate(page) {
+  closeMobileMenu();
   // Movimentos routes to transactions by default
   var sidebarPage = page;
   if (page === 'movimentos') page = 'transactions';
@@ -7144,7 +7140,8 @@ function quickPayTerreno(ev) {
 
   // Layout mobile roda ANTES de qualquer migração de dados — assim o visual do
   // celular nunca fica bloqueado se alguma migração abaixo der erro com dados antigos
-  try { applyMobileLayout(); } catch(e) { console.error('applyMobileLayout falhou:', e); }
+  // applyMobileLayout() removido — todas as regras de mobile agora são CSS puro (@media),
+  // sem depender de JS/detecção de navegador.
 
   // Migrar transações antigas — marcar recorrentes pelo nome das assinaturas
   (function migrateOldTx() {
@@ -7230,52 +7227,8 @@ function quickPayTerreno(ev) {
    } catch(e) { console.error('migrateReconcileSubscriptions falhou:', e); }
   })();
 
-  // Forçar layout mobile via JS — compatível com Samsung Internet
-  // (chamada explicitamente mais acima, antes das migrações — função é "hoisted" então
-  // pode ficar declarada aqui embaixo sem problema)
-  function applyMobileLayout() {
-    var isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
-    if (!isMobile) return;
-    var style = document.createElement('style');
-    style.textContent = [
-      '.sidebar{width:100%!important;height:auto!important;position:fixed!important;bottom:0!important;top:auto!important;left:0!important;right:0!important;flex-direction:row!important;padding:0!important;border-right:none!important;border-top:1px solid var(--border)!important;z-index:200!important;overflow-x:auto!important;display:flex!important;}',
-      '.logo{display:none!important;} .sidebar-footer{display:none!important;}',
-      '.nav{display:flex!important;flex-direction:row!important;width:100%!important;}',
-      '.nav-item{flex-direction:column!important;gap:2px!important;padding:6px 4px!important;font-size:9px!important;border-left:none!important;border-top:3px solid transparent!important;flex:1!important;min-width:44px!important;text-align:center!important;justify-content:center!important;display:flex!important;align-items:center!important;}',
-      '.nav-item.active{border-left-color:transparent!important;border-top-color:var(--accent)!important;}',
-      '.nav-icon{font-size:20px!important;} .nav-item span{font-size:9px!important;}',
-      '.main{margin-left:0!important;padding:12px 10px!important;padding-bottom:80px!important;}',
-      '.cards-grid{grid-template-columns:1fr 1fr!important;gap:8px!important;}',
-      '.two-col{grid-template-columns:1fr!important;} .form-grid{grid-template-columns:1fr!important;}',
-      '.form-group.full{grid-column:1!important;} .page-title{font-size:18px!important;}',
-      '.page-header-row{flex-direction:column!important;align-items:flex-start!important;gap:8px!important;}',
-      '.sub-tabs{gap:2px!important;} .sub-tab{font-size:11px!important;padding:8px 4px!important;}',
-      '.pay-mode-toggle{flex-direction:row!important;} .pay-mode-btn{font-size:10px!important;padding:7px 2px!important;}',
-      '.table-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch!important;} table{min-width:480px!important;}',
-      '.modal-box{margin:10px!important;max-height:88vh!important;} .card-value{font-size:16px!important;}',
-      '.sub-card{flex-direction:column!important;align-items:flex-start!important;gap:8px!important;}',
-      '.sub-card-right{width:100%!important;justify-content:space-between!important;}',
-      '#dash-estimativa>div{grid-template-columns:1fr 1fr!important;gap:8px!important;}',
-      '.panel{padding:14px!important;} .panel-title{font-size:13px!important;}',
-      // Sincronizado com o CSS .is-mobile — campos com min-width fixo (Lançamento Rápido, filtros)
-      '[style*="min-width:130px"],[style*="min-width: 130px"],[style*="min-width:120px"],[style*="min-width:140px"],[style*="min-width:160px"],[style*="min-width:180px"]{min-width:0!important;}',
-      '[style*="flex:0 0"]{flex:1 1 calc(50% - 8px)!important;min-width:0!important;}',
-      '.form-group input,.form-group select,.form-group textarea{min-width:0!important;width:100%!important;box-sizing:border-box!important;}',
-      '.form-group.full{grid-column:1!important;}',
-      // Linhas rótulo:valor não podem estourar a largura da tela — quebra em 2 linhas se precisar
-      '[style*="justify-content:space-between"]{flex-wrap:wrap!important;row-gap:2px!important;}',
-      // Grids específicos que ainda não tinham cobertura nessa lista
-      '#dash-dollar-row{grid-template-columns:1fr!important;}',
-      '#dash-int-grid{grid-template-columns:1fr!important;}',
-      '#dash-est-grid{grid-template-columns:1fr 1fr!important;}',
-      '.invest-boxes-grid{grid-template-columns:1fr!important;}',
-      '.ter-progress-grid{grid-template-columns:1fr!important;}',
-      '#anual-months-grid{grid-template-columns:1fr 1fr!important;}',
-      '#anual-month-detail-grid{grid-template-columns:1fr 1fr!important;}',
-      '.panel{overflow:hidden!important;}',
-    ].join('');
-    document.head.appendChild(style);
-  }
+  // (função applyMobileLayout removida — todo o ajuste de layout mobile agora
+  // vive só em CSS puro dentro de @media (max-width:768px), fonte única.)
 
   // Migrar subcategorias do Terreno
   (function migrateTerrenoSubcats() {
