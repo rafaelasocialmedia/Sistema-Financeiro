@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-07-28T09:36:01.569Z",
+  "savedAt": "2026-07-29T17:29:48.364Z",
   "data": {
     "fp_cats": [
       {
@@ -3199,6 +3199,50 @@
       }
     ],
     "fp_invest_aportes": [
+      {
+        "id": 1785345988233,
+        "boxId": "ib2",
+        "val": 39.88,
+        "date": "2026-07-29",
+        "rate": 0,
+        "institution": "",
+        "origin": "salario_dela",
+        "notes": "",
+        "tipo": "rendimento"
+      },
+      {
+        "id": 1785346045867,
+        "boxId": "ib3",
+        "val": 60.64,
+        "date": "2026-07-29",
+        "rate": 0,
+        "institution": "",
+        "origin": "salario_dela",
+        "notes": "",
+        "tipo": "rendimento"
+      },
+      {
+        "id": 1785346102396,
+        "boxId": "ib_id_1783089690987_x68ue",
+        "val": 106.7,
+        "date": "2026-07-29",
+        "rate": 0,
+        "institution": "",
+        "origin": "salario_dela",
+        "notes": "",
+        "tipo": "resgate"
+      },
+      {
+        "id": 1785346139950,
+        "boxId": "ib_id_1783089690987_x68ue",
+        "val": 8.07,
+        "date": "2026-07-29",
+        "rate": 0,
+        "institution": "",
+        "origin": "salario_dela",
+        "notes": "",
+        "tipo": "rendimento"
+      },
       {
         "id": 1784283703142,
         "boxId": "ib3",
