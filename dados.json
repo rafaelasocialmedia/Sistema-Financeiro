@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-07-29T17:29:48.364Z",
+  "savedAt": "2026-08-04T15:18:14.963Z",
   "data": {
     "fp_cats": [
       {
@@ -635,6 +635,197 @@
         "purchaseId": 1779321938023
       },
       {
+        "id": 1785759063357,
+        "type": "expense",
+        "amount": 139.8,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "🔄 Academia(rafa) (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "recorrente",
+        "card": "inter",
+        "purchaseId": 1785759063356
+      },
+      {
+        "id": 1785759064861,
+        "type": "expense",
+        "amount": 139.8,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "🔄 Academia(kelvin) (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "recorrente",
+        "card": "inter",
+        "purchaseId": 1785759064860
+      },
+      {
+        "id": 1785843573233,
+        "type": "expense",
+        "amount": 139.8,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "🔄 Academia(rafa) (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "recorrente",
+        "card": "inter",
+        "purchaseId": 1785843573232
+      },
+      {
+        "id": 1785843603209,
+        "type": "expense",
+        "amount": 800,
+        "cat": "Moradia",
+        "subcat": "Aluguel",
+        "desc": "🏡 Aluguel (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "recorrente",
+        "card": "inter",
+        "purchaseId": 1785843603208
+      },
+      {
+        "id": 1785843905529,
+        "type": "expense",
+        "amount": 21.9,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🟡 Banco do Brasil)",
+        "date": "2026-09-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1785843905528,
+        "realDate": "2026-08-02"
+      },
+      {
+        "id": 1785843952656,
+        "type": "expense",
+        "amount": 40,
+        "cat": "Lazer",
+        "subcat": "",
+        "desc": "Chopp (🟡 Banco do Brasil)",
+        "date": "2026-09-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1785843952655,
+        "realDate": "2026-08-02"
+      },
+      {
+        "id": 1785844026768,
+        "type": "expense",
+        "amount": 64,
+        "cat": "Lazer",
+        "subcat": "",
+        "desc": "Milkshake (🟡 Banco do Brasil)",
+        "date": "2026-09-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1785844026767,
+        "realDate": "2026-08-02"
+      },
+      {
+        "id": 1785844059511,
+        "type": "expense",
+        "amount": 76,
+        "cat": "Lazer",
+        "subcat": "",
+        "desc": "Cinema (🟡 Banco do Brasil)",
+        "date": "2026-09-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1785844059510,
+        "realDate": "2026-08-02"
+      },
+      {
+        "id": 1785844101121,
+        "type": "expense",
+        "amount": 20.28,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "Aerodine (🟡 Banco do Brasil)",
+        "date": "2026-09-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1785844101120,
+        "realDate": "2026-08-02"
+      },
+      {
+        "id": 1785844139903,
+        "type": "expense",
+        "amount": 231.8,
+        "cat": "Alimentação",
+        "subcat": "Restaurante",
+        "desc": "Almoço grill (🟡 Banco do Brasil)",
+        "date": "2026-09-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1785844139902,
+        "realDate": "2026-08-02"
+      },
+      {
+        "id": 1785844167591,
+        "type": "expense",
+        "amount": 21.2,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99, lagoa (🟡 Banco do Brasil)",
+        "date": "2026-09-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1785844167590,
+        "realDate": "2026-08-02"
+      },
+      {
+        "id": 1785844183185,
+        "type": "expense",
+        "amount": 12.8,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99, lago (🟡 Banco do Brasil)",
+        "date": "2026-09-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1785844183184,
+        "realDate": "2026-08-02"
+      },
+      {
+        "id": 1785844215604,
+        "type": "expense",
+        "amount": 58.28,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Dalcenter (🟡 Banco do Brasil)",
+        "date": "2026-09-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1785844215603,
+        "realDate": "2026-08-02"
+      },
+      {
+        "id": 1785844250120,
+        "type": "expense",
+        "amount": 62.06,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Dalcenter, comida (🟡 Banco do Brasil)",
+        "date": "2026-09-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1785844250119,
+        "realDate": "2026-07-30"
+      },
+      {
+        "id": 1785844306443,
+        "type": "expense",
+        "amount": 29.59,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Dalcenter, comida (🟡 Banco do Brasil)",
+        "date": "2026-09-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1785844306442,
+        "realDate": "2026-07-30"
+      },
+      {
         "id": 1782165180012,
         "type": "expense",
         "amount": 19.9,
@@ -791,76 +982,26 @@
         "purchaseId": 1784209686106
       },
       {
-        "id": 1782165534799,
-        "type": "expense",
-        "amount": 35.45,
-        "cat": "Alimentação",
-        "subcat": "Mercado",
-        "desc": "DalSantos (🟡 Banco do Brasil)",
-        "date": "2026-08-06",
-        "source": "cartao",
-        "card": "bb",
-        "purchaseId": 1782165534798
-      },
-      {
-        "id": 1782165563550,
-        "type": "expense",
-        "amount": 127.78,
-        "cat": "Saúde",
+        "id": 1785759938924,
+        "type": "income",
+        "amount": 125,
+        "cat": "Freelance",
         "subcat": "",
-        "desc": "Farmacia (🟡 Banco do Brasil)",
-        "date": "2026-08-06",
-        "source": "cartao",
-        "card": "bb",
-        "purchaseId": 1782165563549
+        "desc": "💚 InsightZ",
+        "date": "2026-08-10",
+        "payment": "dinheiro",
+        "source": "recorrente"
       },
       {
-        "id": 1784209100987,
-        "type": "expense",
-        "amount": 17,
-        "cat": "Espiritualidade",
-        "subcat": "Artigos religiosos",
-        "desc": "Velas (🟡 Banco do Brasil)",
-        "date": "2026-08-06",
-        "source": "cartao",
-        "card": "bb",
-        "purchaseId": 1784209100986
-      },
-      {
-        "id": 1784209147170,
-        "type": "expense",
-        "amount": 160,
-        "cat": "Lazer",
+        "id": 1785759943585,
+        "type": "income",
+        "amount": 750,
+        "cat": "Salário",
         "subcat": "",
-        "desc": "Capinha de celular (🟡 Banco do Brasil)",
-        "date": "2026-08-06",
-        "source": "cartao",
-        "card": "bb",
-        "purchaseId": 1784209147169
-      },
-      {
-        "id": 1784209182877,
-        "type": "expense",
-        "amount": 94.26,
-        "cat": "Alimentação",
-        "subcat": "Mercado",
-        "desc": "DalSantos (🟡 Banco do Brasil)",
-        "date": "2026-08-06",
-        "source": "cartao",
-        "card": "bb",
-        "purchaseId": 1784209182876
-      },
-      {
-        "id": 1784209343751,
-        "type": "expense",
-        "amount": 78.11,
-        "cat": "Alimentação",
-        "subcat": "Mercado",
-        "desc": "Dalcenter comida (🟡 Banco do Brasil)",
-        "date": "2026-08-06",
-        "source": "cartao",
-        "card": "bb",
-        "purchaseId": 1784209343750
+        "desc": "💚 Freela(VFX)",
+        "date": "2026-08-10",
+        "payment": "dinheiro",
+        "source": "recorrente"
       },
       {
         "id": 1781276488083,
@@ -1017,6 +1158,26 @@
         "source": "recorrente",
         "card": "nubank",
         "purchaseId": 1782164862340
+      },
+      {
+        "id": 1784283577252,
+        "type": "expense",
+        "amount": 1164.82,
+        "cat": "Terreno",
+        "subcat": "Parcela",
+        "desc": "Parcela terreno 43/180",
+        "date": "2026-07-17",
+        "source": "terreno"
+      },
+      {
+        "id": 1784283610096,
+        "type": "expense",
+        "amount": 1164.82,
+        "cat": "Terreno",
+        "subcat": "Parcela",
+        "desc": "Parcela terreno 44/180",
+        "date": "2026-07-17",
+        "source": "terreno"
       },
       {
         "id": 1782840722395,
@@ -1324,6 +1485,18 @@
         "date": "2026-07-10",
         "payment": "dinheiro",
         "source": "recorrente"
+      },
+      {
+        "id": 1779322342891,
+        "type": "expense",
+        "amount": 57,
+        "cat": "Ateliê",
+        "subcat": "",
+        "desc": "Casa favorita (🟡 Banco do Brasil)",
+        "date": "2026-07-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1779322342890
       },
       {
         "id": 1783090865148,
@@ -1941,18 +2114,6 @@
         "paymentAccount": "nubank"
       },
       {
-        "id": 1779322342891,
-        "type": "expense",
-        "amount": 57,
-        "cat": "Ateliê",
-        "subcat": "",
-        "desc": "Casa favorita (🟡 Banco do Brasil)",
-        "date": "2026-06-06",
-        "source": "cartao",
-        "card": "bb",
-        "purchaseId": 1779322342890
-      },
-      {
         "id": 1780858605666,
         "type": "income",
         "amount": 9900,
@@ -2030,28 +2191,9 @@
         "source": "cartao",
         "card": "inter",
         "purchaseId": 1779321938023
-      },
-      {
-        "id": 1784283577252,
-        "type": "expense",
-        "amount": 1164.82,
-        "cat": "Terreno",
-        "subcat": "Parcela",
-        "desc": "Parcela terreno 43/180",
-        "date": "2026-07-17",
-        "source": "terreno"
-      },
-      {
-        "id": 1784283610096,
-        "type": "expense",
-        "amount": 1164.82,
-        "cat": "Terreno",
-        "subcat": "Parcela",
-        "desc": "Parcela terreno 44/180",
-        "date": "2026-07-17",
-        "source": "terreno"
       }
     ],
+    "fp_budgets": [],
     "fp_dollar_entries": [
       {
         "id": 1780540565967,
@@ -2088,6 +2230,28 @@
     },
     "fp_car_purchases": [
       {
+        "id": 1784234673245,
+        "card": "nubank",
+        "date": "2026-08-15",
+        "desc": "🔄 Luz",
+        "cat": "Contas",
+        "subcat": "Luz",
+        "total": 319.87,
+        "parcelas": 1,
+        "installmentVal": 319.87
+      },
+      {
+        "id": 1785843603208,
+        "card": "inter",
+        "date": "2026-08-15",
+        "desc": "🏡 Aluguel",
+        "cat": "Moradia",
+        "subcat": "Aluguel",
+        "total": 800,
+        "parcelas": 1,
+        "installmentVal": 800
+      },
+      {
         "id": 1784208773710,
         "card": "nubank",
         "date": "2026-08-10",
@@ -2099,70 +2263,158 @@
         "installmentVal": 33.4
       },
       {
-        "id": 1784209147169,
-        "card": "bb",
-        "date": "2026-08-04",
-        "desc": "Capinha de celular",
-        "cat": "Lazer",
-        "subcat": "",
-        "total": 160,
-        "parcelas": 1,
-        "installmentVal": 160
-      },
-      {
-        "id": 1784209100986,
-        "card": "bb",
-        "date": "2026-08-01",
-        "desc": "Velas",
-        "cat": "Espiritualidade",
-        "subcat": "Artigos religiosos",
-        "total": 17,
-        "parcelas": 1,
-        "installmentVal": 17
-      },
-      {
-        "id": 1782165534798,
-        "card": "bb",
-        "date": "2026-08-01",
-        "desc": "DalSantos",
-        "cat": "Alimentação",
-        "subcat": "Mercado",
-        "total": 35.45,
-        "parcelas": 1,
-        "installmentVal": 35.45
-      },
-      {
-        "id": 1782165563549,
-        "card": "bb",
-        "date": "2026-08-01",
-        "desc": "Farmacia",
+        "id": 1785759063356,
+        "card": "inter",
+        "date": "2026-08-10",
+        "desc": "🔄 Academia(rafa)",
         "cat": "Saúde",
         "subcat": "",
-        "total": 127.78,
+        "total": 139.8,
         "parcelas": 1,
-        "installmentVal": 127.78
+        "installmentVal": 139.8
       },
       {
-        "id": 1784209182876,
-        "card": "bb",
-        "date": "2026-08-01",
-        "desc": "DalSantos",
-        "cat": "Alimentação",
-        "subcat": "Mercado",
-        "total": 94.26,
+        "id": 1785759064860,
+        "card": "inter",
+        "date": "2026-08-10",
+        "desc": "🔄 Academia(kelvin)",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 139.8,
         "parcelas": 1,
-        "installmentVal": 94.26
+        "installmentVal": 139.8
       },
       {
-        "id": 1784209343750,
+        "id": 1785843573232,
+        "card": "inter",
+        "date": "2026-08-10",
+        "desc": "🔄 Academia(rafa)",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 139.8,
+        "parcelas": 1,
+        "installmentVal": 139.8
+      },
+      {
+        "id": 1785843905528,
         "card": "bb",
-        "date": "2026-08-01",
-        "desc": "Dalcenter comida",
+        "date": "2026-08-02",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 21.9,
+        "parcelas": 1,
+        "installmentVal": 21.9
+      },
+      {
+        "id": 1785843952655,
+        "card": "bb",
+        "date": "2026-08-02",
+        "desc": "Chopp",
+        "cat": "Lazer",
+        "subcat": "",
+        "total": 40,
+        "parcelas": 1,
+        "installmentVal": 40
+      },
+      {
+        "id": 1785844026767,
+        "card": "bb",
+        "date": "2026-08-02",
+        "desc": "Milkshake",
+        "cat": "Lazer",
+        "subcat": "",
+        "total": 64,
+        "parcelas": 1,
+        "installmentVal": 64
+      },
+      {
+        "id": 1785844059510,
+        "card": "bb",
+        "date": "2026-08-02",
+        "desc": "Cinema",
+        "cat": "Lazer",
+        "subcat": "",
+        "total": 76,
+        "parcelas": 1,
+        "installmentVal": 76
+      },
+      {
+        "id": 1785844101120,
+        "card": "bb",
+        "date": "2026-08-02",
+        "desc": "Aerodine",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 20.28,
+        "parcelas": 1,
+        "installmentVal": 20.28
+      },
+      {
+        "id": 1785844139902,
+        "card": "bb",
+        "date": "2026-08-02",
+        "desc": "Almoço grill",
+        "cat": "Alimentação",
+        "subcat": "Restaurante",
+        "total": 231.8,
+        "parcelas": 1,
+        "installmentVal": 231.8
+      },
+      {
+        "id": 1785844167590,
+        "card": "bb",
+        "date": "2026-08-02",
+        "desc": "99, lagoa",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 21.2,
+        "parcelas": 1,
+        "installmentVal": 21.2
+      },
+      {
+        "id": 1785844183184,
+        "card": "bb",
+        "date": "2026-08-02",
+        "desc": "99, lago",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 12.8,
+        "parcelas": 1,
+        "installmentVal": 12.8
+      },
+      {
+        "id": 1785844215603,
+        "card": "bb",
+        "date": "2026-08-02",
+        "desc": "Dalcenter",
         "cat": "Alimentação",
         "subcat": "Mercado",
-        "total": 78.11,
+        "total": 58.28,
         "parcelas": 1,
-        "installmentVal": 78.11
+        "installmentVal": 58.28
+      },
+      {
+        "id": 1785844250119,
+        "card": "bb",
+        "date": "2026-07-30",
+        "desc": "Dalcenter, comida",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 62.06,
+        "parcelas": 1,
+        "installmentVal": 62.06
+      },
+      {
+        "id": 1785844306442,
+        "card": "bb",
+        "date": "2026-07-30",
+        "desc": "Dalcenter, comida",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 29.59,
+        "parcelas": 1,
+        "installmentVal": 29.59
       },
       {
         "id": 1784208969060,
@@ -2229,28 +2481,6 @@
         "total": 28.57,
         "parcelas": 1,
         "installmentVal": 28.57
-      },
-      {
-        "id": 1783093313347,
-        "card": "inter",
-        "date": "2026-07-10",
-        "desc": "🔄 Academia(rafa)",
-        "cat": "Saúde",
-        "subcat": "",
-        "total": 139.8,
-        "parcelas": 1,
-        "installmentVal": 139.8
-      },
-      {
-        "id": 1783093318591,
-        "card": "inter",
-        "date": "2026-07-10",
-        "desc": "🔄 Academia(kelvin)",
-        "cat": "Saúde",
-        "subcat": "",
-        "total": 139.8,
-        "parcelas": 1,
-        "installmentVal": 139.8
       },
       {
         "id": 1784209571465,
@@ -3142,17 +3372,6 @@
         "total": 492.48,
         "parcelas": 9,
         "installmentVal": 54.72
-      },
-      {
-        "id": 1784234673245,
-        "card": "nubank",
-        "date": "2026-08-15",
-        "desc": "🔄 Luz",
-        "cat": "Contas",
-        "subcat": "Luz",
-        "total": 319.87,
-        "parcelas": 1,
-        "installmentVal": 319.87
       }
     ],
     "fp_invest_boxes": [
@@ -3199,6 +3418,28 @@
       }
     ],
     "fp_invest_aportes": [
+      {
+        "id": 1785758777113,
+        "boxId": "ib_id_1783089690987_x68ue",
+        "val": 500,
+        "date": "2026-08-03",
+        "rate": 13.75,
+        "institution": "Caixinha nubank",
+        "origin": "extra_marido",
+        "notes": "",
+        "tipo": "real"
+      },
+      {
+        "id": 1785758863939,
+        "boxId": "ib_id_1783089690987_x68ue",
+        "val": 750,
+        "date": "2026-08-03",
+        "rate": 0,
+        "institution": "",
+        "origin": "extra_marido",
+        "notes": "",
+        "tipo": "real"
+      },
       {
         "id": 1785345988233,
         "boxId": "ib2",
@@ -3476,21 +3717,8 @@
         "cat": "Salário",
         "subcat": "",
         "card": "dinheiro",
-        "confirmedMonths": []
-      },
-      {
-        "id": 1779321684128,
-        "name": "Academia(rafa)",
-        "emoji": "🔄",
-        "type": "expense",
-        "value": 139.8,
-        "day": 10,
-        "cat": "Saúde",
-        "subcat": "",
-        "card": "inter",
         "confirmedMonths": [
-          "2026-06",
-          "2026-07"
+          "2026-08"
         ]
       },
       {
@@ -3565,27 +3793,16 @@
         "name": "InsightZ",
         "emoji": "💚",
         "type": "income",
-        "value": 150,
+        "value": 125,
         "day": 10,
         "cat": "Freelance",
         "subcat": "",
         "card": "dinheiro",
         "confirmedMonths": [
           "2026-06",
-          "2026-07"
+          "2026-07",
+          "2026-08"
         ]
-      },
-      {
-        "id": 1779931271216,
-        "name": "Aluguel",
-        "emoji": "🏡",
-        "type": "expense",
-        "value": 800,
-        "day": 15,
-        "cat": "Moradia",
-        "subcat": "Aluguel",
-        "card": "inter",
-        "confirmedMonths": []
       },
       {
         "id": 1780338303392,
@@ -3628,6 +3845,30 @@
         "confirmedMonths": [
           "2026-07"
         ]
+      },
+      {
+        "id": 1785843708959,
+        "name": "Aluguel",
+        "emoji": "💰",
+        "type": "expense",
+        "value": 800,
+        "day": 10,
+        "cat": "Moradia",
+        "subcat": "Aluguel",
+        "card": "dinheiro",
+        "confirmedMonths": []
+      },
+      {
+        "id": 1785843795855,
+        "name": "Academia",
+        "emoji": "🔄",
+        "type": "expense",
+        "value": 139.9,
+        "day": 10,
+        "cat": "Saúde",
+        "subcat": "",
+        "card": "inter",
+        "confirmedMonths": []
       }
     ]
   }
