@@ -4644,7 +4644,8 @@ function renderAlocarCard() {
     detalheHtml = a.fixedItems.length
       ? '<div style="margin-top:6px;padding:8px 10px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm)">'
         + a.fixedItems.map(function(t){
-            return '<div style="display:flex;justify-content:space-between;font-size:11px;padding:3px 0"><span style="color:var(--text-muted)">'+escHtml(t.desc||t.cat)+' <span style="color:var(--text-dim)">('+escHtml(t.cat)+')</span></span><span style="font-family:var(--font-num)">'+fmt(t.amount)+'</span></div>';
+            var tag = t.source === 'recorrente' ? '🔄' : '💳';
+            return '<div style="display:flex;justify-content:space-between;font-size:11px;padding:3px 0"><span style="color:var(--text-muted)">'+tag+' '+escHtml(t.desc||t.cat)+' <span style="color:var(--text-dim)">('+escHtml(t.cat)+')</span></span><span style="font-family:var(--font-num)">'+fmt(t.amount)+'</span></div>';
           }).join('')
         + '</div>'
       : '<div style="margin-top:6px;font-size:11px;color:var(--text-dim)">Nenhum item fixo pendente fora de envelopes.</div>';
@@ -4658,7 +4659,7 @@ function renderAlocarCard() {
     +'<div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0">'
       +'<span style="color:var(--text-muted)">Envelopes (limites definidos)</span><span style="font-family:var(--font-num);color:var(--red)">'+fmt(a.envelopesTotal)+'</span></div>'
     +'<div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0">'
-      +'<span style="color:var(--text-muted)">Dívidas (parcelas ativas do mês)</span><span style="font-family:var(--font-num);color:var(--red)">'+fmt(a.debtsTotal)+'</span></div>'
+      +'<span style="color:var(--text-muted)">Empréstimos/Dívidas <span style="color:var(--text-dim)">(cadastrados à parte, não é parcela de cartão)</span></span><span style="font-family:var(--font-num);color:var(--red)">'+fmt(a.debtsTotal)+'</span></div>'
     +'<div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:6px 0;cursor:pointer" onclick="toggleAlocarDetalhe()">'
       +'<span style="color:var(--text-muted)">🔄 Fixos sem envelope ainda <span style="color:var(--text-dim)">('+(_alocarDetalheAberto?'ocultar':'ver')+' detalhe)</span></span><span style="font-family:var(--font-num);color:var(--red)">'+fmt(a.fixedSemEnvelope)+'</span></div>'
     +detalheHtml;
@@ -4757,8 +4758,11 @@ function renderBudget() {
     var txRows = '';
     if (!allSubs.length && catTxs.length) {
       txRows = catTxs.map(function(t){
+        var fixedTag = '';
+        if (t.source === 'recorrente') fixedTag = ' <span style="color:var(--text-dim);font-size:10px" title="Recorrente">🔄</span>';
+        else if (txIsFixed(t))         fixedTag = ' <span style="color:var(--text-dim);font-size:10px" title="Parcela de cartão">💳</span>';
         return '<div class="budget-sub-row">'
-          +'<div class="budget-sub-label">'+escHtml(t.desc||'(sem descrição)')+(txIsFixed(t)?' <span style="color:var(--text-dim);font-size:10px">🔄</span>':'')+'</div>'
+          +'<div class="budget-sub-label">'+escHtml(t.desc||'(sem descrição)')+fixedTag+'</div>'
           +'<div style="flex:1"></div>'
           +'<span style="font-family:var(--font-num);color:var(--text-muted);font-size:12px">'+fmt(t.amount)+'</span>'
         +'</div>';
@@ -5668,7 +5672,7 @@ function getBudgetAlerts(mk) {
       return t.cat===b.cat && (!b.sub || t.subcat===b.sub);
     }).reduce(function(s,t){ return s+t.amount; },0);
     var pct = (spent / b.limit) * 100;
-    if (pct >= 100) alerts.push({label:b.sub||b.cat, cat:b.cat, pct:pct, status:'over', spent:spent, limit:b.limit});
+    if (spent - b.limit > 0.01) alerts.push({label:b.sub||b.cat, cat:b.cat, pct:pct, status:'over', spent:spent, limit:b.limit});
     else if (pct >= 70) alerts.push({label:b.sub||b.cat, cat:b.cat, pct:pct, status:'warn', spent:spent, limit:b.limit});
   });
   return alerts.sort(function(a,b){ return b.pct - a.pct; });
