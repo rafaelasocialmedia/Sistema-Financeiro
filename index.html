@@ -4563,6 +4563,7 @@ function getFixedSemEnvelope(mk) {
   var txs       = getMonthTxBudget(currentYear, currentMonth).filter(function(t){ return t.type==='expense'; });
   var purchases = loadPurchases();
   var budgets   = loadKey('budgets').filter(function(b){ return b.month===mk; });
+  var subs      = loadSubscriptions().filter(function(s){ return (s.type||'expense')==='expense'; });
 
   function txIsFixed(t) {
     if (t.source === 'recorrente') return true;
@@ -4573,13 +4574,24 @@ function getFixedSemEnvelope(mk) {
     return false;
   }
 
-  function hasEnvelope(t) {
-    if (budgets.some(function(b){ return b.cat===t.cat && !b.sub; })) return true; // limite geral da categoria
-    if (t.subcat && budgets.some(function(b){ return b.cat===t.cat && b.sub===t.subcat; })) return true; // limite da própria subcategoria
+  function hasEnvelope(catName, subcatName) {
+    if (budgets.some(function(b){ return b.cat===catName && !b.sub; })) return true; // limite geral da categoria
+    if (subcatName && budgets.some(function(b){ return b.cat===catName && b.sub===subcatName; })) return true; // limite da própria subcategoria
     return false;
   }
 
-  var items = txs.filter(function(t){ return txIsFixed(t) && !hasEnvelope(t); });
+  // 1) já lançados de fato: recorrentes confirmadas + parcelas de cartão em andamento
+  var confirmedItems = txs
+    .filter(function(t){ return txIsFixed(t) && !hasEnvelope(t.cat, t.subcat); })
+    .map(function(t){ return { desc: t.desc, cat: t.cat, amount: t.amount, source: t.source }; });
+
+  // 2) recorrentes previstas mas AINDA NÃO confirmadas nesse mês — contam como
+  // comprometidas igual à renda prevista (você sabe que vai gastar, confirmado ou não)
+  var pendingItems = subs
+    .filter(function(s){ return s.confirmedMonths.indexOf(mk) === -1 && !hasEnvelope(s.cat, s.subcat); })
+    .map(function(s){ return { desc: s.emoji+' '+s.name+' (previsto)', cat: s.cat, amount: s.value, source: 'recorrente' }; });
+
+  var items = confirmedItems.concat(pendingItems);
   var total = items.reduce(function(s,t){ return s+t.amount; },0);
   return { total: total, items: items };
 }
