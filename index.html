@@ -454,9 +454,16 @@
       <!-- Terreno alert -->
       <div id="dash-terreno-alert" style="display:none;margin-bottom:18px"></div>
 
+      <!-- Orçamento alert -->
+      <div id="dash-budget-alert" style="display:none;margin-bottom:18px"></div>
+
       <!-- ⚡ Lançamento Rápido -->
       <div class="panel" style="border-color:var(--accent);margin-bottom:24px">
-        <div class="panel-title">⚡ Lançamento Rápido</div>
+        <div class="panel-title" style="cursor:pointer" onclick="toggleQuickLaunch()">
+          <span>⚡ Lançamento Rápido</span>
+          <button class="btn btn-ghost btn-sm" id="ql-toggle-btn">▼</button>
+        </div>
+        <div id="ql-content-wrap">
         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
           <div class="form-group" style="flex:1;min-width:120px">
             <label>Tipo</label>
@@ -525,6 +532,7 @@
         </div>
         <div id="ql-invest-info" style="display:none;margin-top:10px;padding:10px 14px;background:var(--surface);border-radius:var(--radius-sm);font-size:13px;color:var(--text-muted)">
           🏦 O aporte será registrado na caixinha selecionada automaticamente.
+        </div>
         </div>
       </div>
       <div class="cards-grid">
@@ -828,13 +836,21 @@
             </div>
             <div class="form-group" id="sub-card-group">
               <label>Cartão / Forma</label>
-              <select id="sub-card">
+              <select id="sub-card" onchange="toggleSubPixAccount()">
                 <option value="dinheiro">💵 Dinheiro</option>
                 <option value="pix">📱 Pix</option>
                 <option value="inter">🏦 Inter</option>
                 <option value="nubank">💜 Nubank</option>
                 <option value="bb">🟡 Banco do Brasil</option>
                 <option value="ml">🟢 Mercado Livre</option>
+              </select>
+            </div>
+            <div class="form-group" id="sub-pix-account-group" style="display:none">
+              <label>Pix pela conta</label>
+              <select id="sub-pix-account">
+                <option value="inter">🏦 Inter</option>
+                <option value="nubank">💜 Nubank</option>
+                <option value="bb">🟡 Banco do Brasil</option>
               </select>
             </div>
             <div class="form-group full" style="flex-direction:row;gap:8px">
@@ -2440,13 +2456,21 @@
       </div>
       <div class="form-group" id="edit-sub-card-group">
         <label>Cartão / Forma</label>
-        <select id="edit-sub-card">
+        <select id="edit-sub-card" onchange="toggleEditSubPixAccount()">
           <option value="dinheiro">💵 Dinheiro</option>
           <option value="pix">📱 Pix</option>
           <option value="inter">🏦 Inter</option>
           <option value="nubank">💜 Nubank</option>
           <option value="bb">🟡 Banco do Brasil</option>
           <option value="ml">🟢 Mercado Livre</option>
+        </select>
+      </div>
+      <div class="form-group" id="edit-sub-pix-account-group" style="display:none">
+        <label>Pix pela conta</label>
+        <select id="edit-sub-pix-account">
+          <option value="inter">🏦 Inter</option>
+          <option value="nubank">💜 Nubank</option>
+          <option value="bb">🟡 Banco do Brasil</option>
         </select>
       </div>
       <div class="form-group full" style="flex-direction:row;gap:8px">
@@ -3368,8 +3392,16 @@ function openEditSubModal(subId) {
   if (cardGrp) cardGrp.style.display = type === 'income' ? 'none' : '';
   var cardSel = document.getElementById('edit-sub-card');
   if (cardSel && sub.card) cardSel.value = sub.card;
+  var pixSel = document.getElementById('edit-sub-pix-account');
+  if (pixSel) pixSel.value = sub.pixAccount || 'inter';
+  toggleEditSubPixAccount();
 
   document.getElementById('edit-sub-modal').style.display = 'flex';
+}
+
+function toggleEditSubPixAccount() {
+  var isPix = document.getElementById('edit-sub-card').value === 'pix';
+  document.getElementById('edit-sub-pix-account-group').style.display = isPix ? '' : 'none';
 }
 
 function onEditSubCatChange(selectedSubcat) {
@@ -3537,6 +3569,7 @@ function saveEditSub() {
   subs[idx].subcat = subcat;
   if (subs[idx].type !== 'income') {
     subs[idx].card = document.getElementById('edit-sub-card').value;
+    subs[idx].pixAccount = subs[idx].card === 'pix' ? document.getElementById('edit-sub-pix-account').value : '';
   }
 
   saveSubscriptions(subs);
@@ -3821,6 +3854,11 @@ function toggleAddSubForm() {
   }
 }
 
+function toggleSubPixAccount() {
+  var isPix = document.getElementById('sub-card').value === 'pix';
+  document.getElementById('sub-pix-account-group').style.display = isPix ? '' : 'none';
+}
+
 function saveSubscription() {
   var name   = document.getElementById('sub-name').value.trim();
   var emoji  = (window._subEmoji || document.getElementById('sub-emoji-preview').textContent.trim() || (currentSubsTab === 'income' ? '💚' : '🔄'));
@@ -3831,13 +3869,14 @@ function saveSubscription() {
   var subcatEl = document.getElementById('sub-subcat');
   var subcat = (subcatEl && document.getElementById('sub-subcat-group').style.display !== 'none') ? subcatEl.value : '';
   var card   = type === 'income' ? 'dinheiro' : document.getElementById('sub-card').value;
+  var pixAccount = card === 'pix' ? document.getElementById('sub-pix-account').value : '';
 
   if (!name)             return notify('Informe o nome', true);
   if (!value || value<=0) return notify('Informe o valor', true);
   if (!day||day<1||day>31) return notify('Informe um dia válido (1-31)', true);
 
   var subs = loadSubscriptions();
-  subs.push({ id: Date.now(), name: name, emoji: emoji, type: type, value: value, day: day, cat: cat, subcat: subcat, card: card, confirmedMonths: [] });
+  subs.push({ id: Date.now(), name: name, emoji: emoji, type: type, value: value, day: day, cat: cat, subcat: subcat, card: card, pixAccount: pixAccount, confirmedMonths: [] });
   saveSubscriptions(subs);
 
   document.getElementById('sub-name').value  = '';
@@ -3849,6 +3888,20 @@ function saveSubscription() {
   toggleAddSubForm();
   notify('✓ "'+name+'" cadastrado!');
   renderSubscriptions();
+}
+
+// Acha a data de compra (ano-mês-dia) que, aplicando a regra de fechamento
+// do cartão (getBillingMonth), resulta exatamente na fatura do mês alvo.
+// Isso evita o descompasso onde confirmar uma recorrente em "Setembro" gera
+// uma compra que a régua de fechamento manda pra fatura de Outubro.
+function findPurchaseDateForBillingMonth(targetMk, day, cardKey) {
+  for (var back = 0; back <= 2; back++) {
+    var d = new Date(targetMk + '-01T12:00:00');
+    d.setMonth(d.getMonth() - back);
+    var candidate = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(day).padStart(2,'0');
+    if (getBillingMonth({ date: candidate, card: cardKey }) === targetMk) return candidate;
+  }
+  return targetMk + '-' + String(day).padStart(2,'0'); // fallback, não deveria cair aqui
 }
 
 function confirmSubscription(subId) {
@@ -3869,19 +3922,24 @@ function confirmSubscription(subId) {
   var txs     = loadKey('transactions');
 
   if (sub.type === 'income') {
-    txs.push({ id: Date.now(), type: 'income', amount: sub.value, cat: sub.cat, subcat: sub.subcat||'', desc: sub.emoji+' '+sub.name, date: dateStr, payment: 'dinheiro', source: 'recorrente' });
+    txs.push({ id: Date.now(), type: 'income', amount: sub.value, cat: sub.cat, subcat: sub.subcat||'', desc: sub.emoji+' '+sub.name, date: dateStr, payment: 'dinheiro', source: 'recorrente', subId: sub.id });
   } else {
     var isCard = sub.card !== 'dinheiro' && sub.card !== 'pix' && CARDS[sub.card];
     if (isCard) {
       var cardInfo   = CARDS[sub.card];
       var purchaseId = Date.now();
       var purchases  = loadPurchases();
-      purchases.push({ id: purchaseId, card: sub.card, date: dateStr, desc: sub.emoji+' '+sub.name, cat: sub.cat, subcat: sub.subcat||'', total: sub.value, parcelas: 1, installmentVal: sub.value });
+      var purchaseDate = findPurchaseDateForBillingMonth(mk, sub.day, sub.card);
+      purchases.push({ id: purchaseId, card: sub.card, date: purchaseDate, desc: sub.emoji+' '+sub.name, cat: sub.cat, subcat: sub.subcat||'', total: sub.value, parcelas: 1, installmentVal: sub.value, subId: sub.id });
       savePurchases(purchases);
       var mStr = String(refMonth+1).padStart(2,'0');
-      txs.push({ id: purchaseId+1, type:'expense', amount:sub.value, cat:sub.cat, subcat:sub.subcat||'', desc:sub.emoji+' '+sub.name+' ('+cardInfo.icon+' '+cardInfo.name+')', date:refYear+'-'+mStr+'-'+String(cardInfo.venc).padStart(2,'0'), source:'recorrente', card:sub.card, purchaseId:purchaseId });
+      txs.push({ id: purchaseId+1, type:'expense', amount:sub.value, cat:sub.cat, subcat:sub.subcat||'', desc:sub.emoji+' '+sub.name+' ('+cardInfo.icon+' '+cardInfo.name+')', date:refYear+'-'+mStr+'-'+String(cardInfo.venc).padStart(2,'0'), source:'recorrente', card:sub.card, purchaseId:purchaseId, subId: sub.id });
     } else {
-      txs.push({ id: Date.now(), type:'expense', amount:sub.value, cat:sub.cat, subcat:sub.subcat||'', desc:sub.emoji+' '+sub.name, date:dateStr, payment:sub.card, source:'recorrente' });
+      var pixLabels = {inter:'🏦 Inter', nubank:'💜 Nubank', bb:'🟡 B.B'};
+      var extra = (sub.card === 'pix' && sub.pixAccount)
+        ? { paymentAccount: sub.pixAccount, paymentLabel: 'Pix '+pixLabels[sub.pixAccount] }
+        : {};
+      txs.push(Object.assign({ id: Date.now(), type:'expense', amount:sub.value, cat:sub.cat, subcat:sub.subcat||'', desc:sub.emoji+' '+sub.name, date:dateStr, payment:sub.card, source:'recorrente', subId: sub.id }, extra));
     }
   }
   txs.sort(function(a,b){ return b.date.localeCompare(a.date); });
@@ -3913,8 +3971,9 @@ function undoConfirmSubscription(subId) {
 
   var txs = loadKey('transactions');
   var alvo = txs.find(function(t){
-    return t.source === 'recorrente' && t.date && t.date.slice(0,7) === mk
-      && t.desc && t.desc.indexOf(sub.name) !== -1;
+    if (t.source !== 'recorrente' || !t.date || t.date.slice(0,7) !== mk) return false;
+    if (t.subId !== undefined) return t.subId === sub.id;
+    return t.desc && t.desc.indexOf(sub.name) !== -1;
   });
   if (alvo) {
     txs = txs.filter(function(t){ return t.id !== alvo.id; });
@@ -3952,9 +4011,10 @@ function renderSubscriptions() {
   listEl.innerHTML = subs.map(function(sub){
     var isConfirmed = sub.confirmedMonths.indexOf(mk) !== -1;
     var cardLabel   = '';
+    var pixLabels   = {inter:'🏦 Inter', nubank:'💜 Nubank', bb:'🟡 B.B'};
     if (!sub.type || sub.type === 'expense') {
       if (sub.card === 'dinheiro') cardLabel = '💵';
-      else if (sub.card === 'pix') cardLabel = '📱';
+      else if (sub.card === 'pix') cardLabel = '📱 Pix' + (sub.pixAccount ? ' · '+pixLabels[sub.pixAccount] : '');
       else if (CARDS[sub.card])   cardLabel  = CARDS[sub.card].icon + ' ' + CARDS[sub.card].name;
     }
     var confirmBtn = isConfirmed
@@ -4292,6 +4352,10 @@ function renderDashIntegrated() {
 }
 
 function renderDashboard() {
+  // Aplica o estado salvo (minimizado ou não) do Lançamento Rápido
+  toggleQuickLaunch(localStorage.getItem('fp_ql_minimized') !== '1');
+  renderDashBudgetAlert();
+
   var txs     = getMonthTx(currentYear, currentMonth);
   var income  = txs.filter(function(t){return t.type==='income';}).reduce(function(s,t){return s+t.amount;},0);
   var expense = txs.filter(function(t){return t.type==='expense';}).reduce(function(s,t){return s+t.amount;},0);
@@ -4424,6 +4488,22 @@ function makeBarChart(svgId, months) {
 // ══════════════════════════════════════════════════════════════
 // BUDGET
 // ══════════════════════════════════════════════════════════════
+var _editingBudgetId = null;
+
+function editBudget(id) {
+  var b = loadKey('budgets').find(function(x){ return x.id === id; });
+  if (!b) return;
+  _editingBudgetId = id;
+  document.getElementById('budget-form-wrap').style.display = 'block';
+  document.getElementById('budget-cat').value = b.cat;
+  onBudgetCatChange();
+  document.getElementById('budget-subcat').value = b.sub || '';
+  document.getElementById('budget-limit').value  = b.limit;
+  var rolloverSel = document.getElementById('budget-rollover');
+  if (rolloverSel) rolloverSel.value = b.rollover || 'zera';
+  document.getElementById('budget-form-wrap').scrollIntoView({behavior:'smooth', block:'center'});
+}
+
 function addBudget() {
   var cat      = document.getElementById('budget-cat').value;
   var sub      = document.getElementById('budget-subcat').value;
@@ -4434,10 +4514,14 @@ function addBudget() {
 
   var mk      = curMonthKey();
   var bkey    = sub ? cat+'::'+sub : cat;
-  var budgets = loadKey('budgets').filter(function(b){ return !(b.key===bkey && b.month===mk); });
+  var budgets = loadKey('budgets').filter(function(b){
+    if (_editingBudgetId && b.id === _editingBudgetId) return false; // remove o item que estava sendo editado
+    return !(b.key===bkey && b.month===mk); // e qualquer outro que já ocupe essa mesma categoria/mês
+  });
   budgets.push({id:Date.now(), key:bkey, cat:cat, sub:sub, limit:limit, month:mk, rollover:rollover});
   saveKey('budgets', budgets);
   document.getElementById('budget-limit').value = '';
+  _editingBudgetId = null;
   notify('✓ Limite salvo!');
   toggleBudgetForm(true);
   renderBudget();
@@ -4448,6 +4532,12 @@ function toggleBudgetForm(forceHide) {
   if (!wrap) return;
   var show = forceHide ? false : (wrap.style.display === 'none');
   wrap.style.display = show ? 'block' : 'none';
+  if (show && !_editingBudgetId) {
+    // Abrindo do zero (não veio de editBudget) — garante campos limpos
+    var limitEl = document.getElementById('budget-limit');
+    if (limitEl) limitEl.value = '';
+  }
+  if (!show) _editingBudgetId = null; // fechou o formulário, sai do modo edição
 }
 
 function setEnvelopeRollover(budgetId, value) {
@@ -4465,14 +4555,77 @@ function getDebtsMonthlyTotal() {
   return debts.reduce(function(s,d){ return s+((d.installments-d.paid)>0 ? d.total/d.installments : 0); },0);
 }
 
+// Gastos fixos (recorrentes + parcelas de cartão em andamento) que caem em
+// categorias/subcategorias que AINDA NÃO têm envelope (limite) definido no mês.
+// Já cobertos por limite (geral OU da própria subcategoria) não entram aqui,
+// pra não contar o valor 2x.
+function getFixedSemEnvelope(mk) {
+  var txs       = getMonthTxBudget(currentYear, currentMonth).filter(function(t){ return t.type==='expense'; });
+  var purchases = loadPurchases();
+  var budgets   = loadKey('budgets').filter(function(b){ return b.month===mk; });
+
+  function txIsFixed(t) {
+    if (t.source === 'recorrente') return true;
+    if (t.source === 'cartao') {
+      var p = purchases.find(function(x){ return x.id === t.purchaseId; });
+      return p && p.parcelas > 1;
+    }
+    return false;
+  }
+
+  function hasEnvelope(t) {
+    if (budgets.some(function(b){ return b.cat===t.cat && !b.sub; })) return true; // limite geral da categoria
+    if (t.subcat && budgets.some(function(b){ return b.cat===t.cat && b.sub===t.subcat; })) return true; // limite da própria subcategoria
+    return false;
+  }
+
+  var items = txs.filter(function(t){ return txIsFixed(t) && !hasEnvelope(t); });
+  var total = items.reduce(function(s,t){ return s+t.amount; },0);
+  return { total: total, items: items };
+}
+
+// Soma o valor de todos os envelopes com limite no mês. Se a categoria tem
+// limite geral, conta só ele (representa a categoria inteira). Se não tem
+// limite geral mas tem limites de subcategoria, soma esses — assim uma
+// categoria só com limites nas subcategorias (ex: Contas → Luz/Internet)
+// também entra na conta, sem duplicar quando o geral já existe.
+function getEnvelopesTotal(mk) {
+  var budgets = loadKey('budgets').filter(function(b){ return b.month===mk; });
+  var cats = budgets.map(function(b){ return b.cat; }).filter(function(v,i,a){ return a.indexOf(v)===i; });
+  return cats.reduce(function(sum, catName){
+    var catBudg = budgets.find(function(b){ return b.cat===catName && !b.sub; });
+    if (catBudg) return sum + catBudg.limit;
+    var subsSum = budgets.filter(function(b){ return b.cat===catName && b.sub; }).reduce(function(s,b){ return s+b.limit; },0);
+    return sum + subsSum;
+  }, 0);
+}
+
+// Renda prevista do mês: usa o valor total das receitas RECORRENTES
+// cadastradas (Assinaturas/Recorrentes), independente de já terem sido
+// confirmadas no mês, + qualquer receita avulsa (não recorrente) já lançada
+// nesse mês. Evita contar em dobro a recorrente já confirmada.
+function getRendaPrevista(mk) {
+  var subs = loadSubscriptions().filter(function(s){ return (s.type||'expense')==='income'; });
+  var recorrentePrevista = subs.reduce(function(s,x){ return s+x.value; },0);
+  var txs = getMonthTxBudget(currentYear, currentMonth);
+  var extra = txs.filter(function(t){ return t.type==='income' && t.source!=='recorrente'; }).reduce(function(s,t){ return s+t.amount; },0);
+  return recorrentePrevista + extra;
+}
+
 function calcAlocavel() {
   var mk      = curMonthKey();
-  var txs     = getMonthTxBudget(currentYear, currentMonth);
-  var income  = txs.filter(function(t){ return t.type==='income'; }).reduce(function(s,t){ return s+t.amount; },0);
-  var budgets = loadKey('budgets').filter(function(b){ return b.month===mk && !b.sub; }); // só limites gerais de categoria contam pro total (evita duplicar com subcategoria)
-  var envelopesTotal = budgets.reduce(function(s,b){ return s+b.limit; },0);
+  var income  = getRendaPrevista(mk);
+  var envelopesTotal = getEnvelopesTotal(mk);
   var debtsTotal = getDebtsMonthlyTotal();
-  return { income:income, envelopesTotal:envelopesTotal, debtsTotal:debtsTotal, alocavel: income - envelopesTotal - debtsTotal };
+  var fixedInfo  = getFixedSemEnvelope(mk);
+  var alocavel = income - envelopesTotal - debtsTotal - fixedInfo.total;
+  return { income:income, envelopesTotal:envelopesTotal, debtsTotal:debtsTotal, fixedSemEnvelope:fixedInfo.total, fixedItems:fixedInfo.items, alocavel: alocavel };
+}
+
+var _alocarDetalheAberto = false;
+function toggleAlocarDetalhe() {
+  _alocarDetalheAberto = !_alocarDetalheAberto;
+  renderAlocarCard();
 }
 
 function renderAlocarCard() {
@@ -4485,15 +4638,30 @@ function renderAlocarCard() {
     : (a.alocavel < -0.005
       ? '⚠️ você planejou gastar '+fmt(Math.abs(a.alocavel))+' a mais do que ganha'
       : '✓ 100% alocado');
+
+  var detalheHtml = '';
+  if (_alocarDetalheAberto) {
+    detalheHtml = a.fixedItems.length
+      ? '<div style="margin-top:6px;padding:8px 10px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm)">'
+        + a.fixedItems.map(function(t){
+            return '<div style="display:flex;justify-content:space-between;font-size:11px;padding:3px 0"><span style="color:var(--text-muted)">'+escHtml(t.desc||t.cat)+' <span style="color:var(--text-dim)">('+escHtml(t.cat)+')</span></span><span style="font-family:var(--font-num)">'+fmt(t.amount)+'</span></div>';
+          }).join('')
+        + '</div>'
+      : '<div style="margin-top:6px;font-size:11px;color:var(--text-dim)">Nenhum item fixo pendente fora de envelopes.</div>';
+  }
+
   el.innerHTML =
     '<div class="card-value" style="color:'+color+';font-size:26px">'+(a.alocavel<0?'-':'')+fmt(a.alocavel)+'</div>'
     +'<div style="font-size:12px;color:var(--text-muted);margin:6px 0 14px">'+statusMsg+'</div>'
     +'<div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-top:1px solid var(--border)">'
-      +'<span style="color:var(--text-muted)">Renda do mês</span><span style="font-family:var(--font-num);color:var(--accent)">'+fmt(a.income)+'</span></div>'
+      +'<span style="color:var(--text-muted)">Renda prevista do mês <span style="color:var(--text-dim)">(recorrentes + avulsas)</span></span><span style="font-family:var(--font-num);color:var(--accent)">'+fmt(a.income)+'</span></div>'
     +'<div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0">'
       +'<span style="color:var(--text-muted)">Envelopes (limites definidos)</span><span style="font-family:var(--font-num);color:var(--red)">'+fmt(a.envelopesTotal)+'</span></div>'
     +'<div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0">'
-      +'<span style="color:var(--text-muted)">Dívidas (parcelas ativas do mês)</span><span style="font-family:var(--font-num);color:var(--red)">'+fmt(a.debtsTotal)+'</span></div>';
+      +'<span style="color:var(--text-muted)">Dívidas (parcelas ativas do mês)</span><span style="font-family:var(--font-num);color:var(--red)">'+fmt(a.debtsTotal)+'</span></div>'
+    +'<div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:6px 0;cursor:pointer" onclick="toggleAlocarDetalhe()">'
+      +'<span style="color:var(--text-muted)">🔄 Fixos sem envelope ainda <span style="color:var(--text-dim)">('+(_alocarDetalheAberto?'ocultar':'ver')+' detalhe)</span></span><span style="font-family:var(--font-num);color:var(--red)">'+fmt(a.fixedSemEnvelope)+'</span></div>'
+    +detalheHtml;
 }
 
 function deleteBudget(id) {
@@ -4579,16 +4747,32 @@ function renderBudget() {
           +(subLimit>0
             ?'<span style="font-family:var(--font-num);font-weight:700;color:'+(subSaldo>=0?'var(--accent)':'var(--red)')+'">'+(subSaldo<0?'-':'')+fmt(subSaldo)+'</span>'
             :'<span style="font-family:var(--font-num);color:var(--text-muted)">'+fmt(subSpent)+'</span>')
-          +(subBudg && !closed?'<button class="btn btn-danger btn-sm" onclick="deleteBudget('+subBudg.id+')">✕</button>':'')
+          +(subBudg && !closed?'<button class="btn btn-ghost btn-sm" onclick="editBudget('+subBudg.id+')" title="Editar limite">✏️</button><button class="btn btn-danger btn-sm" onclick="deleteBudget('+subBudg.id+')">✕</button>':'')
         +'</div></div>';
     }).join('');
 
+    // Fallback: se a categoria não tem nenhuma subcategoria usada/orçada mas
+    // tem lançamentos, mostra os lançamentos individuais — assim sempre dá
+    // pra ver o que foi gasto, mesmo sem subcategoria marcada.
+    var txRows = '';
+    if (!allSubs.length && catTxs.length) {
+      txRows = catTxs.map(function(t){
+        return '<div class="budget-sub-row">'
+          +'<div class="budget-sub-label">'+escHtml(t.desc||'(sem descrição)')+(txIsFixed(t)?' <span style="color:var(--text-dim);font-size:10px">🔄</span>':'')+'</div>'
+          +'<div style="flex:1"></div>'
+          +'<span style="font-family:var(--font-num);color:var(--text-muted);font-size:12px">'+fmt(t.amount)+'</span>'
+        +'</div>';
+      }).join('');
+    }
+    var bodyContent = subRows || txRows;
+    var canOpen     = !!bodyContent;
+
     return '<div class="budget-cat-block">'
-      +'<div class="budget-cat-header" style="cursor:pointer" onclick="toggleBudgetAccordion(\''+accId+'\')">'
+      +'<div class="budget-cat-header" style="cursor:'+(canOpen?'pointer':'default')+'"'+(canOpen?' onclick="toggleBudgetAccordion(\''+accId+'\')"':'')+'>'
         +'<div class="budget-cat-left">'
           +'<span style="font-size:20px">'+emoji+'</span>'
           +'<div>'
-            +'<div style="font-weight:600;font-size:14px">'+escHtml(catName)+'</div>'
+            +'<div style="font-weight:600;font-size:14px">'+escHtml(catName)+(canOpen?' <span style="font-size:10px;color:var(--text-dim)">▾</span>':'')+'</div>'
             +(catLimit>0
               ?'<div style="font-size:20px;font-weight:700;font-family:var(--font-num);color:'+(catSaldo>=0?'var(--accent)':'var(--red)')+';margin-top:2px">'+(catSaldo<0?'-':'')+fmt(catSaldo)+'</div>'
                +'<div class="progress-bar" style="width:130px;margin-top:4px"><div class="progress-fill" style="width:'+catPct+'%;background:'+catColor+'"></div></div>'
@@ -4607,11 +4791,11 @@ function renderBudget() {
             :'')
           +'<div style="display:flex;align-items:center;gap:8px">'
             +'<span style="font-size:11px;color:var(--text-dim)">gasto '+fmt(catSpent)+'</span>'
-            +(catBudg && !closed?'<button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteBudget('+catBudg.id+')">✕</button>':'')
+            +(catBudg && !closed?'<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();editBudget('+catBudg.id+')" title="Editar limite">✏️</button><button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteBudget('+catBudg.id+')">✕</button>':'')
           +'</div>'
         +'</div>'
       +'</div>'
-      +(subRows?'<div class="budget-cat-body" id="'+accId+'" style="display:none">'+subRows+'</div>':'')
+      +(bodyContent?'<div class="budget-cat-body" id="'+accId+'" style="display:none">'+bodyContent+'</div>':'')
       +'</div>';
   }).join('');
 }
@@ -5462,6 +5646,71 @@ function renderEstimativa() {
 var dashAportesExpanded = true;
 
 var dashReembolsoExpanded = true;
+
+function toggleQuickLaunch(forceState) {
+  var content = document.getElementById('ql-content-wrap');
+  var btn     = document.getElementById('ql-toggle-btn');
+  if (!content) return;
+  var expanded = forceState !== undefined ? forceState : (content.style.display === 'none');
+  content.style.display = expanded ? '' : 'none';
+  if (btn) btn.textContent = expanded ? '▼' : '▶';
+  localStorage.setItem('fp_ql_minimized', expanded ? '' : '1');
+}
+
+// Verifica quais envelopes (categoria ou subcategoria) estão perto (70%+) ou
+// já passaram (100%+) do limite no mês, pra alimentar o banner do Dashboard.
+function getBudgetAlerts(mk) {
+  var budgets = loadKey('budgets').filter(function(b){ return b.month===mk && b.limit>0; });
+  var txs = getMonthTxBudget(currentYear, currentMonth).filter(function(t){ return t.type==='expense'; });
+  var alerts = [];
+  budgets.forEach(function(b){
+    var spent = txs.filter(function(t){
+      return t.cat===b.cat && (!b.sub || t.subcat===b.sub);
+    }).reduce(function(s,t){ return s+t.amount; },0);
+    var pct = (spent / b.limit) * 100;
+    if (pct >= 100) alerts.push({label:b.sub||b.cat, cat:b.cat, pct:pct, status:'over', spent:spent, limit:b.limit});
+    else if (pct >= 70) alerts.push({label:b.sub||b.cat, cat:b.cat, pct:pct, status:'warn', spent:spent, limit:b.limit});
+  });
+  return alerts.sort(function(a,b){ return b.pct - a.pct; });
+}
+
+var _dashBudgetAlertExpanded = false;
+function toggleDashBudgetAlertDetail() {
+  _dashBudgetAlertExpanded = !_dashBudgetAlertExpanded;
+  var detail = document.getElementById('dash-budget-alert-detail');
+  var toggle = document.getElementById('dash-budget-alert-toggle');
+  if (detail) detail.style.display = _dashBudgetAlertExpanded ? 'block' : 'none';
+  if (toggle) toggle.textContent   = _dashBudgetAlertExpanded ? 'ocultar ▾' : 'ver detalhe ▸';
+}
+
+function renderDashBudgetAlert() {
+  var el = document.getElementById('dash-budget-alert');
+  if (!el) return;
+  var alerts = getBudgetAlerts(curMonthKey());
+  if (!alerts.length) { el.style.display = 'none'; el.innerHTML = ''; return; }
+
+  var overs = alerts.filter(function(a){ return a.status==='over'; });
+  var warns = alerts.filter(function(a){ return a.status==='warn'; });
+  var summary = [];
+  if (overs.length) summary.push(overs.length+' estourada'+(overs.length>1?'s':''));
+  if (warns.length) summary.push(warns.length+' perto do limite');
+  var color = overs.length ? 'var(--red)' : 'var(--gold)';
+
+  el.style.display = 'block';
+  el.innerHTML =
+    '<div class="panel" style="border-color:'+color+';padding:14px 16px;cursor:pointer;margin-bottom:0" onclick="toggleDashBudgetAlertDetail()">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center">'
+        +'<span style="font-weight:600;font-size:13px;color:'+color+'">⚠️ Orçamento: '+summary.join(' · ')+'</span>'
+        +'<span style="font-size:11px;color:var(--text-dim)" id="dash-budget-alert-toggle">ver detalhe ▸</span>'
+      +'</div>'
+      +'<div id="dash-budget-alert-detail" style="display:none;margin-top:10px">'
+        +alerts.map(function(a){
+          var c = a.status==='over' ? 'var(--red)' : 'var(--gold)';
+          return '<div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-top:1px solid var(--border)"><span style="color:var(--text-muted)">'+(a.status==='over'?'🔴':'🟡')+' '+escHtml(a.label)+' <span style="color:var(--text-dim)">('+escHtml(a.cat)+')</span></span><span style="font-family:var(--font-num);color:'+c+'">'+fmt(a.spent)+' / '+fmt(a.limit)+'</span></div>';
+        }).join('')
+      +'</div>'
+    +'</div>';
+}
 
 function toggleDashReembolso() {
   dashReembolsoExpanded = !dashReembolsoExpanded;
@@ -7695,8 +7944,13 @@ function quickPayTerreno(ev) {
       var before = s.confirmedMonths.length;
       s.confirmedMonths = s.confirmedMonths.filter(function(mk) {
         return txs.some(function(t) {
-          return t.source === 'recorrente' && t.date && t.date.slice(0,7) === mk
-            && t.desc && t.desc.indexOf(s.name) !== -1;
+          if (t.source !== 'recorrente' || !t.date || t.date.slice(0,7) !== mk) return false;
+          // Lançamentos novos já guardam o id da assinatura (subId) — comparação
+          // exata, não quebra se a recorrente for renomeada depois.
+          if (t.subId !== undefined) return t.subId === s.id;
+          // Fallback pra lançamentos antigos (de antes dessa correção), que só
+          // têm o nome salvo no texto — só usado se subId não existir.
+          return t.desc && t.desc.indexOf(s.name) !== -1;
         });
       });
       if (s.confirmedMonths.length !== before) changed = true;
