@@ -4653,14 +4653,27 @@ function renderAlocarCard() {
 
   var detalheHtml = '';
   if (_alocarDetalheAberto) {
-    detalheHtml = a.fixedItems.length
-      ? '<div style="margin-top:6px;padding:8px 10px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm)">'
-        + a.fixedItems.map(function(t){
-            var tag = t.source === 'recorrente' ? '🔄' : '💳';
-            return '<div style="display:flex;justify-content:space-between;font-size:11px;padding:3px 0"><span style="color:var(--text-muted)">'+tag+' '+escHtml(t.desc||t.cat)+' <span style="color:var(--text-dim)">('+escHtml(t.cat)+')</span></span><span style="font-family:var(--font-num)">'+fmt(t.amount)+'</span></div>';
-          }).join('')
-        + '</div>'
-      : '<div style="margin-top:6px;font-size:11px;color:var(--text-dim)">Nenhum item fixo pendente fora de envelopes.</div>';
+    if (!a.fixedItems.length) {
+      detalheHtml = '<div style="margin-top:6px;font-size:11px;color:var(--text-dim)">Nenhum item fixo pendente fora de envelopes.</div>';
+    } else {
+      var recItems = a.fixedItems.filter(function(t){ return t.source === 'recorrente'; });
+      var carItems = a.fixedItems.filter(function(t){ return t.source !== 'recorrente'; });
+      var recTotal = recItems.reduce(function(s,t){ return s+t.amount; },0);
+      var carTotal = carItems.reduce(function(s,t){ return s+t.amount; },0);
+
+      function groupHtml(title, tag, items, total) {
+        if (!items.length) return '';
+        return '<div style="margin-top:8px;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-dim);display:flex;justify-content:space-between"><span>'+tag+' '+title+'</span><span>'+fmt(total)+'</span></div>'
+          + items.map(function(t){
+              return '<div style="display:flex;justify-content:space-between;font-size:11px;padding:3px 0"><span style="color:var(--text-muted)">'+escHtml(t.desc||t.cat)+' <span style="color:var(--text-dim)">('+escHtml(t.cat)+')</span></span><span style="font-family:var(--font-num)">'+fmt(t.amount)+'</span></div>';
+            }).join('');
+      }
+
+      detalheHtml = '<div style="margin-top:6px;padding:8px 10px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm)">'
+        + groupHtml('Recorrentes', '🔄', recItems, recTotal)
+        + groupHtml('Parcelas de cartão', '💳', carItems, carTotal)
+        + '</div>';
+    }
   }
 
   el.innerHTML =
