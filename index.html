@@ -421,11 +421,11 @@
     <div class="nav">
       <div class="nav-item active" onclick="navigate('dashboard')"><span class="nav-icon">📊</span><span>Dashboard</span></div>
       <div class="nav-item" onclick="navigate('atelie')"><span class="nav-icon">🧵</span><span>Ateliê</span></div>
-      <div class="nav-item" onclick="navigate('dollar')"><span class="nav-icon">💵</span><span>Dólar</span></div>
+      <div class="nav-item" onclick="navigate('dollar')"><span class="nav-icon">💵</span><span>Dólar</span><span id="nav-dollar-badge" style="display:none;margin-left:auto;color:var(--gold);font-size:13px" title="Falta lançar o mês atual">❗</span></div>
       <div class="nav-item" onclick="navigate('invest')"><span class="nav-icon">🏦</span><span>Metas</span></div>
       <div class="nav-item" id="nav-movimentos" onclick="navigate('movimentos')"><span class="nav-icon">💰</span><span>Movimentos</span></div>
       <div class="nav-item" onclick="navigate('budget')"><span class="nav-icon">🎯</span><span>Orçamento</span></div>
-      <div class="nav-item" onclick="navigate('terreno')"><span class="nav-icon">🏗️</span><span>Terreno</span></div>
+      <div class="nav-item" onclick="navigate('terreno')"><span class="nav-icon">🏗️</span><span>Terreno</span><span id="nav-terreno-badge" style="display:none;margin-left:auto;color:var(--gold);font-size:13px" title="Parcelas confirmadas ainda não contabilizadas aqui">❗</span></div>
       <div class="nav-item" onclick="navigate('anual')"><span class="nav-icon">📅</span><span>Anual</span></div>
       <div class="nav-item" onclick="navigate('categories')"><span class="nav-icon">⚙️</span><span>Config</span></div>
     </div>
@@ -683,7 +683,11 @@
       </div>
 
       <div class="panel" id="tx-form-panel">
-        <div class="panel-title">Nova Transação</div>
+        <div class="panel-title" style="cursor:pointer" onclick="toggleSection('tx-form-body')">
+          <span>Nova Transação</span>
+          <span id="tx-form-arrow">▼</span>
+        </div>
+        <div id="tx-form-body">
 
         <!-- Modo de pagamento -->
         <div class="pay-mode-toggle" id="tx-pay-mode-row">
@@ -769,6 +773,7 @@
           <div class="form-group full">
             <button class="btn btn-primary" id="tx-submit-btn" onclick="addTransactionUnified()">+ Adicionar Transação</button>
           </div>
+        </div>
         </div>
       </div>
 
@@ -1299,6 +1304,8 @@
           </div>
         </div>
       </div>
+
+      <div id="terreno-sync-alert" style="display:none;margin:16px 0;background:var(--gold-dim);border:1px solid var(--gold);border-radius:var(--radius-sm);padding:12px 16px;font-size:13px;color:var(--gold)"></div>
 
       <!-- Summary cards -->
       <div class="cards-grid">
@@ -2662,6 +2669,8 @@ function changeMonth(dir) {
 
 function refreshPage(page) {
   updateMonthLabels();
+  updateDollarReminderBadge();
+  updateTerrenoReminderBadge();
   if (page === 'dashboard')    renderDashboard();
   if (page === 'cartoes')      { navigate('transactions'); return; }
   if (page === 'transactions') { setPayMode('dinheiro'); populateTxCatSelect(); populateCarCatSelect(); populateFilterCatSelect(); renderTxTable(); renderCartoes(); renderSubscriptions(); }
@@ -3633,9 +3642,21 @@ function saveEditDollar() {
   entries[idx].rate  = parseFloat(document.getElementById('ed-rate').value);
   entries[idx].brl   = entries[idx].usd * entries[idx].rate;
   saveKey('dollar_entries', entries);
+
+  // Mantém a transação de Receita gerada junto com esse registro sincronizada
+  var txs = loadKey('transactions');
+  var txIdx = txs.findIndex(function(t){ return t.dollarEntryId === entries[idx].id; });
+  if (txIdx !== -1) {
+    var dMonth = entries[idx].month.split('-');
+    txs[txIdx].amount = entries[idx].brl;
+    txs[txIdx].date   = dMonth[0]+'-'+dMonth[1]+'-05';
+    saveKey('transactions', txs);
+  }
+
   closeModal('edit-dollar-modal');
   notify('✓ Registro atualizado!');
   renderDollarPage();
+  renderDashboard();
 }
 
 // ── Editar Renda Extra ──
@@ -4241,28 +4262,22 @@ function renderDashIntegrated() {
   var mk          = curMonthKey();
   var extraIncome = loadExtra().filter(function(e){return e.month===mk;}).reduce(function(s,e){return s+e.brl;},0);
 
-  // Dollar last entry
-  var dolEntries  = loadDollar();
-  var lastDol     = dolEntries.length ? dolEntries[dolEntries.length-1] : null;
-  var dolIncome   = lastDol ? lastDol.brl : 0;
-
-  // Terreno installment (fixed monthly cost)
-  var ter         = loadTerreno();
-  var terCost     = ter.installment || 0;
-
   // Cartoes charges this month
   var carCharges  = getMonthCharges(currentYear, currentMonth);
   var carTotal    = carCharges.reduce(function(s,c){return s+c.installmentVal;},0);
 
   // Build income rows
+  // Salário do Dólar agora vira uma transação de verdade (source:'dollar') quando
+  // lançado na aba Dólar — por isso vem daqui, e não soma com o módulo separado
+  // de novo (senão duplicaria o valor).
   var incomeRows = [];
-  var salIncome = txs.filter(function(t){return t.type==='income' && t.cat!=='Renda Extra';}).reduce(function(s,t){return s+t.amount;},0);
+  var dolIncome = txs.filter(function(t){return t.type==='income' && t.source==='dollar';}).reduce(function(s,t){return s+t.amount;},0);
+  var salIncome = txs.filter(function(t){return t.type==='income' && t.cat!=='Renda Extra' && t.source!=='dollar';}).reduce(function(s,t){return s+t.amount;},0);
   if (salIncome > 0)  incomeRows.push({label:'💼 Salários', val: salIncome});
   if (dolIncome > 0)  incomeRows.push({label:'💵 Dólar', val: dolIncome});
   if (extraIncome > 0)incomeRows.push({label:'💪 Renda Extra', val: extraIncome});
 
-  var totalIncome = income + (dolIncome > 0 && !txs.find(function(t){return t.source==='dollar';}) ? 0 : 0);
-  totalIncome = Math.max(income, salIncome + dolIncome + extraIncome);
+  var totalIncome = income + extraIncome;
 
   // Build expense rows
   // Exclui qualquer transação já representada em car_purchases (tem purchaseId) —
@@ -4273,7 +4288,10 @@ function renderDashIntegrated() {
   var expenseRows = [];
   if (txExpense > 0) expenseRows.push({label:'📋 Despesas gerais', val: txExpense});
   if (carTotal > 0)  expenseRows.push({label:'💳 Cartões', val: carTotal});
-  if (terCost > 0)   expenseRows.push({label:'🏗️ Terreno', val: terCost});
+  // Terreno não entra como linha separada aqui — a parcela paga (seja pela
+  // recorrente "Parcela do terreno" ou pelo botão "Marcar como paga" na aba
+  // Terreno) já vira uma transação de verdade e está contabilizada dentro de
+  // "Despesas gerais" acima. Somar de novo aqui duplicava o valor.
 
   var totalExpense = txExpense + carTotal;
   var sobra        = totalIncome - totalExpense;
@@ -4601,43 +4619,66 @@ function getFixedSemEnvelope(mk) {
 // limite geral mas tem limites de subcategoria, soma esses — assim uma
 // categoria só com limites nas subcategorias (ex: Contas → Luz/Internet)
 // também entra na conta, sem duplicar quando o geral já existe.
-function getEnvelopesTotal(mk) {
+function getEnvelopesDetail(mk) {
   var budgets = loadKey('budgets').filter(function(b){ return b.month===mk; });
   var cats = budgets.map(function(b){ return b.cat; }).filter(function(v,i,a){ return a.indexOf(v)===i; });
-  return cats.reduce(function(sum, catName){
+  var items = [];
+  var total = cats.reduce(function(sum, catName){
     var catBudg = budgets.find(function(b){ return b.cat===catName && !b.sub; });
-    if (catBudg) return sum + catBudg.limit;
-    var subsSum = budgets.filter(function(b){ return b.cat===catName && b.sub; }).reduce(function(s,b){ return s+b.limit; },0);
-    return sum + subsSum;
+    if (catBudg) {
+      items.push({ label: catName, amount: catBudg.limit });
+      return sum + catBudg.limit;
+    }
+    var subBudgs = budgets.filter(function(b){ return b.cat===catName && b.sub; });
+    subBudgs.forEach(function(b){ items.push({ label: catName+' · '+b.sub, amount: b.limit }); });
+    return sum + subBudgs.reduce(function(s,b){ return s+b.limit; },0);
   }, 0);
+  items.sort(function(a,b){ return b.amount - a.amount; });
+  return { total: total, items: items };
 }
+function getEnvelopesTotal(mk) { return getEnvelopesDetail(mk).total; }
 
 // Renda prevista do mês: usa o valor total das receitas RECORRENTES
 // cadastradas (Assinaturas/Recorrentes), independente de já terem sido
 // confirmadas no mês, + qualquer receita avulsa (não recorrente) já lançada
 // nesse mês. Evita contar em dobro a recorrente já confirmada.
-function getRendaPrevista(mk) {
+function getRendaPrevistaDetail(mk) {
   var subs = loadSubscriptions().filter(function(s){ return (s.type||'expense')==='income'; });
+  var items = subs.map(function(s){ return { label: s.emoji+' '+s.name+' (recorrente)', amount: s.value }; });
   var recorrentePrevista = subs.reduce(function(s,x){ return s+x.value; },0);
   var txs = getMonthTxBudget(currentYear, currentMonth);
-  var extra = txs.filter(function(t){ return t.type==='income' && t.source!=='recorrente'; }).reduce(function(s,t){ return s+t.amount; },0);
-  return recorrentePrevista + extra;
+  var extraTxs = txs.filter(function(t){ return t.type==='income' && t.source!=='recorrente'; });
+  extraTxs.forEach(function(t){ items.push({ label: (t.desc||'Avulsa')+' (avulsa)', amount: t.amount }); });
+  var extra = extraTxs.reduce(function(s,t){ return s+t.amount; },0);
+  items.sort(function(a,b){ return b.amount - a.amount; });
+  return { total: recorrentePrevista + extra, items: items };
 }
+function getRendaPrevista(mk) { return getRendaPrevistaDetail(mk).total; }
 
 function calcAlocavel() {
   var mk      = curMonthKey();
-  var income  = getRendaPrevista(mk);
-  var envelopesTotal = getEnvelopesTotal(mk);
+  var rendaInfo = getRendaPrevistaDetail(mk);
+  var envInfo   = getEnvelopesDetail(mk);
   var debtsTotal = getDebtsMonthlyTotal();
   var fixedInfo  = getFixedSemEnvelope(mk);
-  var alocavel = income - envelopesTotal - debtsTotal - fixedInfo.total;
-  return { income:income, envelopesTotal:envelopesTotal, debtsTotal:debtsTotal, fixedSemEnvelope:fixedInfo.total, fixedItems:fixedInfo.items, alocavel: alocavel };
+  var alocavel = rendaInfo.total - envInfo.total - debtsTotal - fixedInfo.total;
+  return { income:rendaInfo.total, incomeItems:rendaInfo.items, envelopesTotal:envInfo.total, envelopesItems:envInfo.items, debtsTotal:debtsTotal, fixedSemEnvelope:fixedInfo.total, fixedItems:fixedInfo.items, alocavel: alocavel };
 }
 
-var _alocarDetalheAberto = false;
-function toggleAlocarDetalhe() {
-  _alocarDetalheAberto = !_alocarDetalheAberto;
+var _alocarDetalheAberto = { fixed:false, envelopes:false, renda:false };
+function toggleAlocarDetalhe(which) {
+  which = which || 'fixed';
+  _alocarDetalheAberto[which] = !_alocarDetalheAberto[which];
   renderAlocarCard();
+}
+
+function simpleListHtml(items) {
+  if (!items.length) return '<div style="margin-top:6px;font-size:11px;color:var(--text-dim)">Nada aqui ainda.</div>';
+  return '<div style="margin-top:6px;padding:8px 10px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm)">'
+    + items.map(function(it){
+        return '<div style="display:flex;justify-content:space-between;font-size:11px;padding:3px 0"><span style="color:var(--text-muted)">'+escHtml(it.label)+'</span><span style="font-family:var(--font-num)">'+fmt(it.amount)+'</span></div>';
+      }).join('')
+    + '</div>';
 }
 
 function renderAlocarCard() {
@@ -4651,10 +4692,13 @@ function renderAlocarCard() {
       ? '⚠️ você planejou gastar '+fmt(Math.abs(a.alocavel))+' a mais do que ganha'
       : '✓ 100% alocado');
 
-  var detalheHtml = '';
-  if (_alocarDetalheAberto) {
+  var rendaDetalhe = _alocarDetalheAberto.renda ? simpleListHtml(a.incomeItems) : '';
+  var envDetalhe   = _alocarDetalheAberto.envelopes ? simpleListHtml(a.envelopesItems) : '';
+
+  var fixedDetalhe = '';
+  if (_alocarDetalheAberto.fixed) {
     if (!a.fixedItems.length) {
-      detalheHtml = '<div style="margin-top:6px;font-size:11px;color:var(--text-dim)">Nenhum item fixo pendente fora de envelopes.</div>';
+      fixedDetalhe = '<div style="margin-top:6px;font-size:11px;color:var(--text-dim)">Nenhum item fixo pendente fora de envelopes.</div>';
     } else {
       var recItems = a.fixedItems.filter(function(t){ return t.source === 'recorrente'; });
       var carItems = a.fixedItems.filter(function(t){ return t.source !== 'recorrente'; });
@@ -4669,7 +4713,7 @@ function renderAlocarCard() {
             }).join('');
       }
 
-      detalheHtml = '<div style="margin-top:6px;padding:8px 10px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm)">'
+      fixedDetalhe = '<div style="margin-top:6px;padding:8px 10px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm)">'
         + groupHtml('Recorrentes', '🔄', recItems, recTotal)
         + groupHtml('Parcelas de cartão', '💳', carItems, carTotal)
         + '</div>';
@@ -4679,15 +4723,21 @@ function renderAlocarCard() {
   el.innerHTML =
     '<div class="card-value" style="color:'+color+';font-size:26px">'+(a.alocavel<0?'-':'')+fmt(a.alocavel)+'</div>'
     +'<div style="font-size:12px;color:var(--text-muted);margin:6px 0 14px">'+statusMsg+'</div>'
-    +'<div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-top:1px solid var(--border)">'
-      +'<span style="color:var(--text-muted)">Renda prevista do mês <span style="color:var(--text-dim)">(recorrentes + avulsas)</span></span><span style="font-family:var(--font-num);color:var(--accent)">'+fmt(a.income)+'</span></div>'
-    +'<div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0">'
-      +'<span style="color:var(--text-muted)">Envelopes (limites definidos)</span><span style="font-family:var(--font-num);color:var(--red)">'+fmt(a.envelopesTotal)+'</span></div>'
+
+    +'<div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:6px 0;border-top:1px solid var(--border);cursor:pointer" onclick="toggleAlocarDetalhe(\'renda\')">'
+      +'<span style="color:var(--text-muted)">Renda prevista do mês <span style="color:var(--text-dim)">(recorrentes + avulsas · '+(_alocarDetalheAberto.renda?'ocultar':'ver')+')</span></span><span style="font-family:var(--font-num);color:var(--accent)">'+fmt(a.income)+'</span></div>'
+    +rendaDetalhe
+
+    +'<div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:6px 0;cursor:pointer" onclick="toggleAlocarDetalhe(\'envelopes\')">'
+      +'<span style="color:var(--text-muted)">Envelopes (limites definidos) <span style="color:var(--text-dim)">('+(_alocarDetalheAberto.envelopes?'ocultar':'ver')+')</span></span><span style="font-family:var(--font-num);color:var(--red)">'+fmt(a.envelopesTotal)+'</span></div>'
+    +envDetalhe
+
     +'<div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0">'
       +'<span style="color:var(--text-muted)">Empréstimos/Dívidas <span style="color:var(--text-dim)">(cadastrados à parte, não é parcela de cartão)</span></span><span style="font-family:var(--font-num);color:var(--red)">'+fmt(a.debtsTotal)+'</span></div>'
-    +'<div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:6px 0;cursor:pointer" onclick="toggleAlocarDetalhe()">'
-      +'<span style="color:var(--text-muted)">🔄 Fixos sem envelope ainda <span style="color:var(--text-dim)">('+(_alocarDetalheAberto?'ocultar':'ver')+' detalhe)</span></span><span style="font-family:var(--font-num);color:var(--red)">'+fmt(a.fixedSemEnvelope)+'</span></div>'
-    +detalheHtml;
+
+    +'<div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:6px 0;cursor:pointer" onclick="toggleAlocarDetalhe(\'fixed\')">'
+      +'<span style="color:var(--text-muted)">🔄 Fixos sem envelope ainda <span style="color:var(--text-dim)">('+(_alocarDetalheAberto.fixed?'ocultar':'ver')+' detalhe)</span></span><span style="font-family:var(--font-num);color:var(--red)">'+fmt(a.fixedSemEnvelope)+'</span></div>'
+    +fixedDetalhe;
 }
 
 function deleteBudget(id) {
@@ -5455,10 +5505,21 @@ function addDollarEntry() {
   var rate      = brl / usd;
   var diff      = brl - estimated;
 
-  entries.push({ id:Date.now(), month:month, usd:usd, ptax:ptax, brl:brl,
+  var entryId = Date.now();
+  entries.push({ id:entryId, month:month, usd:usd, ptax:ptax, brl:brl,
                  gross:gross, estimated:estimated, rate:rate, diff:diff, notes:notes });
   entries.sort(function(a,b){ return a.month.localeCompare(b.month); });
   saveDollar(entries);
+
+  // Gera a transação de Receita automaticamente, linkada a esse registro do
+  // Dólar (source:'dollar' + dollarEntryId) — assim aparece em Movimentos sem
+  // precisar lançar de novo na mão, e some/atualiza junto se você editar ou
+  // apagar o registro do Dólar depois.
+  var dMonth = month.split('-'); // 'YYYY-MM'
+  var txs = loadKey('transactions');
+  txs.push({ id: entryId+1, type:'income', amount: brl, cat:'Salário', subcat:'', desc:'💵 Salário Dólar', date: dMonth[0]+'-'+dMonth[1]+'-05', payment:'dinheiro', source:'dollar', dollarEntryId: entryId });
+  txs.sort(function(a,b){ return b.date.localeCompare(a.date); });
+  saveKey('transactions', txs);
 
   ['dol-month','dol-usd','dol-ptax','dol-brl','dol-notes'].forEach(function(id){
     document.getElementById(id).value = '';
@@ -5468,15 +5529,18 @@ function addDollarEntry() {
   var simEl = document.getElementById('dol-simulator');
   if (simEl) simEl.innerHTML = '<div style="font-size:13px;color:var(--text-muted);padding:12px 0">Informe o salário em USD e o câmbio do dia no formulário acima para ver a comparação.</div>';
 
-  notify('✓ Recebimento registrado!');
+  notify('✓ Recebimento registrado e lançado em Movimentos!');
   renderDollarPage();
+  renderDashboard();
 }
 
 function deleteDollarEntry(id) {
-  
   saveDollar(loadDollar().filter(function(e){ return e.id !== id; }));
+  // Remove também a transação de Receita gerada junto com esse registro
+  saveKey('transactions', loadKey('transactions').filter(function(t){ return t.dollarEntryId !== id; }));
   notify('Registro removido.');
   renderDollarPage();
+  renderDashboard();
 }
 
 function fmtRate(r) {
@@ -5487,6 +5551,49 @@ function fmtMonthLabel(monthStr) {
   // monthStr = "2025-05"
   var parts = monthStr.split('-');
   return MONTHS_SHORT[parseInt(parts[1])-1] + '/' + parts[0].slice(2);
+}
+
+// Mostra um "❗" no menu quando o mês REAL (calendário, não o mês navegado no
+// app) ainda não tem registro lançado na aba Dólar — lembrete simples de "está
+// em dia ou não", independente de qual mês você está visualizando.
+// Compara quantas vezes a recorrente "Parcela do terreno" (categoria Terreno)
+// foi confirmada com o contador de parcelas pagas da calculadora do Terreno.
+// Se a recorrente foi confirmada mais vezes do que o contador registra, quer
+// dizer que a aba Terreno ficou pra trás e precisa ser atualizada.
+// Só sincroniza o contador de parcelas pagas com o que a recorrente já
+// confirmou — NÃO lança transação nenhuma (ela já existe, veio da recorrente).
+function syncTerrenoPaidCount() {
+  var d = loadTerreno();
+  var subs = loadSubscriptions().filter(function(s){ return (s.type||'expense')==='expense' && s.cat === 'Terreno'; });
+  var confirmedTotal = subs.reduce(function(s,x){ return s + x.confirmedMonths.length; }, 0);
+  d.paid = confirmedTotal;
+  saveTerreno_data(d);
+  notify('✓ Contador atualizado para '+d.paid+'/'+d.total+'!');
+  renderTerreno();
+  updateTerrenoReminderBadge();
+}
+
+function getTerrenoReminderCount() {
+  var d = loadTerreno();
+  var subs = loadSubscriptions().filter(function(s){ return (s.type||'expense')==='expense' && s.cat === 'Terreno'; });
+  var confirmedTotal = subs.reduce(function(s,x){ return s + x.confirmedMonths.length; }, 0);
+  return Math.max(0, confirmedTotal - (d.paid||0));
+}
+
+function updateTerrenoReminderBadge() {
+  var badge = document.getElementById('nav-terreno-badge');
+  if (!badge) return;
+  var diff = getTerrenoReminderCount();
+  badge.style.display = diff > 0 ? '' : 'none';
+  badge.title = diff > 0 ? diff+' parcela(s) confirmada(s) na recorrente ainda não contabilizada(s) aqui' : '';
+}
+
+function updateDollarReminderBadge() {
+  var badge = document.getElementById('nav-dollar-badge');
+  if (!badge) return;
+  var realMk = monthKey(today.getFullYear(), today.getMonth());
+  var has = loadDollar().some(function(e){ return e.month === realMk; });
+  badge.style.display = has ? 'none' : '';
 }
 
 function renderDollarPage() {
@@ -6062,6 +6169,18 @@ function renderTerreno() {
   var pct       = (d.paid / d.total) * 100;
   var paidEst   = d.paid * d.installment;
   var remEst    = remaining * d.installment;
+
+  var syncEl = document.getElementById('terreno-sync-alert');
+  if (syncEl) {
+    var diff = getTerrenoReminderCount();
+    if (diff > 0) {
+      syncEl.style.display = '';
+      syncEl.innerHTML = '⚠️ Você confirmou <strong>'+diff+'</strong> parcela(s) pela recorrente "Parcela do terreno" que ainda '+(diff>1?'não foram':'não foi')+' contabilizada(s) aqui. A transação já existe (não precisa lançar de novo) — só falta atualizar esse contador.'
+        + '<div style="margin-top:8px"><button class="btn btn-sm" style="background:var(--gold);color:var(--bg-dark)" onclick="syncTerrenoPaidCount()">✓ Atualizar contador ('+diff+')</button></div>';
+    } else {
+      syncEl.style.display = 'none';
+    }
+  }
 
   // Cards
   document.getElementById('ter-installment').textContent    = fmt(d.installment);
