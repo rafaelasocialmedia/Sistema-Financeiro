@@ -494,19 +494,12 @@
           <div class="form-group" id="ql-pix-group" style="display:none;flex:1;min-width:130px">
             <label>Qual conta?</label>
             <select id="ql-pix-account">
-              <option value="inter">🏦 Inter</option>
-              <option value="nubank">💜 Nubank</option>
-              <option value="bb">🟡 B.B</option>
             </select>
           </div>
           <!-- Qual cartão? (Crédito) -->
           <div class="form-group" id="ql-card-group" style="display:none;flex:1;min-width:130px">
             <label>Qual cartão?</label>
             <select id="ql-card">
-              <option value="inter">🏦 Inter</option>
-              <option value="nubank">💜 Nubank</option>
-              <option value="bb">🟡 B.B</option>
-              <option value="ml">🟢 Mercado Livre</option>
             </select>
           </div>
           <!-- Qual caixinha? (Investimento) -->
@@ -737,9 +730,6 @@
           <div class="form-group" id="tx-pix-account-group" style="display:none">
             <label>Conta Pix</label>
             <select id="tx-pix-account">
-              <option value="inter">🏦 Inter</option>
-              <option value="nubank">💜 Nubank</option>
-              <option value="bb">🟡 Banco do Brasil</option>
             </select>
           </div>
 
@@ -747,10 +737,6 @@
           <div class="form-group" id="tx-card-select-group" style="display:none">
             <label>Cartão</label>
             <select id="tx-card-select">
-              <option value="inter">🏦 Inter</option>
-              <option value="nubank">💜 Nubank</option>
-              <option value="bb">🟡 Banco do Brasil</option>
-              <option value="ml">🟢 Mercado Livre</option>
             </select>
           </div>
           <div class="form-group" id="tx-parcelas-group" style="display:none">
@@ -844,18 +830,11 @@
               <select id="sub-card" onchange="toggleSubPixAccount()">
                 <option value="dinheiro">💵 Dinheiro</option>
                 <option value="pix">📱 Pix</option>
-                <option value="inter">🏦 Inter</option>
-                <option value="nubank">💜 Nubank</option>
-                <option value="bb">🟡 Banco do Brasil</option>
-                <option value="ml">🟢 Mercado Livre</option>
               </select>
             </div>
             <div class="form-group" id="sub-pix-account-group" style="display:none">
               <label>Pix pela conta</label>
               <select id="sub-pix-account">
-                <option value="inter">🏦 Inter</option>
-                <option value="nubank">💜 Nubank</option>
-                <option value="bb">🟡 Banco do Brasil</option>
               </select>
             </div>
             <div class="form-group full" style="flex-direction:row;gap:8px">
@@ -922,10 +901,6 @@
             <span>Lançamentos do Mês</span>
             <div style="display:flex;gap:8px;align-items:center"><span id="lancamentos-arrow" style="font-size:16px">▲</span><select id="car-filter" onchange="renderCartoesTable()" style="font-size:12px;padding:4px 8px">
               <option value="">Todos os cartões</option>
-              <option value="inter">Inter</option>
-              <option value="nubank">Nubank</option>
-              <option value="bb">B.B</option>
-              <option value="ml">Mercado Livre</option>
             </select></div>
           </div>
           <div id="lancamentos-body"><div class="table-wrap">
@@ -1943,10 +1918,6 @@
               <label>Pagamento</label>
               <select id="atl-cost-payment">
                 <option value="dinheiro">💵 Dinheiro / Pix</option>
-                <option value="inter">🏦 Inter</option>
-                <option value="nubank">💜 Nubank</option>
-                <option value="bb">🟡 Banco do Brasil</option>
-                <option value="ml">🟢 Mercado Livre</option>
               </select>
             </div>
             <div class="form-group full">
@@ -2285,10 +2256,6 @@
         <select id="edit-tx-payment" onchange="onEditTxPaymentChange()">
           <option value="dinheiro">💵 Dinheiro</option>
           <option value="pix">📱 Pix</option>
-          <option value="inter">🏦 Inter</option>
-          <option value="nubank">💜 Nubank</option>
-          <option value="bb">🟡 Banco do Brasil</option>
-          <option value="ml">🟢 Mercado Livre</option>
         </select>
       </div>
       <div class="form-group full" style="flex-direction:row;gap:8px">
@@ -2466,18 +2433,11 @@
         <select id="edit-sub-card" onchange="toggleEditSubPixAccount()">
           <option value="dinheiro">💵 Dinheiro</option>
           <option value="pix">📱 Pix</option>
-          <option value="inter">🏦 Inter</option>
-          <option value="nubank">💜 Nubank</option>
-          <option value="bb">🟡 Banco do Brasil</option>
-          <option value="ml">🟢 Mercado Livre</option>
         </select>
       </div>
       <div class="form-group" id="edit-sub-pix-account-group" style="display:none">
         <label>Pix pela conta</label>
         <select id="edit-sub-pix-account">
-          <option value="inter">🏦 Inter</option>
-          <option value="nubank">💜 Nubank</option>
-          <option value="bb">🟡 Banco do Brasil</option>
         </select>
       </div>
       <div class="form-group full" style="flex-direction:row;gap:8px">
@@ -6413,6 +6373,55 @@ var CARDS = {
   ml:     { name:'Mercado Livre', icon:'🟢', color:'#2dff8f', venc:15, close:8  }
 };
 
+// Bancos/contas que têm opção de Pix (ML é o cartão/conta da empresa, mas
+// também tem Pix)
+var PIX_BANKS = ['inter', 'nubank', 'bb', 'ml'];
+
+// Gera o HTML de <option> pra uma lista de chaves de CARDS, na ordem dada.
+// short=true usa só o nome (sem emoji, "B.B" abreviado) — usado no filtro
+// compacto de Lançamentos do Mês.
+function cardOptionsHtml(keys, short) {
+  return keys.map(function(k){
+    var c = CARDS[k];
+    if (!c) return '';
+    if (short) {
+      var shortName = k === 'bb' ? 'B.B' : c.name;
+      return '<option value="'+k+'">'+shortName+'</option>';
+    }
+    return '<option value="'+k+'">'+c.icon+' '+c.name+'</option>';
+  }).join('');
+}
+
+// Preenche todos os selects de cartão/conta-pix do app a partir de CARDS.
+// Selects "mistos" (com Dinheiro/Pix/Todos fixos na frente) só têm a parte de
+// cartão ADICIONADA no final — as opções fixas continuam vindo do HTML.
+function populateCardSelects() {
+  var allKeys = Object.keys(CARDS);
+
+  // Selects só de cartão (sem opções fixas extras) — substitui tudo
+  ['ql-card', 'tx-card-select'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.innerHTML = cardOptionsHtml(allKeys);
+  });
+
+  // Selects só de conta Pix (sem opções fixas extras) — substitui tudo
+  ['ql-pix-account', 'tx-pix-account', 'sub-pix-account', 'edit-sub-pix-account'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.innerHTML = cardOptionsHtml(PIX_BANKS);
+  });
+
+  // Selects mistos: mantém as opções fixas (Dinheiro/Pix/Todos) que já estão
+  // no HTML e só ADICIONA a lista de cartões no final
+  ['sub-card', 'atl-cost-payment', 'edit-tx-payment', 'edit-sub-card'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.insertAdjacentHTML('beforeend', cardOptionsHtml(allKeys));
+  });
+
+  // Filtro compacto de Lançamentos do Mês (mantém "Todos os cartões" fixo, formato curto)
+  var filterEl = document.getElementById('car-filter');
+  if (filterEl) filterEl.insertAdjacentHTML('beforeend', cardOptionsHtml(allKeys, true));
+}
+
 function loadPurchases()         { return loadKey('car_purchases', []); }
 function savePurchases(entries)  { saveKey('car_purchases', entries); }
 
@@ -8013,6 +8022,7 @@ function quickPayTerreno(ev) {
   populateFilterCatSelect();
   populateCarCatSelect();
   populateQlCatSelect();
+  try { populateCardSelects(); } catch(e) { console.error('populateCardSelects falhou:', e); }
 
   // Layout mobile roda ANTES de qualquer migração de dados — assim o visual do
   // celular nunca fica bloqueado se alguma migração abaixo der erro com dados antigos
