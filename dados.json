@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-08-07T12:25:13.911Z",
+  "savedAt": "2026-08-10T11:47:48.345Z",
   "data": {
     "fp_cats": [
       {
@@ -3045,6 +3045,45 @@
         "source": "cartao",
         "card": "inter",
         "purchaseId": 1779321938023
+      },
+      {
+        "id": 1786362345659,
+        "type": "expense",
+        "amount": 19.31,
+        "cat": "Espiritualidade",
+        "subcat": "Comida",
+        "desc": "Oferenda (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1786362345658,
+        "payment": "credito"
+      },
+      {
+        "id": 1786362397802,
+        "type": "expense",
+        "amount": 1.79,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Bolacha (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1786362397801,
+        "payment": "credito"
+      },
+      {
+        "id": 1786362413322,
+        "type": "expense",
+        "amount": 4.581,
+        "cat": "Alimentação",
+        "subcat": "Padaria",
+        "desc": "Brioche (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1786362413321,
+        "payment": "credito"
       }
     ],
     "fp_budgets": [
@@ -4814,6 +4853,39 @@
         "total": 492.48,
         "parcelas": 9,
         "installmentVal": 54.72
+      },
+      {
+        "id": 1786362345658,
+        "card": "inter",
+        "date": "2026-08-08",
+        "desc": "Oferenda",
+        "cat": "Espiritualidade",
+        "subcat": "Comida",
+        "total": 19.31,
+        "parcelas": 1,
+        "installmentVal": 19.31
+      },
+      {
+        "id": 1786362397801,
+        "card": "inter",
+        "date": "2026-08-08",
+        "desc": "Bolacha",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 1.79,
+        "parcelas": 1,
+        "installmentVal": 1.79
+      },
+      {
+        "id": 1786362413321,
+        "card": "inter",
+        "date": "2026-08-08",
+        "desc": "Brioche",
+        "cat": "Alimentação",
+        "subcat": "Padaria",
+        "total": 4.581,
+        "parcelas": 1,
+        "installmentVal": 4.581
       }
     ],
     "fp_invest_boxes": [
