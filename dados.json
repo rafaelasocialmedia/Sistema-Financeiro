@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-08-11T19:42:56.426Z",
+  "savedAt": "2026-08-11T19:43:20.504Z",
   "data": {
     "fp_cats": [
       {
@@ -5036,7 +5036,7 @@
         "goal": 50000,
         "notes": "Prefixado 13,86% a.a. — vencimento Jan/2029",
         "rate": 0,
-        "monthly": 2500
+        "monthly": 500
       },
       {
         "id": "ib3",
