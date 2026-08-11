@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-08-11T19:41:50.268Z",
+  "savedAt": "2026-08-11T19:42:56.426Z",
   "data": {
     "fp_cats": [
       {
@@ -5356,20 +5356,6 @@
         "confirmedMonths": [
           "2026-06",
           "2026-07",
-          "2026-08"
-        ]
-      },
-      {
-        "id": 1779314617671,
-        "name": "Freela(VFX)",
-        "emoji": "💚",
-        "type": "income",
-        "value": 750,
-        "day": 10,
-        "cat": "Salário",
-        "subcat": "",
-        "card": "dinheiro",
-        "confirmedMonths": [
           "2026-08"
         ]
       },
