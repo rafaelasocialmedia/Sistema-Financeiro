@@ -177,14 +177,24 @@
 
     /* ══════════ RESPONSIVO MOBILE ══════════ */
     /* MOBILE — via classe JS (compatível com todos os navegadores mobile) */
-    .is-mobile .sidebar{width:100%!important;height:auto!important;position:fixed!important;bottom:0!important;top:auto!important;left:0!important;right:0!important;flex-direction:row!important;padding:0!important;border-right:none!important;border-top:1px solid var(--border)!important;z-index:200!important;overflow-x:auto!important;display:flex!important;}
-    .is-mobile .logo,.is-mobile .sidebar-footer{display:none!important;}
-    .is-mobile .nav{display:flex!important;flex-direction:row!important;width:100%!important;}
-    .is-mobile .nav-item{flex-direction:column!important;gap:2px!important;padding:6px 4px!important;font-size:9px!important;border-left:none!important;border-top:3px solid transparent!important;flex:1!important;min-width:44px!important;text-align:center!important;justify-content:center!important;display:flex!important;align-items:center!important;}
-    .is-mobile .nav-item.active{border-left-color:transparent!important;border-top-color:var(--accent)!important;}
-    .is-mobile .nav-icon{font-size:20px!important;}
-    .is-mobile .nav-item span{font-size:9px!important;}
-    .is-mobile .main{margin-left:0!important;padding:12px 10px!important;padding-bottom:80px!important;}
+    .is-mobile #mobile-menu-btn{display:flex!important;}
+    .is-mobile .sidebar{
+      width:250px!important;height:100vh!important;position:fixed!important;
+      top:0!important;left:0!important;bottom:auto!important;right:auto!important;
+      flex-direction:column!important;padding:24px 0!important;
+      border-right:1px solid var(--border)!important;border-top:none!important;
+      z-index:300!important;overflow-y:auto!important;overflow-x:hidden!important;
+      display:flex!important;transform:translateX(-100%)!important;
+      transition:transform .25s ease!important;
+    }
+    .is-mobile .sidebar.drawer-open{transform:translateX(0)!important;}
+    .is-mobile .logo,.is-mobile .sidebar-footer{display:block!important;}
+    .is-mobile .nav{display:flex!important;flex-direction:column!important;width:100%!important;}
+    .is-mobile .nav-item{flex-direction:row!important;gap:12px!important;padding:12px 24px!important;font-size:14px!important;width:auto!important;justify-content:flex-start!important;text-align:left!important;}
+    .is-mobile .nav-item.active{border-left-color:var(--accent)!important;border-top-color:transparent!important;}
+    .is-mobile .nav-icon{font-size:18px!important;}
+    .is-mobile .nav-item span{font-size:14px!important;white-space:normal!important;overflow:visible!important;max-width:none!important;}
+    .is-mobile .main{margin-left:0!important;padding:16px 12px!important;padding-top:64px!important;}
     .is-mobile .cards-grid{grid-template-columns:1fr 1fr!important;gap:8px!important;}
     .is-mobile #dash-estimativa>div{grid-template-columns:1fr 1fr!important;gap:8px!important;}
     .is-mobile #dash-dollar-row{grid-template-columns:1fr!important;}
@@ -412,6 +422,10 @@
 <body>
 <div class="app">
 
+  <!-- Botão hamburguer e overlay do menu gaveta (só aparecem no mobile via CSS) -->
+  <button id="mobile-menu-btn" onclick="toggleMobileDrawer()" style="display:none;position:fixed;top:14px;left:14px;z-index:260;width:40px;height:40px;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:18px;align-items:center;justify-content:center;">☰</button>
+  <div id="mobile-drawer-overlay" onclick="closeMobileDrawer()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:250;"></div>
+
   <!-- SIDEBAR -->
   <nav class="sidebar">
     <div class="logo">
@@ -421,11 +435,11 @@
     <div class="nav">
       <div class="nav-item active" onclick="navigate('dashboard')"><span class="nav-icon">📊</span><span>Dashboard</span></div>
       <div class="nav-item" onclick="navigate('atelie')"><span class="nav-icon">🧵</span><span>Ateliê</span></div>
-      <div class="nav-item" onclick="navigate('dollar')"><span class="nav-icon">💵</span><span>Dólar</span><span id="nav-dollar-badge" style="display:none;margin-left:auto;color:var(--gold);font-size:13px" title="Falta lançar o mês atual">❗</span></div>
+      <div class="nav-item" style="position:relative" onclick="navigate('dollar')"><span class="nav-icon">💵</span><span>Dólar</span><span id="nav-dollar-badge" style="display:none;position:absolute;top:4px;right:10px;color:var(--gold);font-size:12px" title="Falta lançar o mês atual">❗</span></div>
       <div class="nav-item" onclick="navigate('invest')"><span class="nav-icon">🏦</span><span>Metas</span></div>
       <div class="nav-item" id="nav-movimentos" onclick="navigate('movimentos')"><span class="nav-icon">💰</span><span>Movimentos</span></div>
       <div class="nav-item" onclick="navigate('budget')"><span class="nav-icon">🎯</span><span>Orçamento</span></div>
-      <div class="nav-item" onclick="navigate('terreno')"><span class="nav-icon">🏗️</span><span>Terreno</span><span id="nav-terreno-badge" style="display:none;margin-left:auto;color:var(--gold);font-size:13px" title="Parcelas confirmadas ainda não contabilizadas aqui">❗</span></div>
+      <div class="nav-item" style="position:relative" onclick="navigate('terreno')"><span class="nav-icon">🏗️</span><span>Terreno</span><span id="nav-terreno-badge" style="display:none;position:absolute;top:4px;right:10px;color:var(--gold);font-size:12px" title="Parcelas confirmadas ainda não contabilizadas aqui">❗</span></div>
       <div class="nav-item" onclick="navigate('anual')"><span class="nav-icon">📅</span><span>Anual</span></div>
       <div class="nav-item" onclick="navigate('categories')"><span class="nav-icon">⚙️</span><span>Config</span></div>
     </div>
@@ -1685,6 +1699,10 @@
               <label>Meta (R$)</label>
               <input type="number" id="inv-box-goal" placeholder="Ex: 250000" step="0.01" min="0">
             </div>
+            <div class="form-group full">
+              <label>Contribuição mensal planejada (opcional)</label>
+              <input type="number" id="inv-box-monthly" placeholder="Ex: 500 — aparece como envelope no Orçamento" step="0.01" min="0">
+            </div>
             <div class="form-group">
               <label>Emoji</label>
               <div style="display:flex;align-items:center;gap:8px">
@@ -2361,6 +2379,7 @@
         </div>
       </div>
       <div class="form-group"><label>Meta (R$)</label><input type="number" id="eib-goal" step="0.01"></div>
+      <div class="form-group"><label>Contribuição mensal planejada (opcional)</label><input type="number" id="eib-monthly" step="0.01" placeholder="Aparece como envelope no Orçamento"></div>
       <div class="form-group"><label>Taxa anual (%)</label><input type="number" id="eib-rate" step="0.01"></div>
       <div class="form-group full" style="flex-direction:row;gap:8px">
         <button class="btn btn-primary" style="flex:1" onclick="saveEditInvestBox()">Salvar</button>
@@ -2617,6 +2636,23 @@ function navigate(page) {
     if (oc && oc.indexOf("'"+sidebarPage+"'") !== -1) n.classList.add('active');
   });
   refreshPage(page);
+  closeMobileDrawer();
+}
+
+// Gaveta lateral do menu (mobile) — abre/fecha a sidebar deslizando da esquerda
+function toggleMobileDrawer() {
+  var sb = document.querySelector('.sidebar');
+  var overlay = document.getElementById('mobile-drawer-overlay');
+  if (!sb) return;
+  var opening = !sb.classList.contains('drawer-open');
+  sb.classList.toggle('drawer-open', opening);
+  if (overlay) overlay.style.display = opening ? 'block' : 'none';
+}
+function closeMobileDrawer() {
+  var sb = document.querySelector('.sidebar');
+  var overlay = document.getElementById('mobile-drawer-overlay');
+  if (sb) sb.classList.remove('drawer-open');
+  if (overlay) overlay.style.display = 'none';
 }
 
 function changeMonth(dir) {
@@ -3701,9 +3737,10 @@ function openEditInvestBoxModal(id) {
   var b = boxes.find(function(x){ return x.id == id; });
   if (!b) return;
   _editInvestBoxId = id;
-  document.getElementById('eib-name').value  = b.name;
-  document.getElementById('eib-goal').value  = b.goal || '';
-  document.getElementById('eib-rate').value  = b.rate || '';
+  document.getElementById('eib-name').value    = b.name;
+  document.getElementById('eib-goal').value    = b.goal || '';
+  document.getElementById('eib-monthly').value = b.monthly || '';
+  document.getElementById('eib-rate').value    = b.rate || '';
   var prev = document.getElementById('eib-emoji-preview');
   if (prev) { prev.textContent = b.emoji || '🏦'; window._eibEmoji = b.emoji || '🏦'; }
   document.getElementById('edit-invest-box-modal').style.display = 'flex';
@@ -3714,10 +3751,11 @@ function saveEditInvestBox() {
   if (idx === -1) return;
   var name = document.getElementById('eib-name').value.trim();
   if (!name) return notify('Informe o nome', true);
-  boxes[idx].name  = name;
-  boxes[idx].emoji = window._eibEmoji || document.getElementById('eib-emoji-preview').textContent.trim() || boxes[idx].emoji;
-  boxes[idx].goal  = parseFloat(document.getElementById('eib-goal').value) || 0;
-  boxes[idx].rate  = parseFloat(document.getElementById('eib-rate').value) || 0;
+  boxes[idx].name    = name;
+  boxes[idx].emoji   = window._eibEmoji || document.getElementById('eib-emoji-preview').textContent.trim() || boxes[idx].emoji;
+  boxes[idx].goal    = parseFloat(document.getElementById('eib-goal').value) || 0;
+  boxes[idx].monthly = parseFloat(document.getElementById('eib-monthly').value) || 0;
+  boxes[idx].rate    = parseFloat(document.getElementById('eib-rate').value) || 0;
   saveInvestBoxes(boxes);
   closeModal('edit-invest-box-modal');
   notify('✓ Caixinha atualizada!');
@@ -4615,17 +4653,34 @@ function getRendaPrevistaDetail(mk) {
 }
 function getRendaPrevista(mk) { return getRendaPrevistaDetail(mk).total; }
 
+// Metas de investimento (caixinhas) com contribuição mensal planejada — só
+// entram aqui as que AINDA NÃO atingiram a meta (uma vez atingida, não faz
+// sentido continuar reservando espaço no orçamento pra ela).
+function getMetasDetail() {
+  var boxes   = loadInvestBoxes().filter(function(b){ return (b.monthly||0) > 0; });
+  var aportes = loadAportes();
+  var items = [];
+  boxes.forEach(function(b){
+    var investedSoFar = aportes.filter(function(a){ return a.boxId===b.id; }).reduce(function(s,a){ return s+a.val; },0);
+    if (investedSoFar >= b.goal) return; // meta já atingida, não desconta mais
+    items.push({ label: b.emoji+' '+b.name, amount: b.monthly });
+  });
+  items.sort(function(a,b){ return b.amount - a.amount; });
+  return { total: items.reduce(function(s,it){ return s+it.amount; },0), items: items };
+}
+
 function calcAlocavel() {
   var mk      = curMonthKey();
   var rendaInfo = getRendaPrevistaDetail(mk);
   var envInfo   = getEnvelopesDetail(mk);
   var debtsTotal = getDebtsMonthlyTotal();
   var fixedInfo  = getFixedSemEnvelope(mk);
-  var alocavel = rendaInfo.total - envInfo.total - debtsTotal - fixedInfo.total;
-  return { income:rendaInfo.total, incomeItems:rendaInfo.items, envelopesTotal:envInfo.total, envelopesItems:envInfo.items, debtsTotal:debtsTotal, fixedSemEnvelope:fixedInfo.total, fixedItems:fixedInfo.items, alocavel: alocavel };
+  var metasInfo  = getMetasDetail();
+  var alocavel = rendaInfo.total - envInfo.total - debtsTotal - fixedInfo.total - metasInfo.total;
+  return { income:rendaInfo.total, incomeItems:rendaInfo.items, envelopesTotal:envInfo.total, envelopesItems:envInfo.items, debtsTotal:debtsTotal, fixedSemEnvelope:fixedInfo.total, fixedItems:fixedInfo.items, metasTotal:metasInfo.total, metasItems:metasInfo.items, alocavel: alocavel };
 }
 
-var _alocarDetalheAberto = { fixed:false, envelopes:false, renda:false };
+var _alocarDetalheAberto = { fixed:false, envelopes:false, renda:false, metas:false };
 function toggleAlocarDetalhe(which) {
   which = which || 'fixed';
   _alocarDetalheAberto[which] = !_alocarDetalheAberto[which];
@@ -4654,6 +4709,7 @@ function renderAlocarCard() {
 
   var rendaDetalhe = _alocarDetalheAberto.renda ? simpleListHtml(a.incomeItems) : '';
   var envDetalhe   = _alocarDetalheAberto.envelopes ? simpleListHtml(a.envelopesItems) : '';
+  var metasDetalhe = _alocarDetalheAberto.metas ? simpleListHtml(a.metasItems) : '';
 
   var fixedDetalhe = '';
   if (_alocarDetalheAberto.fixed) {
@@ -4691,6 +4747,10 @@ function renderAlocarCard() {
     +'<div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:6px 0;cursor:pointer" onclick="toggleAlocarDetalhe(\'envelopes\')">'
       +'<span style="color:var(--text-muted)">Envelopes (limites definidos) <span style="color:var(--text-dim)">('+(_alocarDetalheAberto.envelopes?'ocultar':'ver')+')</span></span><span style="font-family:var(--font-num);color:var(--red)">'+fmt(a.envelopesTotal)+'</span></div>'
     +envDetalhe
+
+    +'<div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:6px 0;cursor:pointer" onclick="toggleAlocarDetalhe(\'metas\')">'
+      +'<span style="color:var(--text-muted)">🎯 Metas de investimento <span style="color:var(--text-dim)">('+(_alocarDetalheAberto.metas?'ocultar':'ver')+')</span></span><span style="font-family:var(--font-num);color:var(--red)">'+fmt(a.metasTotal)+'</span></div>'
+    +metasDetalhe
 
     +'<div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0">'
       +'<span style="color:var(--text-muted)">Empréstimos/Dívidas <span style="color:var(--text-dim)">(cadastrados à parte, não é parcela de cartão)</span></span><span style="font-family:var(--font-num);color:var(--red)">'+fmt(a.debtsTotal)+'</span></div>'
@@ -6825,21 +6885,23 @@ function seedInvestIfNeeded() {
 }
 
 function addInvestBox() {
-  var name  = document.getElementById('inv-box-name').value.trim();
-  var goal  = parseFloat(document.getElementById('inv-box-goal').value);
-  var emoji = (window._invBoxEmoji || document.getElementById('inv-box-emoji-preview').textContent.trim() || '🏦');
-  var color = document.getElementById('inv-box-color').value;
-  var notes = document.getElementById('inv-box-notes').value.trim();
+  var name    = document.getElementById('inv-box-name').value.trim();
+  var goal    = parseFloat(document.getElementById('inv-box-goal').value);
+  var monthly = parseFloat(document.getElementById('inv-box-monthly').value) || 0;
+  var emoji   = (window._invBoxEmoji || document.getElementById('inv-box-emoji-preview').textContent.trim() || '🏦');
+  var color   = document.getElementById('inv-box-color').value;
+  var notes   = document.getElementById('inv-box-notes').value.trim();
 
   if (!name)           return notify('Informe o nome da caixinha', true);
   if (!goal || goal<=0)return notify('Informe a meta em R$', true);
 
   var boxes = loadInvestBoxes();
-  boxes.push({ id:'ib_'+genId(), name:name, emoji:emoji, color:color, goal:goal, notes:notes });
+  boxes.push({ id:'ib_'+genId(), name:name, emoji:emoji, color:color, goal:goal, monthly:monthly, notes:notes });
   saveInvestBoxes(boxes);
 
-  document.getElementById('inv-box-name').value  = '';
-  document.getElementById('inv-box-goal').value  = '';
+  document.getElementById('inv-box-name').value    = '';
+  document.getElementById('inv-box-goal').value    = '';
+  document.getElementById('inv-box-monthly').value = '';
   var invBoxPrev = document.getElementById('inv-box-emoji-preview');
   if (invBoxPrev) invBoxPrev.textContent = '🏦';
   window._invBoxEmoji = '';
@@ -8125,13 +8187,15 @@ function quickPayTerreno(ev) {
     if (!isMobile) return;
     var style = document.createElement('style');
     style.textContent = [
-      '.sidebar{width:100%!important;height:auto!important;position:fixed!important;bottom:0!important;top:auto!important;left:0!important;right:0!important;flex-direction:row!important;padding:0!important;border-right:none!important;border-top:1px solid var(--border)!important;z-index:200!important;overflow-x:auto!important;display:flex!important;}',
-      '.logo{display:none!important;} .sidebar-footer{display:none!important;}',
-      '.nav{display:flex!important;flex-direction:row!important;width:100%!important;}',
-      '.nav-item{flex-direction:column!important;gap:2px!important;padding:6px 4px!important;font-size:9px!important;border-left:none!important;border-top:3px solid transparent!important;flex:1!important;min-width:44px!important;text-align:center!important;justify-content:center!important;display:flex!important;align-items:center!important;}',
-      '.nav-item.active{border-left-color:transparent!important;border-top-color:var(--accent)!important;}',
-      '.nav-icon{font-size:20px!important;} .nav-item span{font-size:9px!important;}',
-      '.main{margin-left:0!important;padding:12px 10px!important;padding-bottom:80px!important;}',
+      '#mobile-menu-btn{display:flex!important;}',
+      '.sidebar{width:250px!important;height:100vh!important;position:fixed!important;top:0!important;left:0!important;bottom:auto!important;right:auto!important;flex-direction:column!important;padding:24px 0!important;border-right:1px solid var(--border)!important;border-top:none!important;z-index:300!important;overflow-y:auto!important;overflow-x:hidden!important;display:flex!important;transform:translateX(-100%)!important;transition:transform .25s ease!important;}',
+      '.sidebar.drawer-open{transform:translateX(0)!important;}',
+      '.logo{display:block!important;} .sidebar-footer{display:block!important;}',
+      '.nav{display:flex!important;flex-direction:column!important;width:100%!important;}',
+      '.nav-item{flex-direction:row!important;gap:12px!important;padding:12px 24px!important;font-size:14px!important;width:auto!important;justify-content:flex-start!important;text-align:left!important;}',
+      '.nav-item.active{border-left-color:var(--accent)!important;border-top-color:transparent!important;}',
+      '.nav-icon{font-size:18px!important;} .nav-item span{font-size:14px!important;white-space:normal!important;overflow:visible!important;max-width:none!important;}',
+      '.main{margin-left:0!important;padding:16px 12px!important;padding-top:64px!important;}',
       '.cards-grid{grid-template-columns:1fr 1fr!important;gap:8px!important;}',
       '.two-col{grid-template-columns:1fr!important;} .form-grid{grid-template-columns:1fr!important;}',
       '.form-group.full{grid-column:1!important;} .page-title{font-size:18px!important;}',
