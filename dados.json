@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-08-11T18:53:11.332Z",
+  "savedAt": "2026-08-11T18:56:14.301Z",
   "data": {
     "fp_cats": [
       {
@@ -384,6 +384,32 @@
     ],
     "fp_transactions": [
       {
+        "id": 1786474449957,
+        "type": "expense",
+        "amount": 440,
+        "cat": "Empresa",
+        "subcat": "Inestimento PC - Rafa",
+        "desc": "Placa de video (💜 Nubank 10/10)",
+        "date": "2027-06-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1786474449947,
+        "realDate": "2027-06-17"
+      },
+      {
+        "id": 1786474449956,
+        "type": "expense",
+        "amount": 440,
+        "cat": "Empresa",
+        "subcat": "Inestimento PC - Rafa",
+        "desc": "Placa de video (💜 Nubank 9/10)",
+        "date": "2027-05-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1786474449947,
+        "realDate": "2027-05-17"
+      },
+      {
         "id": 1782165180020,
         "type": "expense",
         "amount": 19.9,
@@ -406,6 +432,19 @@
         "source": "cartao",
         "card": "nubank",
         "purchaseId": 1782165404290
+      },
+      {
+        "id": 1786474449955,
+        "type": "expense",
+        "amount": 440,
+        "cat": "Empresa",
+        "subcat": "Inestimento PC - Rafa",
+        "desc": "Placa de video (💜 Nubank 8/10)",
+        "date": "2027-04-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1786474449947,
+        "realDate": "2027-04-17"
       },
       {
         "id": 1782165180019,
@@ -432,6 +471,19 @@
         "purchaseId": 1782165404290
       },
       {
+        "id": 1786474449954,
+        "type": "expense",
+        "amount": 440,
+        "cat": "Empresa",
+        "subcat": "Inestimento PC - Rafa",
+        "desc": "Placa de video (💜 Nubank 7/10)",
+        "date": "2027-03-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1786474449947,
+        "realDate": "2027-03-17"
+      },
+      {
         "id": 1782165180018,
         "type": "expense",
         "amount": 19.9,
@@ -456,6 +508,19 @@
         "purchaseId": 1782165404290
       },
       {
+        "id": 1786474449953,
+        "type": "expense",
+        "amount": 440,
+        "cat": "Empresa",
+        "subcat": "Inestimento PC - Rafa",
+        "desc": "Placa de video (💜 Nubank 6/10)",
+        "date": "2027-02-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1786474449947,
+        "realDate": "2027-02-17"
+      },
+      {
         "id": 1782165180017,
         "type": "expense",
         "amount": 19.9,
@@ -478,6 +543,19 @@
         "source": "cartao",
         "card": "nubank",
         "purchaseId": 1782165404290
+      },
+      {
+        "id": 1786474449952,
+        "type": "expense",
+        "amount": 440,
+        "cat": "Empresa",
+        "subcat": "Inestimento PC - Rafa",
+        "desc": "Placa de video (💜 Nubank 5/10)",
+        "date": "2027-01-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1786474449947,
+        "realDate": "2027-01-17"
       },
       {
         "id": 1779321938032,
@@ -516,6 +594,19 @@
         "purchaseId": 1782165404290
       },
       {
+        "id": 1786474449951,
+        "type": "expense",
+        "amount": 440,
+        "cat": "Empresa",
+        "subcat": "Inestimento PC - Rafa",
+        "desc": "Placa de video (💜 Nubank 4/10)",
+        "date": "2026-12-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1786474449947,
+        "realDate": "2026-12-17"
+      },
+      {
         "id": 1779321938031,
         "type": "expense",
         "amount": 54.72,
@@ -550,6 +641,19 @@
         "source": "cartao",
         "card": "nubank",
         "purchaseId": 1782165404290
+      },
+      {
+        "id": 1786474449950,
+        "type": "expense",
+        "amount": 440,
+        "cat": "Empresa",
+        "subcat": "Inestimento PC - Rafa",
+        "desc": "Placa de video (💜 Nubank 3/10)",
+        "date": "2026-11-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1786474449947,
+        "realDate": "2026-11-17"
       },
       {
         "id": 1779321938030,
@@ -637,6 +741,19 @@
         "purchaseId": 1782165434735
       },
       {
+        "id": 1786474449949,
+        "type": "expense",
+        "amount": 440,
+        "cat": "Empresa",
+        "subcat": "Inestimento PC - Rafa",
+        "desc": "Placa de video (💜 Nubank 2/10)",
+        "date": "2026-10-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1786474449947,
+        "realDate": "2026-10-17"
+      },
+      {
         "id": 1779321938029,
         "type": "expense",
         "amount": 54.72,
@@ -696,6 +813,32 @@
         "source": "cartao",
         "card": "nubank",
         "purchaseId": 1782165434735
+      },
+      {
+        "id": 1786474449948,
+        "type": "expense",
+        "amount": 440,
+        "cat": "Empresa",
+        "subcat": "Inestimento PC - Rafa",
+        "desc": "Placa de video (💜 Nubank 1/10)",
+        "date": "2026-09-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1786474449947,
+        "realDate": "2026-09-17"
+      },
+      {
+        "id": 1786474501384,
+        "type": "expense",
+        "amount": 33.4,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "❤ Cartao de todos (💜 Nubank)",
+        "date": "2026-09-17",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1786474501383,
+        "subId": 1780338913454
       },
       {
         "id": 1779321938028,
@@ -3240,6 +3383,17 @@
         "installmentVal": 34.92
       },
       {
+        "id": 1786474449947,
+        "card": "nubank",
+        "date": "2026-08-10",
+        "desc": "Placa de video",
+        "cat": "Empresa",
+        "subcat": "Inestimento PC - Rafa",
+        "total": 4400,
+        "parcelas": 10,
+        "installmentVal": 440
+      },
+      {
         "id": 1785937834348,
         "card": "inter",
         "date": "2026-08-08",
@@ -4849,6 +5003,18 @@
         "total": 492.48,
         "parcelas": 9,
         "installmentVal": 54.72
+      },
+      {
+        "id": 1786474501383,
+        "card": "nubank",
+        "date": "2026-08-10",
+        "desc": "❤ Cartao de todos",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 33.4,
+        "parcelas": 1,
+        "installmentVal": 33.4,
+        "subId": 1780338913454
       }
     ],
     "fp_invest_boxes": [
@@ -5315,7 +5481,8 @@
         "card": "nubank",
         "confirmedMonths": [
           "2026-07",
-          "2026-08"
+          "2026-08",
+          "2026-09"
         ]
       },
       {
