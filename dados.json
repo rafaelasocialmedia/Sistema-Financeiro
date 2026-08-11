@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-08-11T18:56:14.301Z",
+  "savedAt": "2026-08-11T19:41:28.872Z",
   "data": {
     "fp_cats": [
       {
@@ -5024,7 +5024,9 @@
         "emoji": "🛡️",
         "color": "blue",
         "goal": 42000,
-        "notes": "Meta: 6 meses de gastos fixos (~R$ 7.000/mês)"
+        "notes": "Meta: 6 meses de gastos fixos (~R$ 7.000/mês)",
+        "monthly": 500,
+        "rate": 0
       },
       {
         "id": "ib2",
@@ -5033,7 +5035,8 @@
         "color": "accent",
         "goal": 50000,
         "notes": "Prefixado 13,86% a.a. — vencimento Jan/2029",
-        "rate": 0
+        "rate": 0,
+        "monthly": 2500
       },
       {
         "id": "ib3",
@@ -5049,7 +5052,9 @@
         "emoji": "💸",
         "color": "purple",
         "goal": 2000,
-        "notes": ""
+        "notes": "",
+        "monthly": 600,
+        "rate": 0
       },
       {
         "id": "ib_id_1783089690987_x68ue",
@@ -5057,7 +5062,9 @@
         "emoji": "💻",
         "color": "red",
         "goal": 6000,
-        "notes": ""
+        "notes": "",
+        "monthly": 600,
+        "rate": 0
       }
     ],
     "fp_invest_aportes": [
