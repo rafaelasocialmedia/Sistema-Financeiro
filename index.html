@@ -401,6 +401,14 @@
     .modal-close{background:none;border:none;color:var(--text-muted);font-size:20px;cursor:pointer;padding:0;line-height:1;transition:color .2s;}
     .modal-close:hover{color:var(--text);}
 
+    /* NOTA FISCAL (NFC-e) — leitura de QR code */
+    .nfce-video-wrap{position:relative;width:100%;border-radius:var(--radius-sm);overflow:hidden;background:#000;aspect-ratio:1/1;max-height:360px;}
+    .nfce-video-wrap video{width:100%;height:100%;object-fit:cover;display:block;}
+    .nfce-video-frame{position:absolute;inset:12%;border:3px solid var(--accent);border-radius:var(--radius-sm);pointer-events:none;box-shadow:0 0 0 2000px rgba(0,0,0,.35);}
+    .nfce-step{display:none;}
+    .nfce-loading-spin{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;margin:0 auto 14px;animation:nfce-spin 1s linear infinite;}
+    @keyframes nfce-spin{to{transform:rotate(360deg);}}
+
     /* ASSINATURAS */
     .sub-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;transition:border-color .2s;}
     .sub-card:hover{border-color:var(--text-dim);}
@@ -683,6 +691,7 @@
             <div class="page-title">💰 Movimentos <button class="help-btn" onclick="toggleHelp('transactions')">?</button></div>
             <div class="page-subtitle">Transações, cartões e recorrentes</div>
           </div>
+          <button class="btn btn-primary" onclick="openNfceScanner()">📷 Ler nota fiscal</button>
         </div>
       </div>
       <div class="sub-tabs">
@@ -2224,6 +2233,25 @@
           <div style="margin-top:8px;font-size:12px;color:var(--text-muted)" id="github-last-sync"></div>
         </div>
       </div>
+
+      <!-- NOTA FISCAL (NFC-e) — configuração da função na Vercel -->
+      <div class="panel" id="nfce-config-panel" style="border-color:var(--accent);margin-bottom:18px">
+        <div class="panel-title" style="color:var(--accent)">📷 Nota Fiscal — leitura automática</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:14px">
+          Cole aqui a URL da função publicada na Vercel (algo como <code>https://seu-projeto.vercel.app/api/nfce</code>) pra ativar o botão "📷 Ler nota fiscal" em Movimentos.
+        </div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>URL da função (Vercel)</label>
+            <input type="text" id="nfce-api-url-input" placeholder="https://seu-projeto.vercel.app/api/nfce" autocomplete="off">
+          </div>
+          <div class="form-group full" style="flex-direction:row;gap:8px">
+            <button class="btn btn-primary" style="flex:1" onclick="saveNfceApiUrl()">💾 Salvar URL</button>
+            <button class="btn btn-ghost" onclick="clearNfceApiUrl()">🗑️ Remover</button>
+          </div>
+        </div>
+        <div id="nfce-api-url-status" style="margin-top:8px;font-size:12px;color:var(--text-muted)"></div>
+      </div>
       <div class="two-col">
         <div class="panel">
           <div class="panel-title">Nova Categoria</div>
@@ -2561,6 +2589,82 @@
   </div>
 </div>
 
+<!-- ═══════════ NOTA FISCAL (NFC-e) — leitura de QR code ═══════════ -->
+<div class="modal-overlay" id="nfce-modal" style="display:none" onclick="if(event.target===this)closeNfceScanner()">
+  <div class="modal-box" style="max-width:520px">
+    <div class="modal-title">
+      📷 Ler Nota Fiscal
+      <button class="modal-close" onclick="closeNfceScanner()">×</button>
+    </div>
+
+    <!-- Passo: câmera -->
+    <div class="nfce-step" id="nfce-step-scan">
+      <div class="nfce-video-wrap">
+        <video id="nfce-video" autoplay muted playsinline></video>
+        <div class="nfce-video-frame"></div>
+      </div>
+      <canvas id="nfce-canvas" style="display:none"></canvas>
+      <div style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:10px">Aponte a câmera pro QR code da nota fiscal</div>
+      <button class="btn btn-ghost" style="width:100%;margin-top:12px" onclick="closeNfceScanner()">Cancelar</button>
+    </div>
+
+    <!-- Passo: buscando itens -->
+    <div class="nfce-step" id="nfce-step-loading">
+      <div style="text-align:center;padding:30px 0">
+        <div class="nfce-loading-spin"></div>
+        <div style="color:var(--text-muted);font-size:13px">Buscando os itens da nota...</div>
+      </div>
+    </div>
+
+    <!-- Passo: erro -->
+    <div class="nfce-step" id="nfce-step-error">
+      <div style="text-align:center;padding:20px 0">
+        <div style="font-size:32px;margin-bottom:10px">⚠️</div>
+        <div id="nfce-error-msg" style="color:var(--text);font-size:14px;margin-bottom:18px"></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-primary" style="flex:1" onclick="openNfceScanner()">Tentar de novo</button>
+          <button class="btn btn-ghost" style="flex:1" onclick="closeNfceScanner()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Passo: classificar produto novo -->
+    <div class="nfce-step" id="nfce-step-classify">
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px" id="nfce-classify-remaining-wrap">Produto novo (faltam <span id="nfce-classify-remaining"></span>) — em qual categoria ele entra?</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:14px">
+        <div id="nfce-classify-product" style="font-weight:600;font-size:14px"></div>
+        <div id="nfce-classify-value" style="font-family:var(--font-num);color:var(--gold);font-size:13px;margin-top:2px"></div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Categoria</label>
+          <select id="nfce-classify-cat" onchange="onNfceClassifyCatChange()"></select>
+        </div>
+        <div class="form-group" id="nfce-classify-subcat-group" style="display:none">
+          <label>Subcategoria</label>
+          <select id="nfce-classify-subcat"></select>
+        </div>
+        <div class="form-group full" style="flex-direction:row;align-items:center;gap:8px">
+          <input type="checkbox" id="nfce-classify-remember" checked style="width:auto">
+          <label style="margin:0" for="nfce-classify-remember">Lembrar esse produto pra próxima vez</label>
+        </div>
+        <div class="form-group full">
+          <button class="btn btn-primary" style="width:100%" onclick="confirmNfceClassify()">Confirmar categoria</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Passo: revisão final por categoria -->
+    <div class="nfce-step" id="nfce-step-review">
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px">Confira os valores por categoria e escolha a forma de pagamento de cada um. Você pode dividir a mesma nota entre formas diferentes.</div>
+      <div id="nfce-review-list"></div>
+      <button class="btn btn-primary" style="width:100%;margin-top:6px" onclick="confirmNfceImport()">✓ Lançar em Movimentos</button>
+      <button class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="closeNfceScanner()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.js"></script>
 <script>
 'use strict';
 
@@ -2809,6 +2913,37 @@ function updateGithubSyncUI() {
     if (actionsEl) actionsEl.style.display = 'none';
     if (formEl)    formEl.style.display    = 'block';
   }
+}
+
+// ══════════════════════════════════════════════════════════════
+// NOTA FISCAL (NFC-e) — configuração da URL da função (Vercel)
+// ══════════════════════════════════════════════════════════════
+function getNfceApiUrl() {
+  return localStorage.getItem('fp_nfce_api_url') || '';
+}
+
+function saveNfceApiUrl() {
+  var input = document.getElementById('nfce-api-url-input');
+  var url = input ? input.value.trim().replace(/\/$/, '') : '';
+  if (!url) return notify('Informe a URL', true);
+  localStorage.setItem('fp_nfce_api_url', url);
+  if (input) input.value = '';
+  notify('✓ URL salva!');
+  updateNfceApiUrlUI();
+}
+
+function clearNfceApiUrl() {
+  localStorage.removeItem('fp_nfce_api_url');
+  updateNfceApiUrlUI();
+  notify('URL removida.');
+}
+
+function updateNfceApiUrlUI() {
+  var el = document.getElementById('nfce-api-url-status');
+  if (!el) return;
+  var url = getNfceApiUrl();
+  el.textContent = url ? ('🟢 Configurado: ' + url) : '🔴 Ainda não configurado — a leitura de nota fiscal não vai funcionar até você colar a URL.';
+  el.style.color = url ? 'var(--accent)' : 'var(--text-muted)';
 }
 
 function syncToGithub() {
@@ -3258,16 +3393,35 @@ function _addTxFromUnifiedForm() {
   if (!cat)                   return notify('Escolha uma categoria', true);
   if (!date)                  return notify('Informe a data', true);
 
-  var txs = loadKey('transactions');
-  txs.push({id: Date.now(), type: type, amount: amount, cat: cat, subcat: subcat, desc: desc, date: date, payment: payment, paymentAccount: paymentAccount});
-  txs.sort(function(a,b){ return b.date.localeCompare(a.date); });
-  saveKey('transactions', txs);
+  addSimpleTransaction({type: type, amount: amount, cat: cat, subcat: subcat, desc: desc, date: date, payment: payment, paymentAccount: paymentAccount});
 
   document.getElementById('tx-amount').value = '';
   document.getElementById('tx-desc').value   = '';
   notify('✓ Transação adicionada!');
   renderTxTable();
   renderDashboard();
+}
+
+// Núcleo de "criar uma transação simples" (dinheiro/pix), extraído daqui de
+// dentro pra poder ser reaproveitado por outras telas (ex: leitura de nota
+// fiscal) sem duplicar a lógica de salvar/ordenar. Comportamento idêntico ao
+// que já existia antes.
+function addSimpleTransaction(opts) {
+  var txs = loadKey('transactions');
+  txs.push({
+    id: opts.id || Date.now(),
+    type: opts.type,
+    amount: opts.amount,
+    cat: opts.cat,
+    subcat: opts.subcat || '',
+    desc: opts.desc || '',
+    date: opts.date,
+    payment: opts.payment,
+    paymentAccount: opts.paymentAccount || ''
+  });
+  txs.sort(function(a,b){ return b.date.localeCompare(a.date); });
+  saveKey('transactions', txs);
+  return txs;
 }
 
 function _addCarFromUnifiedForm() {
@@ -3284,7 +3438,27 @@ function _addCarFromUnifiedForm() {
   if (!desc)          return notify('Informe a descrição', true);
   if (!val || val<=0) return notify('Informe o valor', true);
 
-  var purchaseId   = Date.now();
+  var result = addCardPurchase({card: card, date: date, desc: desc, cat: cat, subcat: subcat, val: val, parc: parc});
+
+  document.getElementById('tx-amount').value = '';
+  document.getElementById('tx-desc').value   = '';
+  document.getElementById('tx-parcelas').value = '1';
+  document.getElementById('tx-parcela-val').value = '';
+  notify('✓ Compra lançada! ' + parc + 'x de ' + fmt(result.installVal));
+  renderTxTable();
+  renderCartoes();
+  renderDashboard();
+}
+
+// Núcleo de "lançar uma compra no cartão" (gera as parcelas na fatura certa),
+// extraído daqui de dentro pra poder ser reaproveitado por outras telas (ex:
+// leitura de nota fiscal) sem duplicar a lógica de fatura/parcelamento.
+// Comportamento idêntico ao que já existia antes.
+function addCardPurchase(opts) {
+  var card = opts.card, date = opts.date, desc = opts.desc, cat = opts.cat;
+  var subcat = opts.subcat || '', val = opts.val, parc = opts.parc || 1;
+
+  var purchaseId   = opts.id || Date.now();
   var installVal   = val / parc;
   var cardInfo     = CARDS[card];
 
@@ -3314,14 +3488,7 @@ function _addCarFromUnifiedForm() {
   txs.sort(function(a,b){ return b.date.localeCompare(a.date); });
   saveKey('transactions', txs);
 
-  document.getElementById('tx-amount').value = '';
-  document.getElementById('tx-desc').value   = '';
-  document.getElementById('tx-parcelas').value = '1';
-  document.getElementById('tx-parcela-val').value = '';
-  notify('✓ Compra lançada! ' + parc + 'x de ' + fmt(installVal));
-  renderTxTable();
-  renderCartoes();
-  renderDashboard();
+  return {purchaseId: purchaseId, installVal: installVal};
 }
 
 function addTransaction() {
@@ -8267,6 +8434,341 @@ function quickPayTerreno(ev) {
 }
 
 // ══════════════════════════════════════════════════════════════
+// NOTA FISCAL (NFC-e) — leitura de QR code, busca dos itens e
+// categorização automática por produto
+// ══════════════════════════════════════════════════════════════
+
+// --- Dicionário produto → categoria (aprende com o tempo) ---
+function normalizeProductName(name) {
+  return String(name || '')
+    .toUpperCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // remove acentos
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function loadProductMap()    { return loadKey('nfce_product_map', {}); }
+function saveProductMap(map) { saveKey('nfce_product_map', map); }
+
+function getProductCategory(name) {
+  var map = loadProductMap();
+  return map[normalizeProductName(name)] || null;
+}
+
+function setProductCategory(name, cat, subcat) {
+  var map = loadProductMap();
+  map[normalizeProductName(name)] = {cat: cat, subcat: subcat || ''};
+  saveProductMap(map);
+}
+
+// --- Controle dos "passos" do modal ---
+function nfceGoToStep(step) {
+  ['scan','loading','error','classify','review'].forEach(function(s){
+    var el = document.getElementById('nfce-step-'+s);
+    if (el) el.style.display = (s === step) ? 'block' : 'none';
+  });
+}
+
+function nfceShowError(msg) {
+  stopNfceCamera();
+  var el = document.getElementById('nfce-error-msg');
+  if (el) el.textContent = msg;
+  nfceGoToStep('error');
+}
+
+// --- Câmera e leitura do QR code ---
+var _nfceStream = null;
+var _nfceScanRAF = null;
+
+function openNfceScanner() {
+  if (!getNfceApiUrl()) {
+    notify('Configure a URL da função (Vercel) em Categorias & Config antes de usar essa funcionalidade.', true);
+    return;
+  }
+  document.getElementById('nfce-modal').style.display = 'flex';
+  nfceGoToStep('scan');
+  startNfceCamera();
+}
+
+function closeNfceScanner() {
+  stopNfceCamera();
+  document.getElementById('nfce-modal').style.display = 'none';
+}
+
+function startNfceCamera() {
+  var video = document.getElementById('nfce-video');
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    return nfceShowError('Esse navegador não permite acesso à câmera. Tente pelo Chrome.');
+  }
+  navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+    .then(function(stream) {
+      _nfceStream = stream;
+      video.srcObject = stream;
+      video.play();
+      _nfceScanRAF = requestAnimationFrame(nfceScanFrame);
+    })
+    .catch(function(err) {
+      nfceShowError('Não consegui acessar a câmera (' + err.message + '). Verifique a permissão de câmera do navegador.');
+    });
+}
+
+function stopNfceCamera() {
+  if (_nfceScanRAF) cancelAnimationFrame(_nfceScanRAF);
+  _nfceScanRAF = null;
+  if (_nfceStream) {
+    _nfceStream.getTracks().forEach(function(t){ t.stop(); });
+    _nfceStream = null;
+  }
+}
+
+function nfceScanFrame() {
+  var video  = document.getElementById('nfce-video');
+  var canvas = document.getElementById('nfce-canvas');
+  if (!video || !canvas || video.readyState !== video.HAVE_ENOUGH_DATA) {
+    _nfceScanRAF = requestAnimationFrame(nfceScanFrame);
+    return;
+  }
+  canvas.width  = video.videoWidth;
+  canvas.height = video.videoHeight;
+  var ctx = canvas.getContext('2d');
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  var code = (typeof jsQR === 'function') ? jsQR(imageData.data, imageData.width, imageData.height) : null;
+  if (code && code.data) {
+    stopNfceCamera();
+    onNfceQrDetected(code.data);
+  } else {
+    _nfceScanRAF = requestAnimationFrame(nfceScanFrame);
+  }
+}
+
+// --- Busca dos itens na função da Vercel ---
+function onNfceQrDetected(qrText) {
+  if (!/^https?:\/\//i.test(qrText)) {
+    return nfceShowError('O QR code lido não parece ser de uma nota fiscal (NFC-e). Tente novamente.');
+  }
+  nfceGoToStep('loading');
+  var apiUrl = getNfceApiUrl();
+  fetch(apiUrl + '?url=' + encodeURIComponent(qrText))
+    .then(function(res){ return res.json().catch(function(){ return null; }).then(function(body){ return {ok: res.ok, body: body}; }); })
+    .then(function(r){
+      if (!r.ok || !r.body || r.body.ok === false || !r.body.items || !r.body.items.length) {
+        var msg = (r.body && r.body.error) ? r.body.error : 'Não consegui buscar os itens dessa nota automaticamente.';
+        throw new Error(msg);
+      }
+      nfceStartReview(r.body.items, r.body.estabelecimento || '', r.body.data || '');
+    })
+    .catch(function(err){
+      console.error('Falha ao buscar itens da nota:', err);
+      nfceShowError((err && err.message ? err.message : 'Falha ao buscar os itens dessa nota.') + ' Isso pode acontecer dependendo do estado que emitiu a nota — você pode tentar de novo ou lançar essa compra manualmente pelo formulário de Movimentos.');
+    });
+}
+
+// --- Categorização automática (dicionário) + agrupamento por categoria ---
+var _nfceState = null;
+
+function nfceStartReview(items, estabelecimento, dataCompra) {
+  var todayStr = new Date().toISOString().slice(0,10);
+  _nfceState = {
+    estabelecimento: estabelecimento,
+    date: (dataCompra && /^\d{4}-\d{2}-\d{2}$/.test(dataCompra)) ? dataCompra : todayStr,
+    pending: [],
+    groups: {},
+    groupList: []
+  };
+  items.forEach(function(it){
+    var name = (it && it.name) ? String(it.name) : '';
+    var value = (it && +it.value > 0) ? +it.value : 0;
+    if (name && value > 0) _nfceState.pending.push({name: name, value: value});
+  });
+  nfceProcessPending();
+}
+
+function nfceProcessPending() {
+  var state = _nfceState;
+  var stillPending = [];
+  state.pending.forEach(function(it){
+    var known = getProductCategory(it.name);
+    if (known && known.cat) {
+      nfceAddToGroup(known.cat, known.subcat, it);
+    } else {
+      stillPending.push(it);
+    }
+  });
+  state.pending = stillPending;
+
+  if (state.pending.length) {
+    nfceGoToStep('classify');
+    nfceRenderClassifyStep();
+  } else {
+    nfceGoToStep('review');
+    nfceRenderReviewStep();
+  }
+}
+
+function nfceAddToGroup(cat, subcat, item) {
+  var key = cat + '||' + (subcat || '');
+  var g = _nfceState.groups[key];
+  if (!g) {
+    var cardKeys = Object.keys(CARDS);
+    g = _nfceState.groups[key] = {
+      cat: cat, subcat: subcat || '', total: 0, items: [],
+      payment: 'dinheiro', paymentAccount: '', card: cardKeys[0] || '', parc: 1
+    };
+    _nfceState.groupList.push(g);
+  }
+  g.total += (+item.value || 0);
+  g.items.push(item);
+}
+
+function nfceRenderClassifyStep() {
+  var state = _nfceState;
+  var item = state.pending[0];
+  if (!item) { nfceGoToStep('review'); nfceRenderReviewStep(); return; }
+  document.getElementById('nfce-classify-product').textContent   = item.name;
+  document.getElementById('nfce-classify-value').textContent     = fmt(item.value);
+  document.getElementById('nfce-classify-remaining').textContent = String(state.pending.length);
+  populateNfceClassifyCatSelect();
+}
+
+function populateNfceClassifyCatSelect() {
+  var sel = document.getElementById('nfce-classify-cat');
+  var cats = getCatsByType('expense');
+  sel.innerHTML = cats.map(function(c){ return '<option value="'+escHtml(c.name)+'">'+c.emoji+' '+escHtml(c.name)+'</option>'; }).join('');
+  onNfceClassifyCatChange();
+}
+
+function onNfceClassifyCatChange() {
+  var catName  = document.getElementById('nfce-classify-cat').value;
+  var subs     = getSubcats(catName);
+  var subSel   = document.getElementById('nfce-classify-subcat');
+  var subGroup = document.getElementById('nfce-classify-subcat-group');
+  if (subs.length) {
+    subGroup.style.display = '';
+    subSel.innerHTML = subs.map(function(s){ return '<option value="'+escHtml(s.name)+'">'+escHtml(s.name)+'</option>'; }).join('');
+  } else {
+    subGroup.style.display = 'none';
+    subSel.innerHTML = '';
+  }
+}
+
+function confirmNfceClassify() {
+  var state = _nfceState;
+  var item  = state.pending.shift();
+  var cat   = document.getElementById('nfce-classify-cat').value;
+  var subcatGroup = document.getElementById('nfce-classify-subcat-group');
+  var subcat = (subcatGroup && subcatGroup.style.display !== 'none') ? document.getElementById('nfce-classify-subcat').value : '';
+  var remember = document.getElementById('nfce-classify-remember').checked;
+
+  if (!cat) { state.pending.unshift(item); return notify('Escolha uma categoria', true); }
+
+  if (remember) setProductCategory(item.name, cat, subcat);
+  nfceAddToGroup(cat, subcat, item);
+
+  if (state.pending.length) {
+    nfceRenderClassifyStep();
+  } else {
+    nfceGoToStep('review');
+    nfceRenderReviewStep();
+  }
+}
+
+// --- Revisão final: forma de pagamento por categoria ---
+function nfceCardSelectOptions(keys, selected) {
+  return keys.map(function(k){
+    var c = CARDS[k];
+    if (!c) return '';
+    return '<option value="'+k+'"'+(k===selected?' selected':'')+'>'+c.icon+' '+c.name+'</option>';
+  }).join('');
+}
+
+function nfceRenderReviewStep() {
+  var state  = _nfceState;
+  var groups = state.groupList;
+
+  var html = groups.map(function(g, idx){
+    var label = g.subcat ? (g.cat + ' → ' + g.subcat) : g.cat;
+    var itemsList = g.items.map(function(it){
+      return '<div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-dim);padding:2px 0"><span>'+escHtml(it.name)+'</span><span>'+fmt(it.value)+'</span></div>';
+    }).join('');
+    return ''
+      + '<div class="panel" style="margin-bottom:12px">'
+      +   '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'
+      +     '<div style="font-weight:600">'+escHtml(label)+'</div>'
+      +     '<div style="font-family:var(--font-num);font-weight:700;color:var(--gold)">'+fmt(g.total)+'</div>'
+      +   '</div>'
+      +   '<div style="margin-bottom:10px">'+itemsList+'</div>'
+      +   '<div class="pay-mode-toggle">'
+      +     '<div class="pay-mode-btn'+(g.payment==='dinheiro'?' active':'')+'" onclick="setNfceGroupPayment('+idx+',\'dinheiro\')">💵 Dinheiro</div>'
+      +     '<div class="pay-mode-btn'+(g.payment==='pix'?' active':'')+'" onclick="setNfceGroupPayment('+idx+',\'pix\')">📱 Pix</div>'
+      +     '<div class="pay-mode-btn card-mode'+(g.payment==='cartao'?' active':'')+'" onclick="setNfceGroupPayment('+idx+',\'cartao\')">💳 Cartão</div>'
+      +   '</div>'
+      +   '<div id="nfce-group-extra-'+idx+'" style="margin-top:8px"></div>'
+      + '</div>';
+  }).join('');
+
+  document.getElementById('nfce-review-list').innerHTML = html || '<div style="text-align:center;color:var(--text-muted)">Nenhum item encontrado.</div>';
+  groups.forEach(function(g, idx){ nfceRenderGroupExtra(idx); });
+}
+
+function setNfceGroupPayment(idx, mode) {
+  _nfceState.groupList[idx].payment = mode;
+  nfceRenderReviewStep();
+}
+
+function nfceRenderGroupExtra(idx) {
+  var g  = _nfceState.groupList[idx];
+  var el = document.getElementById('nfce-group-extra-'+idx);
+  if (!el) return;
+
+  if (g.payment === 'pix') {
+    el.innerHTML = '<div class="form-group"><label>Conta Pix</label><select onchange="_nfceState.groupList['+idx+'].paymentAccount=this.value">'
+      + nfceCardSelectOptions(PIX_BANKS, g.paymentAccount) + '</select></div>';
+  } else if (g.payment === 'cartao') {
+    var cardKeys = Object.keys(CARDS);
+    if (!g.card) g.card = cardKeys[0] || '';
+    var parcOptions = '';
+    for (var p = 1; p <= 12; p++) {
+      parcOptions += '<option value="'+p+'"'+(g.parc===p?' selected':'')+'>'+p+'x'+(p===1?' (à vista)':'')+'</option>';
+    }
+    el.innerHTML = ''
+      + '<div class="form-grid">'
+      +   '<div class="form-group"><label>Cartão</label><select onchange="_nfceState.groupList['+idx+'].card=this.value">'+nfceCardSelectOptions(cardKeys, g.card)+'</select></div>'
+      +   '<div class="form-group"><label>Parcelas</label><select onchange="_nfceState.groupList['+idx+'].parc=parseInt(this.value)">'+parcOptions+'</select></div>'
+      + '</div>';
+  } else {
+    el.innerHTML = '';
+  }
+}
+
+// --- Confirmação final: cria as transações reaproveitando exatamente as
+// mesmas funções que o formulário normal de Movimentos já usa ---
+function confirmNfceImport() {
+  var state  = _nfceState;
+  var groups = state.groupList || [];
+  if (!groups.length) return notify('Nada pra lançar', true);
+
+  var baseId = Date.now();
+  groups.forEach(function(g, idx){
+    var label = g.subcat ? g.subcat : g.cat;
+    var desc  = 'Nota Fiscal' + (state.estabelecimento ? ' - ' + state.estabelecimento : '') + ' (' + label + ')';
+    var entryId = baseId + idx * 1000;
+
+    if (g.payment === 'cartao') {
+      addCardPurchase({ id: entryId, card: g.card, date: state.date, desc: desc, cat: g.cat, subcat: g.subcat, val: g.total, parc: g.parc || 1 });
+    } else {
+      addSimpleTransaction({ id: entryId, type: 'expense', amount: g.total, cat: g.cat, subcat: g.subcat, desc: desc, date: state.date, payment: g.payment, paymentAccount: g.paymentAccount || '' });
+    }
+  });
+
+  notify('✓ Nota fiscal lançada! ' + groups.length + ' categoria(s) atualizada(s).');
+  closeNfceScanner();
+  renderTxTable();
+  renderCartoes();
+  renderDashboard();
+}
+
+// ══════════════════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════════════════
 (function init(){
@@ -8289,6 +8791,7 @@ function quickPayTerreno(ev) {
   populateCarCatSelect();
   populateQlCatSelect();
   try { populateCardSelects(); } catch(e) { console.error('populateCardSelects falhou:', e); }
+  try { updateNfceApiUrlUI(); } catch(e) { console.error('updateNfceApiUrlUI falhou:', e); }
 
   // Layout mobile roda ANTES de qualquer migração de dados — assim o visual do
   // celular nunca fica bloqueado se alguma migração abaixo der erro com dados antigos
