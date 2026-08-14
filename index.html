@@ -2643,7 +2643,18 @@
         </div>
         <div class="form-group" id="nfce-classify-subcat-group" style="display:none">
           <label>Subcategoria</label>
-          <select id="nfce-classify-subcat"></select>
+          <div class="subcat-row">
+            <select id="nfce-classify-subcat"></select>
+            <button type="button" class="btn-icon" onclick="openNfceAddSubcatPanel()" title="Criar nova subcategoria">+</button>
+          </div>
+        </div>
+        <div class="form-group full" id="nfce-add-subcat-panel" style="display:none;background:var(--surface);border:1px solid var(--accent);border-radius:var(--radius-sm);padding:10px">
+          <div style="font-size:12px;margin-bottom:8px">Nova subcategoria em "<span id="nfce-add-subcat-catname" style="color:var(--accent)"></span>"</div>
+          <div style="display:flex;gap:8px">
+            <input type="text" id="nfce-new-subcat-name" placeholder="Nome da subcategoria..." style="flex:1" onkeydown="if(event.key==='Enter')saveNfceNewSubcatInline()">
+            <button type="button" class="btn btn-primary btn-sm" onclick="saveNfceNewSubcatInline()">Criar</button>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="closeNfceAddSubcatPanel()">Cancelar</button>
+          </div>
         </div>
         <div class="form-group full" style="flex-direction:row;align-items:center;gap:8px">
           <input type="checkbox" id="nfce-classify-remember" checked style="width:auto">
@@ -8681,13 +8692,46 @@ function onNfceClassifyCatChange() {
   var subs     = getSubcats(catName);
   var subSel   = document.getElementById('nfce-classify-subcat');
   var subGroup = document.getElementById('nfce-classify-subcat-group');
+  // Sempre mostra o grupo (mesmo sem nenhuma subcategoria ainda) pra deixar
+  // o botão "+" disponível — assim dá pra criar a primeira subcategoria de
+  // uma categoria direto por aqui, sem precisar ir em Categorias & Config.
+  subGroup.style.display = '';
   if (subs.length) {
-    subGroup.style.display = '';
     subSel.innerHTML = subs.map(function(s){ return '<option value="'+escHtml(s.name)+'">'+escHtml(s.name)+'</option>'; }).join('');
   } else {
-    subGroup.style.display = 'none';
-    subSel.innerHTML = '';
+    subSel.innerHTML = '<option value="">— Nenhuma ainda —</option>';
   }
+  closeNfceAddSubcatPanel();
+}
+
+// ── Criar subcategoria nova direto na hora de classificar (reaproveita a
+// mesma _addSubcatToCat() que o formulário normal de Movimentos usa — ou
+// seja, salva no mesmo lugar que a aba Categorias & Config lê) ──
+function openNfceAddSubcatPanel() {
+  var catName = document.getElementById('nfce-classify-cat') ? document.getElementById('nfce-classify-cat').value : '';
+  if (!catName) return notify('Escolha uma categoria primeiro', true);
+  document.getElementById('nfce-add-subcat-catname').textContent = catName;
+  document.getElementById('nfce-add-subcat-panel').style.display = 'block';
+  document.getElementById('nfce-new-subcat-name').value = '';
+  document.getElementById('nfce-new-subcat-name').focus();
+}
+
+function closeNfceAddSubcatPanel() {
+  var panel = document.getElementById('nfce-add-subcat-panel');
+  if (panel) panel.style.display = 'none';
+}
+
+function saveNfceNewSubcatInline() {
+  var catName = document.getElementById('nfce-classify-cat') ? document.getElementById('nfce-classify-cat').value : '';
+  var subName = document.getElementById('nfce-new-subcat-name').value.trim();
+  if (!subName) return notify('Informe o nome da subcategoria', true);
+  var err = _addSubcatToCat(catName, subName);
+  if (err) return notify(err, true);
+  closeNfceAddSubcatPanel();
+  onNfceClassifyCatChange();
+  var sel = document.getElementById('nfce-classify-subcat');
+  if (sel) sel.value = subName;
+  notify('✓ Subcategoria "'+subName+'" criada!');
 }
 
 function confirmNfceClassify() {
@@ -8700,6 +8744,7 @@ function confirmNfceClassify() {
 
   if (!cat) { state.pending.unshift(item); return notify('Escolha uma categoria', true); }
 
+  closeNfceAddSubcatPanel();
   if (remember) setProductCategory(item.name, cat, subcat);
   nfceAddToGroup(cat, subcat, item);
 
@@ -8779,26 +8824,53 @@ function nfceRenderGroupExtra(idx) {
   }
 }
 
-// --- Confirmação final: cria as transações reaproveitando exatamente as
-// mesmas funções que o formulário normal de Movimentos já usa ---
+// --- Confirmação final: junta os grupos (separados por categoria na
+// classificação) em 1 lançamento por forma de pagamento, e cria as
+// transações reaproveitando exatamente as mesmas funções que o formulário
+// normal de Movimentos já usa. Só fica em lançamentos separados quando a
+// forma de pagamento for realmente diferente (dinheiro/pix/cartão), ou
+// quando for cartão/pix com cartão ou conta diferente, ou parcelamento
+// diferente — categorias misturadas na mesma forma de pagamento viram 1 só.
 function confirmNfceImport() {
   var state  = _nfceState;
   var groups = state.groupList || [];
   if (!groups.length) return notify('Nada pra lançar', true);
 
+  var desc = state.estabelecimento ? state.estabelecimento : 'Nota Fiscal';
+
+  var buckets     = {};
+  var bucketList  = [];
+  groups.forEach(function(g){
+    var key = g.payment === 'cartao' ? ('cartao|' + g.card + '|' + (g.parc || 1))
+            : g.payment === 'pix'    ? ('pix|' + (g.paymentAccount || ''))
+            : 'dinheiro';
+    var b = buckets[key];
+    if (!b) {
+      b = buckets[key] = {
+        payment: g.payment, card: g.card, parc: g.parc || 1, paymentAccount: g.paymentAccount || '',
+        total: 0, cat: g.cat, subcat: g.subcat, maxCatVal: 0
+      };
+      bucketList.push(b);
+    }
+    b.total += g.total;
+    // Quando mistura categorias na mesma forma de pagamento, guarda pro
+    // lançamento a categoria de maior valor entre elas (só uso interno —
+    // a descrição do lançamento é sempre o nome da loja, não a categoria).
+    if (g.total > b.maxCatVal) { b.cat = g.cat; b.subcat = g.subcat; b.maxCatVal = g.total; }
+  });
+
   var baseId = Date.now();
-  groups.forEach(function(g, idx){
-    var desc  = state.estabelecimento ? state.estabelecimento : 'Nota Fiscal';
+  bucketList.forEach(function(b, idx){
     var entryId = baseId + idx * 1000;
 
-    if (g.payment === 'cartao') {
-      addCardPurchase({ id: entryId, card: g.card, date: state.date, desc: desc, cat: g.cat, subcat: g.subcat, val: g.total, parc: g.parc || 1 });
+    if (b.payment === 'cartao') {
+      addCardPurchase({ id: entryId, card: b.card, date: state.date, desc: desc, cat: b.cat, subcat: b.subcat, val: b.total, parc: b.parc || 1 });
     } else {
-      addSimpleTransaction({ id: entryId, type: 'expense', amount: g.total, cat: g.cat, subcat: g.subcat, desc: desc, date: state.date, payment: g.payment, paymentAccount: g.paymentAccount || '' });
+      addSimpleTransaction({ id: entryId, type: 'expense', amount: b.total, cat: b.cat, subcat: b.subcat, desc: desc, date: state.date, payment: b.payment, paymentAccount: b.paymentAccount || '' });
     }
   });
 
-  notify('✓ Nota fiscal lançada! ' + groups.length + ' categoria(s) atualizada(s).');
+  notify('✓ Nota fiscal lançada! ' + bucketList.length + ' lançamento(s) criado(s).');
   closeNfceScanner();
   renderTxTable();
   renderCartoes();
