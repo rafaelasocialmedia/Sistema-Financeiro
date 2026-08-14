@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-08-14T21:44:11.532Z",
+  "savedAt": "2026-08-14T23:12:40.636Z",
   "data": {
     "fp_cats": [
       {
@@ -1521,6 +1521,39 @@
         "card": "nubank",
         "purchaseId": 1786020120584,
         "subId": 1779321710343
+      },
+      {
+        "id": 1786749048574,
+        "type": "expense",
+        "amount": 4.51,
+        "cat": "Alimentação",
+        "subcat": "Padaria",
+        "desc": "N.B. Dal Santos &#38; Cia Ltda",
+        "date": "2026-08-12",
+        "payment": "pix",
+        "paymentAccount": ""
+      },
+      {
+        "id": 1786749049574,
+        "type": "expense",
+        "amount": 0.89,
+        "cat": "Espiritualidade",
+        "subcat": "Comida",
+        "desc": "N.B. Dal Santos &#38; Cia Ltda",
+        "date": "2026-08-12",
+        "payment": "pix",
+        "paymentAccount": ""
+      },
+      {
+        "id": 1786749050574,
+        "type": "expense",
+        "amount": 3.99,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "N.B. Dal Santos &#38; Cia Ltda",
+        "date": "2026-08-12",
+        "payment": "pix",
+        "paymentAccount": ""
       },
       {
         "id": 1784209571466,
@@ -5653,6 +5686,14 @@
       "MASSA DOCE KG": {
         "cat": "Alimentação",
         "subcat": "Padaria"
+      },
+      "AGUA MIN.MILAG S GAS": {
+        "cat": "Espiritualidade",
+        "subcat": "Comida"
+      },
+      "DOCE LTE FRIMSA 400G": {
+        "cat": "Alimentação",
+        "subcat": "Mercado"
       }
     }
   }
