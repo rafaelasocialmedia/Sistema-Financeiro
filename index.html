@@ -8788,8 +8788,7 @@ function confirmNfceImport() {
 
   var baseId = Date.now();
   groups.forEach(function(g, idx){
-    var label = g.subcat ? g.subcat : g.cat;
-    var desc  = 'Nota Fiscal' + (state.estabelecimento ? ' - ' + state.estabelecimento : '') + ' (' + label + ')';
+    var desc  = state.estabelecimento ? state.estabelecimento : 'Nota Fiscal';
     var entryId = baseId + idx * 1000;
 
     if (g.payment === 'cartao') {
