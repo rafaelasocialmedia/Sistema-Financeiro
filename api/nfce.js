@@ -81,12 +81,24 @@ function decodeEntities(str) {
     .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
-    .replace(/\s+/g, ' ')
+    .replace(/[ \t]+/g, ' ')             // colapsa espaços/tabs repetidos (preserva quebra de linha)
+    .replace(/[ \t]*\n[ \t]*/g, '\n')    // limpa espaço em volta de cada quebra de linha
+    .replace(/\n{2,}/g, '\n')            // colapsa quebras de linha repetidas em uma só
     .trim();
 }
 
+// Remove as tags de HTML, mas ANTES marca quebra de linha real nos limites de
+// blocos (</div>, </td>, </tr>, </p>, <br>, etc.) em vez de simplesmente virar
+// espaço como uma tag qualquer. Isso preserva a "estrutura em linhas" da
+// página — essencial pra função de itens (mais abaixo) nunca grudar o nome de
+// um produto com o texto de um bloco anterior (nome da loja, CNPJ, endereço),
+// já que o nome do item (padrão [^()\n]) nunca atravessa uma quebra de linha.
 function stripTags(str) {
-  return decodeEntities(String(str || '').replace(/<[^>]*>/g, ' '));
+  var s = String(str || '')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/(div|td|tr|p|li|h[1-6]|section|header|footer|title)\s*>/gi, '\n')
+    .replace(/<[^>]*>/g, ' ');
+  return decodeEntities(s);
 }
 
 function parseMoney(str) {
