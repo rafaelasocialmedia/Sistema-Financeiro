@@ -4956,14 +4956,46 @@ function getRendaPrevista(mk) { return getRendaPrevistaDetail(mk).total; }
 function getMetasDetail() {
   var boxes   = loadInvestBoxes().filter(function(b){ return (b.monthly||0) > 0; });
   var aportes = loadAportes();
+  var mk      = curMonthKey();
   var items = [];
   boxes.forEach(function(b){
     var investedSoFar = aportes.filter(function(a){ return a.boxId===b.id; }).reduce(function(s,a){ return s+a.val; },0);
     if (investedSoFar >= b.goal) return; // meta já atingida, não desconta mais
-    items.push({ label: b.emoji+' '+b.name, amount: b.monthly });
+    // Quanto já foi aportado de verdade (tipo "real", não rendimento/resgate)
+    // NESTE mês — usado só pra "confirmar" visualmente no Orçamento que o
+    // aporte planejado já foi feito, mesmo que o valor não bata exatinho.
+    var investedThisMonth = aportes
+      .filter(function(a){ return a.boxId===b.id && a.tipo==='real' && (a.date||'').slice(0,7)===mk; })
+      .reduce(function(s,a){ return s+a.val; },0);
+    items.push({ label: b.emoji+' '+b.name, amount: b.monthly, invested: investedThisMonth });
   });
   items.sort(function(a,b){ return b.amount - a.amount; });
   return { total: items.reduce(function(s,it){ return s+it.amount; },0), items: items };
+}
+
+// Lista de detalhe específica das Metas de investimento: mostra o valor
+// planejado de cada caixinha e, junto, uma confirmação de quanto já foi
+// aportado de verdade esse mês (✓ quando bate ou passa do planejado, 🟡
+// quando já tem algo aportado mas ainda não chegou no valor previsto).
+function metasListHtml(items) {
+  if (!items.length) return '<div style="margin-top:6px;font-size:11px;color:var(--text-dim)">Nada aqui ainda.</div>';
+  return '<div style="margin-top:6px;padding:8px 10px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm)">'
+    + items.map(function(it){
+        var done    = it.invested >= it.amount - 0.005;
+        var partial = it.invested > 0.005 && !done;
+        var statusColor = done ? 'var(--accent)' : 'var(--gold)';
+        var investedLine = it.invested > 0.005
+          ? '<div style="font-size:10px;color:'+statusColor+';margin-top:1px">'+(done?'✓':'🟡')+' '+fmt(it.invested)+' aportado esse mês</div>'
+          : '';
+        return '<div style="padding:4px 0">'
+          +'<div style="display:flex;justify-content:space-between;font-size:11px">'
+            +'<span style="color:var(--text-muted)">'+escHtml(it.label)+'</span>'
+            +'<span style="font-family:var(--font-num)">'+fmt(it.amount)+'</span>'
+          +'</div>'
+          +investedLine
+        +'</div>';
+      }).join('')
+    + '</div>';
 }
 
 function calcAlocavel() {
@@ -5006,7 +5038,7 @@ function renderAlocarCard() {
 
   var rendaDetalhe = _alocarDetalheAberto.renda ? simpleListHtml(a.incomeItems) : '';
   var envDetalhe   = _alocarDetalheAberto.envelopes ? simpleListHtml(a.envelopesItems) : '';
-  var metasDetalhe = _alocarDetalheAberto.metas ? simpleListHtml(a.metasItems) : '';
+  var metasDetalhe = _alocarDetalheAberto.metas ? metasListHtml(a.metasItems) : '';
 
   var fixedDetalhe = '';
   if (_alocarDetalheAberto.fixed) {
