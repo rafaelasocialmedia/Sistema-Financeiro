@@ -438,6 +438,7 @@
       <div class="nav-item" style="position:relative" onclick="navigate('dollar')"><span class="nav-icon">💵</span><span>Dólar</span><span id="nav-dollar-badge" style="display:none;position:absolute;top:4px;right:10px;color:var(--gold);font-size:12px" title="Falta lançar o mês atual">❗</span></div>
       <div class="nav-item" onclick="navigate('invest')"><span class="nav-icon">🏦</span><span>Metas</span></div>
       <div class="nav-item" id="nav-movimentos" onclick="navigate('movimentos')"><span class="nav-icon">💰</span><span>Movimentos</span></div>
+      <div class="nav-item" onclick="navigate('cardmanager')"><span class="nav-icon">🃏</span><span>Cartões</span></div>
       <div class="nav-item" onclick="navigate('budget')"><span class="nav-icon">🎯</span><span>Orçamento</span></div>
       <div class="nav-item" style="position:relative" onclick="navigate('terreno')"><span class="nav-icon">🏗️</span><span>Terreno</span><span id="nav-terreno-badge" style="display:none;position:absolute;top:4px;right:10px;color:var(--gold);font-size:12px" title="Parcelas confirmadas ainda não contabilizadas aqui">❗</span></div>
       <div class="nav-item" onclick="navigate('anual')"><span class="nav-icon">📅</span><span>Anual</span></div>
@@ -1642,6 +1643,66 @@
       </div>
     </div>
 
+    <!-- ═══════════ GERENCIAR CARTÕES (visual, ainda isolado do resto do app) ═══════════ -->
+    <div class="page" id="page-cardmanager">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div>
+            <div class="page-title">🃏 Gerenciar Cartões <button class="help-btn" onclick="toggleHelp('cardmanager')">?</button></div>
+            <div class="page-subtitle">Cadastre novos cartões — já funcionam em todo o app</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="border-color:var(--accent);margin-bottom:20px">
+        <div style="font-size:13px;color:var(--accent)">✓ Cartões cadastrados aqui já funcionam em todo o app — aparecem em Movimentos, Recorrentes e nas Faturas, com a mesma régua de fechamento/vencimento dos outros.</div>
+      </div>
+
+      <div class="panel" style="margin-bottom:20px">
+        <div class="panel-title">Cartões já em uso no sistema</div>
+        <div id="cm-builtin-list"></div>
+      </div>
+
+      <div class="panel" style="margin-bottom:20px">
+        <div class="panel-title" style="cursor:pointer" onclick="toggleSection('cm-form-body')">
+          <span>+ Adicionar Cartão</span>
+          <span id="cm-form-arrow">▼</span>
+        </div>
+        <div id="cm-form-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Emoji</label>
+              <div id="cm-emoji-preview" onclick="openEmojiPicker('cm-emoji-preview', function(e){ window._cmEmoji=e; })" style="font-size:28px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer" title="Clique para escolher">💳</div>
+            </div>
+            <div class="form-group">
+              <label>Nome do cartão</label>
+              <input type="text" id="cm-name" placeholder="Ex: C6 Bank, Santander...">
+            </div>
+            <div class="form-group">
+              <label>Dia de fechamento</label>
+              <input type="number" id="cm-close" min="1" max="31" placeholder="Ex: 5">
+            </div>
+            <div class="form-group">
+              <label>Dia de vencimento</label>
+              <input type="number" id="cm-venc" min="1" max="31" placeholder="Ex: 12">
+            </div>
+            <div class="form-group">
+              <label>Cor</label>
+              <input type="color" id="cm-color" value="#00b4d8" style="height:42px;padding:4px">
+            </div>
+            <div class="form-group full">
+              <button class="btn btn-primary" onclick="addCustomCard()">+ Adicionar Cartão</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Cartões adicionados por você</div>
+        <div id="cm-custom-list"></div>
+      </div>
+    </div>
+
     <!-- ═══════════ METAS ═══════════ -->
     <div class="page" id="page-invest">
       <div class="page-header">
@@ -2672,6 +2733,7 @@ function refreshPage(page) {
   if (page === 'transactions') { setPayMode('dinheiro'); populateTxCatSelect(); populateCarCatSelect(); populateFilterCatSelect(); renderTxTable(); renderCartoes(); renderSubscriptions(); }
   if (page === 'budget')       { populateBudgetSelects(); renderBudget(); }
   if (page === 'debts')        renderDebts();
+  if (page === 'cardmanager')  renderCardManagerPage();
   if (page === 'dollar')       renderDollarPage();
   if (page === 'terreno')      renderTerreno();
   if (page === 'extra')        { renderExtraPage(); }
@@ -6425,13 +6487,26 @@ function renderExtraTable() {
 // ══════════════════════════════════════════════════════════════
 // CARTÕES
 // ══════════════════════════════════════════════════════════════
-var CARDS = {
+// DEFAULT_CARDS = os 4 cartões originais, fixos no código como sempre foram.
+// CARDS = DEFAULT_CARDS + cartões cadastrados em "Gerenciar Cartões", já
+// integrados de verdade — usado em TODO o app (Movimentos, Recorrentes,
+// Faturas, cálculo de fechamento, etc.)
+var DEFAULT_CARDS = {
   // close = dia de fechamento real de cada cartao
   inter:  { name:'Inter',         icon:'🏦', color:'#00b4d8', venc:10, close:6  },
   nubank: { name:'Nubank',        icon:'💜', color:'#a29bfe', venc:17, close:10 },
   bb:     { name:'Banco do Brasil',icon:'🟡', color:'#ffd166', venc:6,  close:27 },
   ml:     { name:'Mercado Livre', icon:'🟢', color:'#2dff8f', venc:15, close:8  }
 };
+var CARDS = {};
+function rebuildCards() {
+  var merged = Object.assign({}, DEFAULT_CARDS);
+  loadCustomCardsDraft().forEach(function(c){
+    merged[c.id] = { name:c.name, icon:c.emoji, color:c.color, venc:c.venc, close:c.close };
+  });
+  CARDS = merged;
+}
+rebuildCards();
 
 // Bancos/contas que têm opção de Pix (ML é o cartão/conta da empresa, mas
 // também tem Pix)
@@ -6440,46 +6515,175 @@ var PIX_BANKS = ['inter', 'nubank', 'bb', 'ml'];
 // Gera o HTML de <option> pra uma lista de chaves de CARDS, na ordem dada.
 // short=true usa só o nome (sem emoji, "B.B" abreviado) — usado no filtro
 // compacto de Lançamentos do Mês.
+// ══════════════════════════════════════════════════════════════
+// GERENCIAR CARTÕES — página nova, ainda ISOLADA do resto do app.
+// Guarda num storage próprio ('custom_cards_draft'), separado do CARDS
+// real usado em todo o sistema. Nada aqui afeta Movimentos, Recorrentes,
+// Cartões de Crédito, etc. até a etapa de integração ser feita.
+// ══════════════════════════════════════════════════════════════
+function loadCustomCardsDraft()       { return loadKey('custom_cards_draft', []); }
+function saveCustomCardsDraft(list)   { saveKey('custom_cards_draft', list); }
+
+function renderCardManagerPage() {
+  var builtinEl = document.getElementById('cm-builtin-list');
+  if (builtinEl) {
+    builtinEl.innerHTML = Object.keys(DEFAULT_CARDS).map(function(k){
+      var c = DEFAULT_CARDS[k];
+      return '<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--border)">'
+        +'<span style="font-size:22px">'+c.icon+'</span>'
+        +'<div style="flex:1"><div style="font-weight:600;font-size:14px">'+escHtml(c.name)+'</div>'
+        +'<div style="font-size:12px;color:var(--text-dim)">Fecha dia '+c.close+' · Vence dia '+c.venc+'</div></div>'
+        +'<span style="width:16px;height:16px;border-radius:4px;background:'+c.color+'"></span>'
+      +'</div>';
+    }).join('');
+  }
+
+  var customEl = document.getElementById('cm-custom-list');
+  if (customEl) {
+    var list = loadCustomCardsDraft();
+    customEl.innerHTML = list.length
+      ? list.map(function(c){
+          return '<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--border)">'
+            +'<span style="font-size:22px">'+c.emoji+'</span>'
+            +'<div style="flex:1"><div style="font-weight:600;font-size:14px">'+escHtml(c.name)+'</div>'
+            +'<div style="font-size:12px;color:var(--text-dim)">Fecha dia '+c.close+' · Vence dia '+c.venc+'</div></div>'
+            +'<span style="width:16px;height:16px;border-radius:4px;background:'+c.color+'"></span>'
+            +'<button class="btn btn-ghost btn-sm" onclick="editCustomCard(\''+c.id+'\')">✏️</button>'
+            +'<button class="btn btn-danger btn-sm" onclick="deleteCustomCard(\''+c.id+'\')">✕</button>'
+          +'</div>';
+        }).join('')
+      : '<div style="font-size:13px;color:var(--text-dim);padding:8px 0">Nenhum cartão cadastrado ainda — usa o formulário acima.</div>';
+  }
+}
+
+var _editCustomCardId = null;
+
+function addCustomCard() {
+  var name  = document.getElementById('cm-name').value.trim();
+  var close = parseInt(document.getElementById('cm-close').value);
+  var venc  = parseInt(document.getElementById('cm-venc').value);
+  var color = document.getElementById('cm-color').value;
+  var emoji = window._cmEmoji || document.getElementById('cm-emoji-preview').textContent.trim() || '💳';
+
+  if (!name)                              return notify('Informe o nome do cartão', true);
+  if (!close || close<1 || close>31)      return notify('Informe um dia de fechamento válido (1-31)', true);
+  if (!venc  || venc<1  || venc>31)       return notify('Informe um dia de vencimento válido (1-31)', true);
+
+  var list = loadCustomCardsDraft();
+
+  if (_editCustomCardId) {
+    var idx = list.findIndex(function(c){ return c.id === _editCustomCardId; });
+    if (idx !== -1) {
+      list[idx] = { id:_editCustomCardId, name:name, emoji:emoji, close:close, venc:venc, color:color };
+    }
+    _editCustomCardId = null;
+  } else {
+    list.push({ id:'cc_'+genId(), name:name, emoji:emoji, close:close, venc:venc, color:color });
+  }
+  saveCustomCardsDraft(list);
+  rebuildCards();
+  populateCardSelects();
+
+  document.getElementById('cm-name').value  = '';
+  document.getElementById('cm-close').value = '';
+  document.getElementById('cm-venc').value  = '';
+  document.getElementById('cm-color').value = '#00b4d8';
+  document.getElementById('cm-emoji-preview').textContent = '💳';
+  window._cmEmoji = '';
+
+  notify('✓ Cartão salvo e já disponível em todo o app!');
+  renderCardManagerPage();
+}
+
+function editCustomCard(id) {
+  var c = loadCustomCardsDraft().find(function(x){ return x.id === id; });
+  if (!c) return;
+  _editCustomCardId = id;
+  document.getElementById('cm-name').value  = c.name;
+  document.getElementById('cm-close').value = c.close;
+  document.getElementById('cm-venc').value  = c.venc;
+  document.getElementById('cm-color').value = c.color;
+  document.getElementById('cm-emoji-preview').textContent = c.emoji;
+  window._cmEmoji = c.emoji;
+  var body = document.getElementById('cm-form-body');
+  if (body) {
+    body.style.display = '';
+    if (typeof body.scrollIntoView === 'function') body.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+}
+
+function deleteCustomCard(id) {
+  var emUsoCompra = loadPurchases().some(function(p){ return p.card === id; });
+  var emUsoSub    = loadSubscriptions().some(function(s){ return s.card === id; });
+  if (emUsoCompra || emUsoSub) {
+    return notify('Esse cartão já tem compras ou recorrentes lançadas nele — não dá pra excluir (edite se precisar mudar algo).', true);
+  }
+  saveCustomCardsDraft(loadCustomCardsDraft().filter(function(c){ return c.id !== id; }));
+  rebuildCards();
+  populateCardSelects();
+  notify('Cartão removido.');
+  renderCardManagerPage();
+}
+
 function cardOptionsHtml(keys, short) {
   return keys.map(function(k){
     var c = CARDS[k];
     if (!c) return '';
     if (short) {
       var shortName = k === 'bb' ? 'B.B' : c.name;
-      return '<option value="'+k+'">'+shortName+'</option>';
+      return '<option value="'+k+'" data-cardopt="1">'+shortName+'</option>';
     }
-    return '<option value="'+k+'">'+c.icon+' '+c.name+'</option>';
+    return '<option value="'+k+'" data-cardopt="1">'+c.icon+' '+c.name+'</option>';
   }).join('');
 }
 
 // Preenche todos os selects de cartão/conta-pix do app a partir de CARDS.
 // Selects "mistos" (com Dinheiro/Pix/Todos fixos na frente) só têm a parte de
 // cartão ADICIONADA no final — as opções fixas continuam vindo do HTML.
+// Seguro pra chamar de novo a qualquer momento (ex: depois de adicionar um
+// cartão novo em "Gerenciar Cartões") — as opções antigas marcadas com
+// data-cardopt são removidas antes de recriar, pra não duplicar.
 function populateCardSelects() {
   var allKeys = Object.keys(CARDS);
 
   // Selects só de cartão (sem opções fixas extras) — substitui tudo
   ['ql-card', 'tx-card-select'].forEach(function(id){
     var el = document.getElementById(id);
-    if (el) el.innerHTML = cardOptionsHtml(allKeys);
+    if (!el) return;
+    var prev = el.value;
+    el.innerHTML = cardOptionsHtml(allKeys);
+    if (allKeys.indexOf(prev) !== -1) el.value = prev;
   });
 
   // Selects só de conta Pix (sem opções fixas extras) — substitui tudo
   ['ql-pix-account', 'tx-pix-account', 'sub-pix-account', 'edit-sub-pix-account'].forEach(function(id){
     var el = document.getElementById(id);
-    if (el) el.innerHTML = cardOptionsHtml(PIX_BANKS);
+    if (!el) return;
+    var prev = el.value;
+    el.innerHTML = cardOptionsHtml(PIX_BANKS);
+    if (PIX_BANKS.indexOf(prev) !== -1) el.value = prev;
   });
 
   // Selects mistos: mantém as opções fixas (Dinheiro/Pix/Todos) que já estão
-  // no HTML e só ADICIONA a lista de cartões no final
+  // no HTML, remove só as opções de cartão marcadas (data-cardopt) e
+  // adiciona a lista atualizada no final
   ['sub-card', 'atl-cost-payment', 'edit-tx-payment', 'edit-sub-card'].forEach(function(id){
     var el = document.getElementById(id);
-    if (el) el.insertAdjacentHTML('beforeend', cardOptionsHtml(allKeys));
+    if (!el) return;
+    var prev = el.value;
+    Array.prototype.slice.call(el.querySelectorAll('option[data-cardopt]')).forEach(function(o){ o.remove(); });
+    el.insertAdjacentHTML('beforeend', cardOptionsHtml(allKeys));
+    if (Array.prototype.some.call(el.options, function(o){ return o.value===prev; })) el.value = prev;
   });
 
   // Filtro compacto de Lançamentos do Mês (mantém "Todos os cartões" fixo, formato curto)
   var filterEl = document.getElementById('car-filter');
-  if (filterEl) filterEl.insertAdjacentHTML('beforeend', cardOptionsHtml(allKeys, true));
+  if (filterEl) {
+    var prevF = filterEl.value;
+    Array.prototype.slice.call(filterEl.querySelectorAll('option[data-cardopt]')).forEach(function(o){ o.remove(); });
+    filterEl.insertAdjacentHTML('beforeend', cardOptionsHtml(allKeys, true));
+    if (Array.prototype.some.call(filterEl.options, function(o){ return o.value===prevF; })) filterEl.value = prevF;
+  }
 }
 
 function loadPurchases()         { return loadKey('car_purchases', []); }
