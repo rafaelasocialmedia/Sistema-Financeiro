@@ -81,6 +81,11 @@ function decodeEntities(str) {
     .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
+    // Entidades numéricas (ex: "&#38;" é o "&" escrito em código — algumas
+    // notas usam esse formato em vez do nome "&amp;" pro mesmo caractere).
+    // Cobre decimal (&#38;) e hexadecimal (&#x26;), com ou sem o ";" final.
+    .replace(/&#x([0-9a-fA-F]+);?/g, function(_, hex) { return String.fromCharCode(parseInt(hex, 16)); })
+    .replace(/&#(\d+);?/g, function(_, dec) { return String.fromCharCode(parseInt(dec, 10)); })
     .replace(/[ \t]+/g, ' ')             // colapsa espaços/tabs repetidos (preserva quebra de linha)
     .replace(/[ \t]*\n[ \t]*/g, '\n')    // limpa espaço em volta de cada quebra de linha
     .replace(/\n{2,}/g, '\n')            // colapsa quebras de linha repetidas em uma só
