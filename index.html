@@ -2231,6 +2231,7 @@
             <button class="btn btn-ghost btn-sm" onclick="showTokenForm()" title="Trocar token">🔑 Trocar token</button>
           </div>
           <div style="margin-top:8px;font-size:12px;color:var(--text-muted)" id="github-last-sync"></div>
+          <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:12px;color:var(--text-muted)" id="github-remote-last-update">🕒 Arquivo atualizado pela última vez em: —</div>
         </div>
       </div>
 
@@ -2907,6 +2908,7 @@ function updateGithubSyncUI() {
     if (formEl)    formEl.style.display    = 'none';
     var last = localStorage.getItem('fp_github_last_sync');
     if (lastEl && last) lastEl.textContent = 'Último sync: ' + new Date(last).toLocaleString('pt-BR');
+    fetchGithubRemoteLastUpdate();
   } else {
     statusEl.innerHTML  = '🔴 Não configurado — adicione seu token para ativar o sync';
     statusEl.style.color = 'var(--text-muted)';
@@ -2915,18 +2917,46 @@ function updateGithubSyncUI() {
   }
 }
 
+// Pergunta pro próprio GitHub quando o arquivo dados.json foi salvo pela
+// última vez (não importa de qual dispositivo foi) — assim você vê, em
+// qualquer aparelho, se tem alguma atualização que ainda não chegou aqui,
+// antes de clicar em Salvar/Carregar.
+function fetchGithubRemoteLastUpdate() {
+  var el = document.getElementById('github-remote-last-update');
+  if (!el) return;
+  var token = getGithubToken();
+  if (!token) return;
+
+  var commitsUrl = 'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/commits?path=' + GITHUB_FILE + '&per_page=1';
+  fetch(commitsUrl, { headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' } })
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(commits){
+      if (!commits || !commits.length) {
+        el.textContent = '🕒 Arquivo atualizado pela última vez em: nenhum sync encontrado ainda';
+        return;
+      }
+      var dateStr = commits[0].commit && commits[0].commit.committer && commits[0].commit.committer.date;
+      el.textContent = '🕒 Arquivo atualizado pela última vez em: ' + (dateStr ? new Date(dateStr).toLocaleString('pt-BR') : '—');
+    })
+    .catch(function(){
+      el.textContent = '☁️ Última atualização salva no GitHub: não consegui checar agora';
+    });
+}
+
 // ══════════════════════════════════════════════════════════════
 // NOTA FISCAL (NFC-e) — configuração da URL da função (Vercel)
 // ══════════════════════════════════════════════════════════════
 function getNfceApiUrl() {
-  return localStorage.getItem('fp_nfce_api_url') || '';
+  // Usa loadKey (mesmo formato JSON do resto do app) pra ficar compatível
+  // com o sync do GitHub, que espera todo valor salvo nesse formato.
+  return loadKey('nfce_api_url', '') || '';
 }
 
 function saveNfceApiUrl() {
   var input = document.getElementById('nfce-api-url-input');
   var url = input ? input.value.trim().replace(/\/$/, '') : '';
   if (!url) return notify('Informe a URL', true);
-  localStorage.setItem('fp_nfce_api_url', url);
+  saveKey('nfce_api_url', url);
   if (input) input.value = '';
   notify('✓ URL salva!');
   updateNfceApiUrlUI();
