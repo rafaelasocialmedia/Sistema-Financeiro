@@ -158,9 +158,21 @@ function parseNfceHtml(html) {
     }
   }
 
-  // Estabelecimento: início do texto da página, antes do CNPJ/título do documento
-  var estMatch = fullText.match(/^\s*([A-Za-zÀ-ú0-9.,&\s]{3,60}?)\s*(?:CNPJ|Documento Auxiliar)/i);
-  var estabelecimento = estMatch ? estMatch[1].trim() : '';
+  // Estabelecimento: o nome da loja fica logo DEPOIS do título oficial do
+  // documento e ANTES do CNPJ (ordem confirmada numa nota real: título →
+  // nome da loja → CNPJ → endereço). Reaproveita o texto que já cortamos
+  // pra achar os itens (itemSearchText já começa logo após o título), então
+  // procura só até o "CNPJ" aparecer.
+  var estabelecimento = '';
+  if (headerMatch) {
+    var nameMatch = itemSearchText.match(/^\s*([A-Za-zÀ-ú0-9.,&\-\s]{3,80}?)\s*CNPJ/i);
+    if (nameMatch) estabelecimento = nameMatch[1].trim();
+  }
+  if (!estabelecimento) {
+    // Reserva: sites que coloquem o nome da loja ANTES do título (ordem oposta)
+    var estMatchOld = fullText.match(/^\s*([A-Za-zÀ-ú0-9.,&\s]{3,60}?)\s*(?:CNPJ|Documento Auxiliar)/i);
+    estabelecimento = estMatchOld ? estMatchOld[1].trim() : '';
+  }
   if (!estabelecimento) {
     // Reserva: layout antigo por classe CSS "txtTopo"
     var estMatch2 = html.match(/<div[^>]*class="[^"]*txtTopo[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
