@@ -235,6 +235,14 @@
     .is-mobile .sub-card-right{width:100%!important;justify-content:space-between!important;}
     .is-mobile #dash-estimativa>div{grid-template-columns:1fr 1fr!important;gap:8px!important;}
     .is-mobile .panel{padding:14px!important;}
+    .is-mobile .budget-cat-header{flex-wrap:wrap!important;row-gap:8px!important;}
+    .is-mobile .budget-cat-header>.budget-cat-left{flex:1 1 100%!important;}
+    .is-mobile .budget-cat-header>div:nth-child(2){flex:1 1 100%!important;align-items:flex-end!important;}
+    .is-mobile .budget-sub-row{flex-wrap:wrap!important;row-gap:6px!important;padding:10px 0!important;}
+    .is-mobile .budget-sub-row>div:nth-child(1){flex:1 1 100%!important;}
+    .is-mobile .budget-sub-row>div:nth-child(2){flex:1 1 100%!important;margin:0!important;}
+    .is-mobile .budget-sub-row>div:nth-child(3),
+    .is-mobile .budget-sub-row>span:nth-child(3){flex:1 1 100%!important;justify-content:space-between!important;}
 
     @media (max-width: 768px) {
       .sidebar {
@@ -332,6 +340,18 @@
         gap: 10px !important;
       }
       .sub-card-right { width: 100% !important; -webkit-justify-content: space-between !important; justify-content: space-between !important; }
+
+      /* Orçamento — categoria e subcategoria: no celular, empilha em vez de
+         espremer nome + barra + valor numa linha só só */
+      .budget-cat-header { flex-wrap: wrap !important; row-gap: 8px !important; }
+      .budget-cat-header > .budget-cat-left { flex: 1 1 100% !important; }
+      .budget-cat-header > div:nth-child(2) { flex: 1 1 100% !important; align-items: flex-end !important; }
+
+      .budget-sub-row { flex-wrap: wrap !important; row-gap: 6px !important; padding: 10px 0 !important; }
+      .budget-sub-row > div:nth-child(1) { flex: 1 1 100% !important; }
+      .budget-sub-row > div:nth-child(2) { flex: 1 1 100% !important; margin: 0 !important; }
+      .budget-sub-row > div:nth-child(3),
+      .budget-sub-row > span:nth-child(3) { flex: 1 1 100% !important; justify-content: space-between !important; }
 
       /* Estimativa grid mobile */
       #dash-estimativa > div { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
