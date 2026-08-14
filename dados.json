@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-08-14T23:12:45.962Z",
+  "savedAt": "2026-08-14T23:54:19.825Z",
   "data": {
     "fp_cats": [
       {
@@ -5210,6 +5210,17 @@
       }
     ],
     "fp_invest_aportes": [
+      {
+        "id": 1786751642290,
+        "boxId": "ib_id_1783089690987_x68ue",
+        "val": 115,
+        "date": "2026-08-14",
+        "rate": 0,
+        "institution": "CDB",
+        "origin": "salario_dela",
+        "notes": "Retirada para pagar ia",
+        "tipo": "resgate"
+      },
       {
         "id": 1786493771431,
         "boxId": "ib_id_1783089690987_x68ue",
