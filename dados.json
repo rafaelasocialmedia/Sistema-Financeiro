@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-08-12T00:17:35.764Z",
+  "savedAt": "2026-08-14T21:44:11.532Z",
   "data": {
     "fp_cats": [
       {
@@ -994,6 +994,58 @@
         "card": "inter",
         "purchaseId": 1786474333832,
         "realDate": "2026-08-10"
+      },
+      {
+        "id": 1786737937190,
+        "type": "expense",
+        "amount": 9.98,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Nota Fiscal - N.B. Dal Santos &#38; Cia Ltda (Mercado) (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1786737937189,
+        "realDate": "2026-08-14"
+      },
+      {
+        "id": 1786743643146,
+        "type": "expense",
+        "amount": 10.8,
+        "cat": "Alimentação",
+        "subcat": "Hortfrut",
+        "desc": "Nota Fiscal - N.B. Dal Santos &#38; Cia Ltda (Hortfrut) (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1786743643145,
+        "realDate": "2026-08-14"
+      },
+      {
+        "id": 1786743644146,
+        "type": "expense",
+        "amount": 8.3,
+        "cat": "Alimentação",
+        "subcat": "Padaria",
+        "desc": "Nota Fiscal - N.B. Dal Santos &#38; Cia Ltda (Padaria) (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1786743644145,
+        "realDate": "2026-08-14"
+      },
+      {
+        "id": 1786743645146,
+        "type": "expense",
+        "amount": 4.98,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Nota Fiscal - N.B. Dal Santos &#38; Cia Ltda (Mercado) (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1786743645145,
+        "realDate": "2026-08-14"
       },
       {
         "id": 1785843905529,
@@ -3352,6 +3404,50 @@
         "installmentVal": 99.9
       },
       {
+        "id": 1786737937189,
+        "card": "inter",
+        "date": "2026-08-14",
+        "desc": "Nota Fiscal - N.B. Dal Santos &#38; Cia Ltda (Mercado)",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 9.98,
+        "parcelas": 1,
+        "installmentVal": 9.98
+      },
+      {
+        "id": 1786743643145,
+        "card": "inter",
+        "date": "2026-08-14",
+        "desc": "Nota Fiscal - N.B. Dal Santos &#38; Cia Ltda (Hortfrut)",
+        "cat": "Alimentação",
+        "subcat": "Hortfrut",
+        "total": 10.8,
+        "parcelas": 1,
+        "installmentVal": 10.8
+      },
+      {
+        "id": 1786743644145,
+        "card": "inter",
+        "date": "2026-08-14",
+        "desc": "Nota Fiscal - N.B. Dal Santos &#38; Cia Ltda (Padaria)",
+        "cat": "Alimentação",
+        "subcat": "Padaria",
+        "total": 8.3,
+        "parcelas": 1,
+        "installmentVal": 8.3
+      },
+      {
+        "id": 1786743645145,
+        "card": "inter",
+        "date": "2026-08-14",
+        "desc": "Nota Fiscal - N.B. Dal Santos &#38; Cia Ltda (Mercado)",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 4.98,
+        "parcelas": 1,
+        "installmentVal": 4.98
+      },
+      {
         "id": 1786474274052,
         "card": "inter",
         "date": "2026-08-10",
@@ -3405,6 +3501,18 @@
         "total": 4400,
         "parcelas": 10,
         "installmentVal": 440
+      },
+      {
+        "id": 1786474501383,
+        "card": "nubank",
+        "date": "2026-08-10",
+        "desc": "❤ Cartao de todos",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 33.4,
+        "parcelas": 1,
+        "installmentVal": 33.4,
+        "subId": 1780338913454
       },
       {
         "id": 1785937834348,
@@ -5016,18 +5124,6 @@
         "total": 492.48,
         "parcelas": 9,
         "installmentVal": 54.72
-      },
-      {
-        "id": 1786474501383,
-        "card": "nubank",
-        "date": "2026-08-10",
-        "desc": "❤ Cartao de todos",
-        "cat": "Saúde",
-        "subcat": "",
-        "total": 33.4,
-        "parcelas": 1,
-        "installmentVal": 33.4,
-        "subId": 1780338913454
       }
     ],
     "fp_invest_boxes": [
@@ -5531,6 +5627,33 @@
           "2026-08"
         ]
       }
-    ]
+    ],
+    "fp_nfce_api_url": "https://sistema-financeiro-cyan-theta.vercel.app/api/nfce",
+    "fp_nfce_product_map": {
+      "MANOEL RIBAS, 0, , CENTRO, GUARAPUAVA, PR COCA COLA 2L ZERO": {
+        "cat": "Alimentação",
+        "subcat": "Mercado"
+      },
+      "92 MANOEL RIBAS, 0, , CENTRO, GUARAPUAVA, PR LARANJA PERA KG": {
+        "cat": "Alimentação",
+        "subcat": "Hortfrut"
+      },
+      "PAO FRANCES KG": {
+        "cat": "Alimentação",
+        "subcat": "Padaria"
+      },
+      "BATATA ESPECIAL KG": {
+        "cat": "Alimentação",
+        "subcat": "Hortfrut"
+      },
+      "LEIT.LV.TIROL 1L INT": {
+        "cat": "Alimentação",
+        "subcat": "Mercado"
+      },
+      "MASSA DOCE KG": {
+        "cat": "Alimentação",
+        "subcat": "Padaria"
+      }
+    }
   }
 }
