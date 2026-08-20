@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-08-14T23:54:19.825Z",
+  "savedAt": "2026-08-20T13:03:19.906Z",
   "data": {
     "fp_cats": [
       {
@@ -841,6 +841,32 @@
         "subId": 1780338913454
       },
       {
+        "id": 1787006181455,
+        "type": "expense",
+        "amount": 120,
+        "cat": "Empresa",
+        "subcat": "Investimento",
+        "desc": "Conta da Ia claude (💜 Nubank)",
+        "date": "2026-09-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1787006181454,
+        "realDate": "2026-08-17"
+      },
+      {
+        "id": 1787006275421,
+        "type": "expense",
+        "amount": 7.49,
+        "cat": "Lazer",
+        "subcat": "",
+        "desc": "Jogo (💜 Nubank)",
+        "date": "2026-09-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1787006275420,
+        "realDate": "2026-08-17"
+      },
+      {
         "id": 1779321938028,
         "type": "expense",
         "amount": 54.72,
@@ -1046,6 +1072,19 @@
         "card": "inter",
         "purchaseId": 1786743645145,
         "realDate": "2026-08-14"
+      },
+      {
+        "id": 1787006748056,
+        "type": "expense",
+        "amount": 10.6,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1787006748055,
+        "realDate": "2026-08-15"
       },
       {
         "id": 1785843905529,
@@ -1267,6 +1306,110 @@
         "card": "bb",
         "purchaseId": 1786105471126,
         "realDate": "2026-08-06"
+      },
+      {
+        "id": 1787006381628,
+        "type": "expense",
+        "amount": 9.6,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🟡 Banco do Brasil)",
+        "date": "2026-09-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1787006381627,
+        "realDate": "2026-08-14"
+      },
+      {
+        "id": 1787006425730,
+        "type": "expense",
+        "amount": 10.92,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Dalcenter (🟡 Banco do Brasil)",
+        "date": "2026-09-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1787006425729,
+        "realDate": "2026-08-06"
+      },
+      {
+        "id": 1787006440231,
+        "type": "expense",
+        "amount": 25.12,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Medcado (🟡 Banco do Brasil)",
+        "date": "2026-09-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1787006440230,
+        "realDate": "2026-08-06"
+      },
+      {
+        "id": 1787006485894,
+        "type": "expense",
+        "amount": 10.9,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🟡 Banco do Brasil)",
+        "date": "2026-09-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1787006485893,
+        "realDate": "2026-08-09"
+      },
+      {
+        "id": 1787006516109,
+        "type": "expense",
+        "amount": 9.4,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🟡 Banco do Brasil)",
+        "date": "2026-09-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1787006516108,
+        "realDate": "2026-08-08"
+      },
+      {
+        "id": 1787006564366,
+        "type": "expense",
+        "amount": 10.8,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🟡 Banco do Brasil)",
+        "date": "2026-09-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1787006564365,
+        "realDate": "2026-08-14"
+      },
+      {
+        "id": 1787006586070,
+        "type": "expense",
+        "amount": 12.102,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🟡 Banco do Brasil)",
+        "date": "2026-09-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1787006586069,
+        "realDate": "2026-08-14"
+      },
+      {
+        "id": 1787006654487,
+        "type": "expense",
+        "amount": 9.02,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Mercado (🟡 Banco do Brasil)",
+        "date": "2026-09-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1787006654486,
+        "realDate": "2026-08-14"
       },
       {
         "id": 1782165180012,
@@ -1521,6 +1664,39 @@
         "card": "nubank",
         "purchaseId": 1786020120584,
         "subId": 1779321710343
+      },
+      {
+        "id": 1786989384153,
+        "type": "expense",
+        "amount": 1164.82,
+        "cat": "Terreno",
+        "subcat": "Parcela",
+        "desc": "Parcela terreno 46/180",
+        "date": "2026-08-17",
+        "source": "terreno",
+        "terrenoPaidRef": true
+      },
+      {
+        "id": 1786989459631,
+        "type": "expense",
+        "amount": 80.61999999999999,
+        "cat": "Alimentação",
+        "subcat": "Carne",
+        "desc": "N.B. Dal Santos & Cia Ltda",
+        "date": "2026-08-17",
+        "payment": "pix",
+        "paymentAccount": ""
+      },
+      {
+        "id": 1786911387538,
+        "type": "expense",
+        "amount": 40.38,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "N.B. Dal Santos & Cia Ltda",
+        "date": "2026-08-16",
+        "payment": "pix",
+        "paymentAccount": ""
       },
       {
         "id": 1786749048574,
@@ -3395,7 +3571,7 @@
     "fp_terreno": {
       "installment": 1164.82,
       "total": 180,
-      "paid": 45,
+      "paid": 46,
       "readjustMonth": 9,
       "notes": "",
       "readjustHistory": []
@@ -3435,6 +3611,39 @@
         "total": 99.9,
         "parcelas": 1,
         "installmentVal": 99.9
+      },
+      {
+        "id": 1787006181454,
+        "card": "nubank",
+        "date": "2026-08-17",
+        "desc": "Conta da Ia claude",
+        "cat": "Empresa",
+        "subcat": "Investimento",
+        "total": 120,
+        "parcelas": 1,
+        "installmentVal": 120
+      },
+      {
+        "id": 1787006275420,
+        "card": "nubank",
+        "date": "2026-08-17",
+        "desc": "Jogo",
+        "cat": "Lazer",
+        "subcat": "",
+        "total": 7.49,
+        "parcelas": 1,
+        "installmentVal": 7.49
+      },
+      {
+        "id": 1787006748055,
+        "card": "inter",
+        "date": "2026-08-15",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 10.6,
+        "parcelas": 1,
+        "installmentVal": 10.6
       },
       {
         "id": 1786737937189,
@@ -3479,6 +3688,50 @@
         "total": 4.98,
         "parcelas": 1,
         "installmentVal": 4.98
+      },
+      {
+        "id": 1787006381627,
+        "card": "bb",
+        "date": "2026-08-14",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 9.6,
+        "parcelas": 1,
+        "installmentVal": 9.6
+      },
+      {
+        "id": 1787006564365,
+        "card": "bb",
+        "date": "2026-08-14",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 10.8,
+        "parcelas": 1,
+        "installmentVal": 10.8
+      },
+      {
+        "id": 1787006586069,
+        "card": "bb",
+        "date": "2026-08-14",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 12.102,
+        "parcelas": 1,
+        "installmentVal": 12.102
+      },
+      {
+        "id": 1787006654486,
+        "card": "bb",
+        "date": "2026-08-14",
+        "desc": "Mercado",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 9.02,
+        "parcelas": 1,
+        "installmentVal": 9.02
       },
       {
         "id": 1786474274052,
@@ -3548,6 +3801,17 @@
         "subId": 1780338913454
       },
       {
+        "id": 1787006485893,
+        "card": "bb",
+        "date": "2026-08-09",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 10.9,
+        "parcelas": 1,
+        "installmentVal": 10.9
+      },
+      {
         "id": 1785937834348,
         "card": "inter",
         "date": "2026-08-08",
@@ -3603,6 +3867,17 @@
         "installmentVal": 4.581
       },
       {
+        "id": 1787006516108,
+        "card": "bb",
+        "date": "2026-08-08",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 9.4,
+        "parcelas": 1,
+        "installmentVal": 9.4
+      },
+      {
         "id": 1786105452048,
         "card": "bb",
         "date": "2026-08-06",
@@ -3623,6 +3898,28 @@
         "total": 4.98,
         "parcelas": 1,
         "installmentVal": 4.98
+      },
+      {
+        "id": 1787006425729,
+        "card": "bb",
+        "date": "2026-08-06",
+        "desc": "Dalcenter",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 10.92,
+        "parcelas": 1,
+        "installmentVal": 10.92
+      },
+      {
+        "id": 1787006440230,
+        "card": "bb",
+        "date": "2026-08-06",
+        "desc": "Medcado",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 25.12,
+        "parcelas": 1,
+        "installmentVal": 25.12
       },
       {
         "id": 1785936379505,
@@ -5559,12 +5856,13 @@
         "name": "Luz",
         "emoji": "🔄",
         "type": "expense",
-        "value": 319.87,
+        "value": 295,
         "day": 15,
         "cat": "Contas",
         "subcat": "Luz",
         "card": "nubank",
-        "confirmedMonths": []
+        "confirmedMonths": [],
+        "pixAccount": ""
       },
       {
         "id": 1779322500367,
@@ -5705,6 +6003,34 @@
       "DOCE LTE FRIMSA 400G": {
         "cat": "Alimentação",
         "subcat": "Mercado"
+      },
+      "CAFE 3CORA.GOURMET": {
+        "cat": "Alimentação",
+        "subcat": "Mercado"
+      },
+      "DES ABVE CLASIC FRES": {
+        "cat": "Alimentação",
+        "subcat": "Mercado"
+      },
+      "PE DE MOLEQUE KG": {
+        "cat": "Alimentação",
+        "subcat": "Padaria"
+      },
+      "PRESUNTO SEARA FATIA": {
+        "cat": "Alimentação",
+        "subcat": "Mercado"
+      },
+      "PALETA SUINA KG": {
+        "cat": "Alimentação",
+        "subcat": "Carne"
+      },
+      "PEITO DE FRANGO KG": {
+        "cat": "Alimentação",
+        "subcat": "Carne"
+      },
+      "CXA SBRECXA C P.DORS": {
+        "cat": "Alimentação",
+        "subcat": "Carne"
       }
     }
   }
