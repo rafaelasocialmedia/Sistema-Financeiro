@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-08-21T21:29:00.809Z",
+  "savedAt": "2026-08-21T21:30:38.069Z",
   "data": {
     "fp_cats": [
       {
@@ -5666,8 +5666,9 @@
         "emoji": "✈",
         "color": "gold",
         "goal": 3000,
-        "monthly": 0,
-        "notes": ""
+        "monthly": 750,
+        "notes": "",
+        "rate": 0
       }
     ],
     "fp_invest_aportes": [
