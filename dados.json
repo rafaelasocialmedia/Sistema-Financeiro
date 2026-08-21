@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-08-21T21:30:38.069Z",
+  "savedAt": "2026-08-21T21:32:16.899Z",
   "data": {
     "fp_cats": [
       {
@@ -5619,7 +5619,7 @@
         "color": "blue",
         "goal": 42000,
         "notes": "Meta: 6 meses de gastos fixos (~R$ 7.000/mês)",
-        "monthly": 500,
+        "monthly": 0,
         "rate": 0
       },
       {
