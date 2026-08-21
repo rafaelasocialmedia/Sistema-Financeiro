@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-08-21T21:28:04.182Z",
+  "savedAt": "2026-08-21T21:29:00.809Z",
   "data": {
     "fp_cats": [
       {
@@ -5659,6 +5659,15 @@
         "notes": "",
         "monthly": 600,
         "rate": 0
+      },
+      {
+        "id": "ib_id_1787347734374_dq3mi",
+        "name": "VIajem",
+        "emoji": "✈",
+        "color": "gold",
+        "goal": 3000,
+        "monthly": 0,
+        "notes": ""
       }
     ],
     "fp_invest_aportes": [
