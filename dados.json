@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-08-20T13:15:47.788Z",
+  "savedAt": "2026-08-21T21:27:28.056Z",
   "data": {
     "fp_cats": [
       {
@@ -867,6 +867,19 @@
         "realDate": "2026-08-17"
       },
       {
+        "id": 1787270316493,
+        "type": "expense",
+        "amount": 295,
+        "cat": "Contas",
+        "subcat": "Luz",
+        "desc": "🔄 Luz (💜 Nubank)",
+        "date": "2026-09-17",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1787270316492,
+        "subId": 1779322392668
+      },
+      {
         "id": 1779321938028,
         "type": "expense",
         "amount": 54.72,
@@ -1085,6 +1098,57 @@
         "card": "inter",
         "purchaseId": 1787006748055,
         "realDate": "2026-08-15"
+      },
+      {
+        "id": 1787270305673,
+        "type": "expense",
+        "amount": 1216.56,
+        "cat": "Terreno",
+        "subcat": "Parcela",
+        "desc": "☁️ Parcela do terreno",
+        "date": "2026-09-10",
+        "payment": "pix",
+        "source": "recorrente",
+        "subId": 1786019977358,
+        "paymentAccount": "inter",
+        "paymentLabel": "Pix 🏦 Inter"
+      },
+      {
+        "id": 1787270307964,
+        "type": "expense",
+        "amount": 800,
+        "cat": "Moradia",
+        "subcat": "Aluguel",
+        "desc": "💰 Aluguel",
+        "date": "2026-09-10",
+        "payment": "dinheiro",
+        "source": "recorrente",
+        "subId": 1785843708959
+      },
+      {
+        "id": 1787270314151,
+        "type": "expense",
+        "amount": 59.1,
+        "cat": "Terreno",
+        "subcat": "Condomínio",
+        "desc": "🔄 Condominio (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "recorrente",
+        "card": "inter",
+        "purchaseId": 1787270314150,
+        "subId": 1779322500367
+      },
+      {
+        "id": 1787270321005,
+        "type": "expense",
+        "amount": 99.9,
+        "cat": "Contas",
+        "subcat": "Internet",
+        "desc": "🔄 Internet",
+        "date": "2026-09-10",
+        "payment": "pix",
+        "source": "recorrente",
+        "subId": 1779322047640
       },
       {
         "id": 1785843905529,
@@ -5460,6 +5524,30 @@
         "total": 492.48,
         "parcelas": 9,
         "installmentVal": 54.72
+      },
+      {
+        "id": 1787270314150,
+        "card": "inter",
+        "date": "2026-08-10",
+        "desc": "🔄 Condominio",
+        "cat": "Terreno",
+        "subcat": "Condomínio",
+        "total": 59.1,
+        "parcelas": 1,
+        "installmentVal": 59.1,
+        "subId": 1779322500367
+      },
+      {
+        "id": 1787270316492,
+        "card": "nubank",
+        "date": "2026-08-15",
+        "desc": "🔄 Luz",
+        "cat": "Contas",
+        "subcat": "Luz",
+        "total": 295,
+        "parcelas": 1,
+        "installmentVal": 295,
+        "subId": 1779322392668
       }
     ],
     "fp_invest_boxes": [
@@ -5854,7 +5942,8 @@
         "card": "pix",
         "confirmedMonths": [
           "2026-06",
-          "2026-08"
+          "2026-08",
+          "2026-09"
         ]
       },
       {
@@ -5867,7 +5956,9 @@
         "cat": "Contas",
         "subcat": "Luz",
         "card": "nubank",
-        "confirmedMonths": [],
+        "confirmedMonths": [
+          "2026-09"
+        ],
         "pixAccount": ""
       },
       {
@@ -5881,7 +5972,8 @@
         "subcat": "Condomínio",
         "card": "inter",
         "confirmedMonths": [
-          "2026-08"
+          "2026-08",
+          "2026-09"
         ]
       },
       {
@@ -5957,7 +6049,8 @@
         "subcat": "Aluguel",
         "card": "dinheiro",
         "confirmedMonths": [
-          "2026-08"
+          "2026-08",
+          "2026-09"
         ]
       },
       {
@@ -5965,15 +6058,29 @@
         "name": "Parcela do terreno",
         "emoji": "☁️",
         "type": "expense",
-        "value": 1164.82,
+        "value": 1216.56,
         "day": 10,
         "cat": "Terreno",
         "subcat": "Parcela",
         "card": "pix",
         "pixAccount": "inter",
         "confirmedMonths": [
-          "2026-08"
+          "2026-08",
+          "2026-09"
         ]
+      },
+      {
+        "id": 1787270225334,
+        "name": "Academia rafa",
+        "emoji": "❤",
+        "type": "expense",
+        "value": 139.8,
+        "day": 10,
+        "cat": "Saúde",
+        "subcat": "",
+        "card": "inter",
+        "pixAccount": "",
+        "confirmedMonths": []
       }
     ],
     "fp_nfce_api_url": "https://sistema-financeiro-cyan-theta.vercel.app/api/nfce",
