@@ -41,6 +41,23 @@ module.exports = async function handler(req, res) {
     return;
   }
 
+  // Por segurança, só busca páginas em sites oficiais do governo (qualquer
+  // órgão/estado terminando em ".gov.br", que é onde ficam TODOS os portais
+  // de nota fiscal eletrônica dos estados brasileiros). Isso evita que essa
+  // função seja usada pra buscar conteúdo de sites que não sejam de nota
+  // fiscal.
+  var hostname;
+  try {
+    hostname = new URL(nfceUrl).hostname;
+  } catch (e) {
+    res.status(400).json({ ok: false, error: 'URL da nota inválida.' });
+    return;
+  }
+  if (!/\.gov\.br$/i.test(hostname)) {
+    res.status(400).json({ ok: false, error: 'Por segurança, essa função só busca notas fiscais em sites oficiais do governo (.gov.br). Se essa é uma nota fiscal de verdade e o link não é .gov.br, me avise pra eu revisar.' });
+    return;
+  }
+
   try {
     var pageResp = await fetch(nfceUrl, {
       headers: {
