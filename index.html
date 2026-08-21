@@ -881,6 +881,14 @@
               <select id="sub-pix-account">
               </select>
             </div>
+            <div class="form-group full" style="flex-direction:row;align-items:center;gap:8px">
+              <input type="checkbox" id="sub-auto" style="width:auto" onchange="if(this.checked)document.getElementById('sub-variable').checked=false">
+              <label style="margin:0" for="sub-auto">🏦 Débito automático (sai sozinho da conta — o app lança sem eu confirmar)</label>
+            </div>
+            <div class="form-group full" style="flex-direction:row;align-items:center;gap:8px">
+              <input type="checkbox" id="sub-variable" style="width:auto" onchange="if(this.checked)document.getElementById('sub-auto').checked=false">
+              <label style="margin:0" for="sub-variable">📊 Valor varia todo mês (ex: conta de luz) — o app vai me avisar pra eu atualizar</label>
+            </div>
             <div class="form-group full" style="flex-direction:row;gap:8px">
               <button class="btn btn-primary" style="flex:1" onclick="saveSubscription()">Salvar</button>
               <button class="btn btn-ghost" onclick="toggleAddSubForm()">Cancelar</button>
@@ -1846,7 +1854,7 @@
             </div>
             <div class="form-group" id="inv-aporte-cdi-group">
               <label>CDI atual (% a.a.) <span style="font-size:11px;color:var(--text-muted)">— salvo automaticamente</span></label>
-              <input type="number" id="inv-cdi-atual" placeholder="Ex: 13,75" step="0.01" min="0" oninput="calcTaxaCDI()" onchange="localStorage.setItem('fp_cdi_atual',this.value)">
+              <input type="number" id="inv-cdi-atual" placeholder="Ex: 13,75" step="0.01" min="0" oninput="calcTaxaCDI()" onchange="saveCdiAtual(this.value)">
             </div>
             <div class="form-group" id="inv-aporte-cdipct-group">
               <label>% do CDI <span style="font-size:11px;color:var(--text-muted)">— ex: 115 para 115% CDI</span></label>
@@ -2569,9 +2577,36 @@
         <select id="edit-sub-pix-account">
         </select>
       </div>
+      <div class="form-group full" style="flex-direction:row;align-items:center;gap:8px">
+        <input type="checkbox" id="edit-sub-auto" style="width:auto" onchange="if(this.checked)document.getElementById('edit-sub-variable').checked=false">
+        <label style="margin:0" for="edit-sub-auto">🏦 Débito automático (sai sozinho da conta — o app lança sem eu confirmar)</label>
+      </div>
+      <div class="form-group full" style="flex-direction:row;align-items:center;gap:8px">
+        <input type="checkbox" id="edit-sub-variable" style="width:auto" onchange="if(this.checked)document.getElementById('edit-sub-auto').checked=false">
+        <label style="margin:0" for="edit-sub-variable">📊 Valor varia todo mês (ex: conta de luz) — o app vai me avisar pra eu atualizar</label>
+      </div>
       <div class="form-group full" style="flex-direction:row;gap:8px">
         <button class="btn btn-primary" style="flex:1" onclick="saveEditSub()">Salvar</button>
         <button class="btn btn-ghost" onclick="closeEditSubModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="varval-reminder-modal" style="display:none" onclick="if(event.target===this)adiarVarValueReminder()">
+  <div class="modal-box">
+    <div class="modal-title">
+      💡 Atualizar valor <span id="varval-reminder-title" style="color:var(--accent)"></span>
+      <button class="modal-close" onclick="adiarVarValueReminder()">×</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-group full" style="font-size:12px;color:var(--text-muted)" id="varval-reminder-sub"></div>
+      <div class="form-group full">
+        <label>Valor desse mês (R$)</label>
+        <input type="number" id="varval-reminder-value" step="0.01" min="0" placeholder="0,00">
+      </div>
+      <div class="form-group full" style="flex-direction:row;gap:8px">
+        <button class="btn btn-primary" style="flex:1" onclick="saveVarValueReminder()">✓ Salvar e lançar</button>
+        <button class="btn btn-ghost" onclick="adiarVarValueReminder()">Adiar</button>
       </div>
     </div>
   </div>
@@ -2754,6 +2789,32 @@ function loadKey(k, fallback) {
 }
 function saveKey(k, v) { localStorage.setItem('fp_'+k, JSON.stringify(v)); }
 
+// Helpers pra 2 valores que antes eram salvos "no jeito antigo" (texto cru,
+// sem JSON), pra passarem a usar loadKey/saveKey como todo o resto do app.
+// Cada um migra sozinho, na primeira leitura, o valor antigo que já estava
+// salvo no navegador — sem precisar o usuário digitar de novo.
+function loadCdiAtual() {
+  var stored = localStorage.getItem('fp_cdi_atual');
+  if (stored === null) return '';
+  if (stored.charAt(0) === '"') {
+    try { return JSON.parse(stored); } catch(e) { /* cai pro valor cru abaixo */ }
+  }
+  saveKey('cdi_atual', stored); // migra pro formato novo, mantendo o valor
+  return stored;
+}
+function saveCdiAtual(v) { saveKey('cdi_atual', v); }
+
+function loadQlMinimized() {
+  var stored = localStorage.getItem('fp_ql_minimized');
+  if (stored === null) return '';
+  if (stored.charAt(0) === '"') {
+    try { return JSON.parse(stored); } catch(e) { /* cai pro valor cru abaixo */ }
+  }
+  saveKey('ql_minimized', stored); // migra pro formato novo, mantendo o valor
+  return stored;
+}
+function saveQlMinimized(v) { saveKey('ql_minimized', v); }
+
 // ══════════════════════════════════════════════════════════════
 // CATEGORIES — single source of truth
 // ══════════════════════════════════════════════════════════════
@@ -2912,7 +2973,7 @@ function saveGithubToken() {
   if (!token) return notify('Informe o token', true);
   localStorage.setItem('fp_github_token', token);
   document.getElementById('github-token-input').value = '';
-  notify('✓ Token salvo com segurança!');
+  notify('✓ Token salvo neste navegador.');
   updateGithubSyncUI();
 }
 
@@ -3680,6 +3741,10 @@ function openEditSubModal(subId) {
   if (editSubPrev) { editSubPrev.textContent = sub.emoji || '🔄'; window._editSubEmoji = sub.emoji || '🔄'; }
   document.getElementById('edit-sub-value').value = sub.value;
   document.getElementById('edit-sub-day').value   = sub.day;
+  var editAutoEl = document.getElementById('edit-sub-auto');
+  var editVarEl  = document.getElementById('edit-sub-variable');
+  if (editAutoEl) editAutoEl.checked = !!sub.auto;
+  if (editVarEl)  editVarEl.checked  = !!sub.variableValue;
 
   var type   = sub.type || 'expense';
   var catSel = document.getElementById('edit-sub-cat');
@@ -3869,6 +3934,8 @@ function saveEditSub() {
   subs[idx].day    = day;
   subs[idx].cat    = document.getElementById('edit-sub-cat').value;
   subs[idx].subcat = subcat;
+  subs[idx].auto         = document.getElementById('edit-sub-auto') ? document.getElementById('edit-sub-auto').checked : false;
+  subs[idx].variableValue = document.getElementById('edit-sub-variable') ? document.getElementById('edit-sub-variable').checked : false;
   if (subs[idx].type !== 'income') {
     subs[idx].card = document.getElementById('edit-sub-card').value;
     subs[idx].pixAccount = subs[idx].card === 'pix' ? document.getElementById('edit-sub-pix-account').value : '';
@@ -4186,13 +4253,15 @@ function saveSubscription() {
   var subcat = (subcatEl && document.getElementById('sub-subcat-group').style.display !== 'none') ? subcatEl.value : '';
   var card   = type === 'income' ? 'dinheiro' : document.getElementById('sub-card').value;
   var pixAccount = card === 'pix' ? document.getElementById('sub-pix-account').value : '';
+  var auto     = document.getElementById('sub-auto') ? document.getElementById('sub-auto').checked : false;
+  var variable = document.getElementById('sub-variable') ? document.getElementById('sub-variable').checked : false;
 
   if (!name)             return notify('Informe o nome', true);
   if (!value || value<=0) return notify('Informe o valor', true);
   if (!day||day<1||day>31) return notify('Informe um dia válido (1-31)', true);
 
   var subs = loadSubscriptions();
-  subs.push({ id: Date.now(), name: name, emoji: emoji, type: type, value: value, day: day, cat: cat, subcat: subcat, card: card, pixAccount: pixAccount, confirmedMonths: [] });
+  subs.push({ id: Date.now(), name: name, emoji: emoji, type: type, value: value, day: day, cat: cat, subcat: subcat, card: card, pixAccount: pixAccount, confirmedMonths: [], auto: auto, variableValue: variable });
   saveSubscriptions(subs);
 
   document.getElementById('sub-name').value  = '';
@@ -4201,6 +4270,8 @@ function saveSubscription() {
   window._subEmoji = '';
   document.getElementById('sub-value').value = '';
   document.getElementById('sub-day').value   = '';
+  if (document.getElementById('sub-auto'))     document.getElementById('sub-auto').checked = false;
+  if (document.getElementById('sub-variable')) document.getElementById('sub-variable').checked = false;
   toggleAddSubForm();
   notify('✓ "'+name+'" cadastrado!');
   renderSubscriptions();
@@ -4220,20 +4291,23 @@ function findPurchaseDateForBillingMonth(targetMk, day, cardKey) {
   return targetMk + '-' + String(day).padStart(2,'0'); // fallback, não deveria cair aqui
 }
 
-function confirmSubscription(subId) {
-  var mk   = curMonthKey();
+// Faz o trabalho de "confirmar e lançar" uma recorrente pra um mês/ano
+// específico (refYear/refMonth). Extraída do antigo confirmSubscription pra
+// poder ser reaproveitada tanto pelo clique manual de "Confirmar" quanto
+// pelo lançamento automático (débito automático) e pelo aviso de valor
+// variável — sem duplicar essa lógica em 3 lugares diferentes.
+// Retorna true se lançou, false se não havia nada a fazer (já confirmado,
+// ou assinatura não encontrada).
+function doConfirmSubscription(subId, refYear, refMonth) {
+  var mk   = refYear + '-' + String(refMonth+1).padStart(2,'0');
   var subs = loadSubscriptions();
   var sub  = subs.find(function(s){ return s.id === subId; });
-  if (!sub) return;
-  if (sub.confirmedMonths.indexOf(mk) !== -1) return;
+  if (!sub) return false;
+  if (sub.confirmedMonths.indexOf(mk) !== -1) return false;
 
   sub.confirmedMonths.push(mk);
   saveSubscriptions(subs);
 
-  // Usa o mês que está sendo navegado na tela (currentYear/currentMonth), não a data real do sistema —
-  // senão o lançamento cai num mês diferente do que foi marcado como confirmado
-  var refYear  = currentYear;
-  var refMonth = currentMonth; // 0-indexed
   var dateStr = refYear + '-' + String(refMonth+1).padStart(2,'0') + '-' + String(sub.day).padStart(2,'0');
   var txs     = loadKey('transactions');
 
@@ -4260,11 +4334,116 @@ function confirmSubscription(subId) {
   }
   txs.sort(function(a,b){ return b.date.localeCompare(a.date); });
   saveKey('transactions', txs);
+  return true;
+}
+
+function confirmSubscription(subId) {
+  // Usa o mês que está sendo navegado na tela (currentYear/currentMonth), não a data real do sistema —
+  // senão o lançamento cai num mês diferente do que foi marcado como confirmado
+  var subs = loadSubscriptions();
+  var sub  = subs.find(function(s){ return s.id === subId; });
+  if (!sub) return;
+  var ok = doConfirmSubscription(subId, currentYear, currentMonth);
+  if (!ok) return;
 
   notify('✓ '+sub.name+' confirmado e lançado!');
   renderSubscriptions();
   renderTxTable();
   renderDashboard();
+}
+
+// Roda uma vez ao abrir o app: lança sozinhas as recorrentes marcadas como
+// "débito automático" cujo dia já chegou nesse mês (sem precisar clicar em
+// "Confirmar"). Usa a data real de hoje, não o mês que porventura esteja
+// sendo navegado na tela.
+function runAutoDebitSubscriptions() {
+  var subs = loadSubscriptions();
+  var todayStr = today.toISOString().slice(0,10);
+  var mk = todayStr.slice(0,7);
+  var launched = [];
+  subs.forEach(function(sub) {
+    if (!sub.auto) return;
+    if (sub.confirmedMonths.indexOf(mk) !== -1) return;
+    if (today.getDate() < sub.day) return;
+    if (doConfirmSubscription(sub.id, today.getFullYear(), today.getMonth())) {
+      launched.push(sub.emoji+' '+sub.name);
+    }
+  });
+  if (launched.length) {
+    notify('✓ Lançado automaticamente: ' + launched.join(', '));
+    renderSubscriptions();
+    renderTxTable();
+    renderDashboard();
+  }
+}
+
+// ── Aviso de valor variável (ex: conta de luz) ──────────────────────────
+// Recorrentes marcadas como "valor variável" não são lançadas sozinhas —
+// no dia cadastrado, um aviso pede pra você digitar o valor daquele mês.
+// Se não der pra preencher agora, "Adiar" pergunta de novo amanhã.
+var _varValueQueue = [];
+
+function queueVarValueReminders() {
+  var subs = loadSubscriptions();
+  var todayStr = today.toISOString().slice(0,10);
+  var mk = todayStr.slice(0,7);
+  _varValueQueue = subs.filter(function(sub) {
+    if (!sub.variableValue || sub.auto) return false;
+    if (sub.confirmedMonths.indexOf(mk) !== -1) return false;
+    if (today.getDate() < sub.day) return false;
+    if (sub.snoozeUntil && todayStr <= sub.snoozeUntil) return false;
+    return true;
+  }).map(function(s){ return s.id; });
+  showNextVarValueReminder();
+}
+
+function showNextVarValueReminder() {
+  if (!_varValueQueue.length) return;
+  var subId = _varValueQueue[0];
+  var sub = loadSubscriptions().find(function(s){ return s.id === subId; });
+  if (!sub) { _varValueQueue.shift(); showNextVarValueReminder(); return; }
+  document.getElementById('varval-reminder-title').textContent = sub.emoji+' '+sub.name;
+  document.getElementById('varval-reminder-sub').textContent = 'Dia '+sub.day+' — informe o valor desse mês';
+  document.getElementById('varval-reminder-value').value = '';
+  window._varValueReminderSubId = subId;
+  document.getElementById('varval-reminder-modal').style.display = 'flex';
+}
+
+function dismissVarValueReminder() {
+  document.getElementById('varval-reminder-modal').style.display = 'none';
+  _varValueQueue.shift();
+  if (_varValueQueue.length) setTimeout(showNextVarValueReminder, 300);
+}
+
+function saveVarValueReminder() {
+  var subId = window._varValueReminderSubId;
+  var value = parseFloat(document.getElementById('varval-reminder-value').value);
+  if (!value || value <= 0) { notify('Informe o valor', true); return; }
+  var subs = loadSubscriptions();
+  var sub  = subs.find(function(s){ return s.id === subId; });
+  if (!sub) { dismissVarValueReminder(); return; }
+  sub.value = value;
+  sub.snoozeUntil = '';
+  saveSubscriptions(subs);
+  var ok = doConfirmSubscription(subId, today.getFullYear(), today.getMonth());
+  if (ok) notify('✓ '+sub.name+' — '+fmt(value)+' lançado.');
+  renderSubscriptions();
+  renderTxTable();
+  renderDashboard();
+  dismissVarValueReminder();
+}
+
+function adiarVarValueReminder() {
+  var subId = window._varValueReminderSubId;
+  var subs = loadSubscriptions();
+  var sub  = subs.find(function(s){ return s.id === subId; });
+  if (sub) {
+    var tmr = new Date(today);
+    tmr.setDate(tmr.getDate() + 1);
+    sub.snoozeUntil = tmr.toISOString().slice(0,10);
+    saveSubscriptions(subs);
+  }
+  dismissVarValueReminder();
 }
 
 function deleteSubscription(subId) {
@@ -4358,6 +4537,7 @@ function renderSubscriptions() {
 }
 
 function deleteTx(id) {
+  if (!confirm('Excluir esta transação? Essa ação não pode ser desfeita.')) return;
   var txs  = loadKey('transactions');
   var tx   = txs.find(function(t){ return t.id === id; });
   saveKey('transactions', txs.filter(function(t){ return t.id !== id; }));
@@ -4666,7 +4846,7 @@ function renderDashIntegrated() {
 
 function renderDashboard() {
   // Aplica o estado salvo (minimizado ou não) do Lançamento Rápido
-  toggleQuickLaunch(localStorage.getItem('fp_ql_minimized') !== '1');
+  toggleQuickLaunch(loadQlMinimized() !== '1');
   renderDashBudgetAlert();
 
   var txs     = getMonthTx(currentYear, currentMonth);
@@ -4901,7 +5081,7 @@ function getFixedSemEnvelope(mk) {
   // 2) recorrentes previstas mas AINDA NÃO confirmadas nesse mês — contam como
   // comprometidas igual à renda prevista (você sabe que vai gastar, confirmado ou não)
   var pendingItems = subs
-    .filter(function(s){ return s.confirmedMonths.indexOf(mk) === -1 && !hasEnvelope(s.cat, s.subcat); })
+    .filter(function(s){ return s.confirmedMonths.indexOf(mk) === -1 && !hasEnvelope(s.cat, s.subcat) && !s.variableValue; })
     .map(function(s){ return { desc: s.emoji+' '+s.name+' (previsto)', cat: s.cat, amount: s.value, source: 'recorrente' }; });
 
   var items = confirmedItems.concat(pendingItems);
@@ -5090,6 +5270,7 @@ function renderAlocarCard() {
 }
 
 function deleteBudget(id) {
+  if (!confirm('Excluir este limite de orçamento? Essa ação não pode ser desfeita.')) return;
   saveKey('budgets', loadKey('budgets').filter(function(b){ return b.id !== id; }));
   renderBudget();
 }
@@ -6103,14 +6284,14 @@ function renderEstimativa() {
 
   // Receitas recorrentes ainda não confirmadas
   var pending = subs.filter(function(s){
-    return (s.type || 'expense') === 'income' && s.confirmedMonths.indexOf(mk) === -1;
+    return (s.type || 'expense') === 'income' && s.confirmedMonths.indexOf(mk) === -1 && !s.variableValue;
   }).reduce(function(s,sub){ return s + sub.value; }, 0);
 
   // Despesas do mês (lançadas) + despesas recorrentes pendentes
   var expenses = txs.filter(function(t){ return t.type === 'expense'; })
                     .reduce(function(s,t){ return s + t.amount; }, 0);
   var pendingExp = subs.filter(function(s){
-    return (s.type || 'expense') === 'expense' && s.confirmedMonths.indexOf(mk) === -1;
+    return (s.type || 'expense') === 'expense' && s.confirmedMonths.indexOf(mk) === -1 && !s.variableValue;
   }).reduce(function(s,sub){ return s + sub.value; }, 0);
   var totalExp = expenses + pendingExp;
 
@@ -6139,7 +6320,7 @@ function toggleQuickLaunch(forceState) {
   var expanded = forceState !== undefined ? forceState : (content.style.display === 'none');
   content.style.display = expanded ? '' : 'none';
   if (btn) btn.textContent = expanded ? '▼' : '▶';
-  localStorage.setItem('fp_ql_minimized', expanded ? '' : '1');
+  saveQlMinimized(expanded ? '' : '1');
 }
 
 // Verifica quais envelopes (categoria ou subcategoria) estão perto (70%+) ou
@@ -6452,12 +6633,10 @@ function renderTerMetaAnual() {
 }
 
 function loadTerreno() {
-  try {
-    var v = localStorage.getItem('fp_terreno');
-    return v ? JSON.parse(v) : JSON.parse(JSON.stringify(TERRENO_DEFAULT));
-  } catch(e) { return JSON.parse(JSON.stringify(TERRENO_DEFAULT)); }
+  var v = loadKey('terreno', null);
+  return v ? v : JSON.parse(JSON.stringify(TERRENO_DEFAULT));
 }
-function saveTerreno_data(d) { localStorage.setItem('fp_terreno', JSON.stringify(d)); }
+function saveTerreno_data(d) { saveKey('terreno', d); }
 
 function saveTerreno() {
   var inst    = parseFloat(document.getElementById('ter-input-installment').value);
@@ -7100,7 +7279,7 @@ function renderCartoes() {
           var subs = loadSubscriptions();
           var mk = monthKey(currentYear, currentMonth);
           var recorrPend = subs.filter(function(s){
-            return (s.type||'expense')==='expense' && s.card===key && s.confirmedMonths.indexOf(mk)===-1;
+            return (s.type||'expense')==='expense' && s.card===key && s.confirmedMonths.indexOf(mk)===-1 && !s.variableValue;
           });
           var recorrPendVal = recorrPend.reduce(function(s,sub){ return s+sub.value; },0);
           // Total da fatura = soma direta de cardChgs (sem duplicar)
@@ -7450,6 +7629,7 @@ function toggleAporteTipoFields() {
 }
 
 function deleteAporte(id) {
+  if (!confirm('Excluir este aporte? Essa ação não pode ser desfeita.')) return;
   saveAportes(loadAportes().filter(function(a){ return a.id !== id; }));
   notify('Aporte removido.');
   renderInvest();
@@ -7485,7 +7665,7 @@ function renderInvest() {
   seedInvestIfNeeded();
   populateInvestSelects();
   // Carregar CDI salvo
-  var cdiSalvo = localStorage.getItem('fp_cdi_atual');
+  var cdiSalvo = loadCdiAtual();
   var cdiEl = document.getElementById('inv-cdi-atual');
   if (cdiEl && cdiSalvo) cdiEl.value = cdiSalvo;
 
@@ -7920,10 +8100,10 @@ function renderTerAportes() {
 }
 
 function loadTerAnt() {
-  try { var v=localStorage.getItem('fp_ter_ant'); return v?JSON.parse(v):{target:10,monthly:0,quotations:[]}; }
-  catch(e){ return {target:10,monthly:0,quotations:[]}; }
+  var v = loadKey('ter_ant', null);
+  return v ? v : {target:10,monthly:0,quotations:[]};
 }
-function saveTerAntData(d){ localStorage.setItem('fp_ter_ant',JSON.stringify(d)); }
+function saveTerAntData(d){ saveKey('ter_ant', d); }
 
 function getSavedForAntecipacao() {
   var boxes   = loadInvestBoxes();
@@ -9115,6 +9295,12 @@ function confirmNfceImport() {
   })();
 
   try { renderDashboard(); } catch(e) { console.error('renderDashboard falhou:', e); }
+
+  // Débito automático + aviso de valor variável das recorrentes — roda uma
+  // vez por abertura do app, depois de tudo já estar carregado/migrado.
+  try { runAutoDebitSubscriptions(); } catch(e) { console.error('runAutoDebitSubscriptions falhou:', e); }
+  try { queueVarValueReminders(); } catch(e) { console.error('queueVarValueReminders falhou:', e); }
+
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js')
       .then(function(reg) { console.log('✅ SW registrado:', reg.scope); })
