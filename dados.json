@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-08-21T21:27:28.056Z",
+  "savedAt": "2026-08-21T21:28:04.182Z",
   "data": {
     "fp_cats": [
       {
@@ -1752,6 +1752,19 @@
         "paymentAccount": ""
       },
       {
+        "id": 1787347676597,
+        "type": "expense",
+        "amount": 295,
+        "cat": "Contas",
+        "subcat": "Luz",
+        "desc": "🔄 Luz (💜 Nubank)",
+        "date": "2026-08-17",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1787347676596,
+        "subId": 1779322392668
+      },
+      {
         "id": 1786911387538,
         "type": "expense",
         "amount": 40.38,
@@ -2220,6 +2233,19 @@
         "payment": "pix",
         "source": "recorrente",
         "subId": 1779322047640
+      },
+      {
+        "id": 1787347679224,
+        "type": "expense",
+        "amount": 139.8,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "❤ Academia rafa (🏦 Inter)",
+        "date": "2026-08-10",
+        "source": "recorrente",
+        "card": "inter",
+        "purchaseId": 1787347679223,
+        "subId": 1787270225334
       },
       {
         "id": 1785936196535,
@@ -3643,6 +3669,17 @@
           "year": 2026,
           "ipca": null,
           "value": 1216.57
+        }
+      ]
+    },
+    "fp_ter_ant": {
+      "target": 10,
+      "monthly": 0,
+      "quotations": [
+        {
+          "month": "2026-08",
+          "n": 10,
+          "val": 4245.98
         }
       ]
     },
@@ -5548,6 +5585,30 @@
         "parcelas": 1,
         "installmentVal": 295,
         "subId": 1779322392668
+      },
+      {
+        "id": 1787347676596,
+        "card": "nubank",
+        "date": "2026-07-15",
+        "desc": "🔄 Luz",
+        "cat": "Contas",
+        "subcat": "Luz",
+        "total": 295,
+        "parcelas": 1,
+        "installmentVal": 295,
+        "subId": 1779322392668
+      },
+      {
+        "id": 1787347679223,
+        "card": "inter",
+        "date": "2026-07-10",
+        "desc": "❤ Academia rafa",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 139.8,
+        "parcelas": 1,
+        "installmentVal": 139.8,
+        "subId": 1787270225334
       }
     ],
     "fp_invest_boxes": [
@@ -5957,7 +6018,8 @@
         "subcat": "Luz",
         "card": "nubank",
         "confirmedMonths": [
-          "2026-09"
+          "2026-09",
+          "2026-08"
         ],
         "pixAccount": ""
       },
@@ -6080,7 +6142,9 @@
         "subcat": "",
         "card": "inter",
         "pixAccount": "",
-        "confirmedMonths": []
+        "confirmedMonths": [
+          "2026-08"
+        ]
       }
     ],
     "fp_nfce_api_url": "https://sistema-financeiro-cyan-theta.vercel.app/api/nfce",
