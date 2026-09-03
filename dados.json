@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-09-03T11:03:48.757Z",
+  "savedAt": "2026-09-03T11:17:49.460Z",
   "data": {
     "fp_cats": [
       {
@@ -848,7 +848,7 @@
         "subcat": "Investimento",
         "desc": "Conta da Ia claude (💜 Nubank)",
         "date": "2026-09-17",
-        "source": "cartao",
+        "source": "recorrente",
         "card": "nubank",
         "purchaseId": 1787006181454,
         "realDate": "2026-08-17"
@@ -1201,6 +1201,175 @@
         "card": "inter",
         "purchaseId": 1788433170624,
         "subId": 1787270225334
+      },
+      {
+        "id": 1788433717311,
+        "type": "expense",
+        "amount": 10.7,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1788433717310,
+        "realDate": "2026-08-29"
+      },
+      {
+        "id": 1788433739673,
+        "type": "expense",
+        "amount": 8.6,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99-Aula de inglês (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1788433739672,
+        "realDate": "2026-08-29"
+      },
+      {
+        "id": 1788433762222,
+        "type": "expense",
+        "amount": 7.77,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1788433762221,
+        "realDate": "2026-08-28"
+      },
+      {
+        "id": 1788433774071,
+        "type": "expense",
+        "amount": 7.7,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1788433774070,
+        "realDate": "2026-08-28"
+      },
+      {
+        "id": 1788433797352,
+        "type": "expense",
+        "amount": 11.2,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 - Aula de dança (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1788433797351,
+        "realDate": "2026-08-23"
+      },
+      {
+        "id": 1788433816478,
+        "type": "expense",
+        "amount": 8.61,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 - (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1788433816477,
+        "realDate": "2026-08-22"
+      },
+      {
+        "id": 1788433865508,
+        "type": "expense",
+        "amount": 72.94,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Dalcenter (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1788433865507,
+        "realDate": "2026-08-21"
+      },
+      {
+        "id": 1788433906081,
+        "type": "expense",
+        "amount": 13.6,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99- (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1788433906080,
+        "realDate": "2026-08-18"
+      },
+      {
+        "id": 1788433913334,
+        "type": "expense",
+        "amount": 16,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1788433913333,
+        "realDate": "2026-08-18"
+      },
+      {
+        "id": 1788433931239,
+        "type": "expense",
+        "amount": 10.6,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1788433931238,
+        "realDate": "2026-08-15"
+      },
+      {
+        "id": 1788433961372,
+        "type": "expense",
+        "amount": 40.35,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "Mercado (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1788433961371,
+        "realDate": "2026-08-14"
+      },
+      {
+        "id": 1788433978210,
+        "type": "expense",
+        "amount": 9.98,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99- (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1788433978209,
+        "realDate": "2026-08-14"
+      },
+      {
+        "id": 1788434011046,
+        "type": "expense",
+        "amount": 7.77,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99- (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1788434011045,
+        "realDate": "2026-08-12"
       },
       {
         "id": 1785843905529,
@@ -3682,6 +3851,33 @@
         "limit": 150,
         "month": "2026-08",
         "rollover": "zera"
+      },
+      {
+        "id": 1788433581135,
+        "key": "Alimentação::Carne",
+        "cat": "Alimentação",
+        "sub": "Carne",
+        "limit": 300,
+        "month": "2026-10",
+        "rollover": "zera"
+      },
+      {
+        "id": 1788433605882,
+        "key": "Alimentação::Padaria",
+        "cat": "Alimentação",
+        "sub": "Padaria",
+        "limit": 100,
+        "month": "2026-10",
+        "rollover": "zera"
+      },
+      {
+        "id": 1788433619308,
+        "key": "Alimentação::Mercado",
+        "cat": "Alimentação",
+        "sub": "Mercado",
+        "limit": 500,
+        "month": "2026-10",
+        "rollover": "zera"
       }
     ],
     "fp_dollar_entries": [
@@ -3737,7 +3933,7 @@
     "fp_terreno": {
       "installment": 1216.57,
       "total": 180,
-      "paid": 70,
+      "paid": 65,
       "readjustMonth": 9,
       "notes": "",
       "readjustHistory": [
@@ -3796,6 +3992,129 @@
         "installmentVal": 99.9
       },
       {
+        "id": 1788433717310,
+        "card": "inter",
+        "date": "2026-08-29",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 10.7,
+        "parcelas": 1,
+        "installmentVal": 10.7
+      },
+      {
+        "id": 1788433739672,
+        "card": "inter",
+        "date": "2026-08-29",
+        "desc": "99-Aula de inglês",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 8.6,
+        "parcelas": 1,
+        "installmentVal": 8.6
+      },
+      {
+        "id": 1788433762221,
+        "card": "inter",
+        "date": "2026-08-28",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 7.77,
+        "parcelas": 1,
+        "installmentVal": 7.77
+      },
+      {
+        "id": 1788433774070,
+        "card": "inter",
+        "date": "2026-08-28",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 7.7,
+        "parcelas": 1,
+        "installmentVal": 7.7
+      },
+      {
+        "id": 1788433167259,
+        "card": "nubank",
+        "date": "2026-08-27",
+        "desc": "☁️ Drive",
+        "cat": "Armazenamento",
+        "subcat": "Drive",
+        "total": 49.99,
+        "parcelas": 1,
+        "installmentVal": 49.99,
+        "subId": 1780338303392
+      },
+      {
+        "id": 1788433797351,
+        "card": "inter",
+        "date": "2026-08-23",
+        "desc": "99 - Aula de dança",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 11.2,
+        "parcelas": 1,
+        "installmentVal": 11.2
+      },
+      {
+        "id": 1788433816477,
+        "card": "inter",
+        "date": "2026-08-22",
+        "desc": "99 -",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 8.61,
+        "parcelas": 1,
+        "installmentVal": 8.61
+      },
+      {
+        "id": 1788433168040,
+        "card": "nubank",
+        "date": "2026-08-21",
+        "desc": "❤ Crunchyroll",
+        "cat": "Entretenimento",
+        "subcat": "Crunchirol",
+        "total": 24.9,
+        "parcelas": 1,
+        "installmentVal": 24.9,
+        "subId": 1780338478518
+      },
+      {
+        "id": 1788433865507,
+        "card": "inter",
+        "date": "2026-08-21",
+        "desc": "Dalcenter",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 72.94,
+        "parcelas": 1,
+        "installmentVal": 72.94
+      },
+      {
+        "id": 1788433906080,
+        "card": "inter",
+        "date": "2026-08-18",
+        "desc": "99-",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 13.6,
+        "parcelas": 1,
+        "installmentVal": 13.6
+      },
+      {
+        "id": 1788433913333,
+        "card": "inter",
+        "date": "2026-08-18",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 16,
+        "parcelas": 1,
+        "installmentVal": 16
+      },
+      {
         "id": 1787006181454,
         "card": "nubank",
         "date": "2026-08-17",
@@ -3819,6 +4138,29 @@
       },
       {
         "id": 1787006748055,
+        "card": "inter",
+        "date": "2026-08-15",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 10.6,
+        "parcelas": 1,
+        "installmentVal": 10.6
+      },
+      {
+        "id": 1787270316492,
+        "card": "nubank",
+        "date": "2026-08-15",
+        "desc": "🔄 Luz",
+        "cat": "Contas",
+        "subcat": "Luz",
+        "total": 295,
+        "parcelas": 1,
+        "installmentVal": 295,
+        "subId": 1779322392668
+      },
+      {
+        "id": 1788433931238,
         "card": "inter",
         "date": "2026-08-15",
         "desc": "99",
@@ -3917,6 +4259,39 @@
         "installmentVal": 9.02
       },
       {
+        "id": 1788433961371,
+        "card": "inter",
+        "date": "2026-08-14",
+        "desc": "Mercado",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 40.35,
+        "parcelas": 1,
+        "installmentVal": 40.35
+      },
+      {
+        "id": 1788433978209,
+        "card": "inter",
+        "date": "2026-08-14",
+        "desc": "99-",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 9.98,
+        "parcelas": 1,
+        "installmentVal": 9.98
+      },
+      {
+        "id": 1788434011045,
+        "card": "inter",
+        "date": "2026-08-12",
+        "desc": "99-",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 7.77,
+        "parcelas": 1,
+        "installmentVal": 7.77
+      },
+      {
         "id": 1786474274052,
         "card": "inter",
         "date": "2026-08-10",
@@ -3982,6 +4357,42 @@
         "parcelas": 1,
         "installmentVal": 33.4,
         "subId": 1780338913454
+      },
+      {
+        "id": 1787270314150,
+        "card": "inter",
+        "date": "2026-08-10",
+        "desc": "🔄 Condominio",
+        "cat": "Terreno",
+        "subcat": "Condomínio",
+        "total": 59.1,
+        "parcelas": 1,
+        "installmentVal": 59.1,
+        "subId": 1779322500367
+      },
+      {
+        "id": 1788433163909,
+        "card": "nubank",
+        "date": "2026-08-10",
+        "desc": "🔄 Academia(kelvin)",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 139.8,
+        "parcelas": 1,
+        "installmentVal": 139.8,
+        "subId": 1779321710343
+      },
+      {
+        "id": 1788433170624,
+        "card": "inter",
+        "date": "2026-08-10",
+        "desc": "❤ Academia rafa",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 139.8,
+        "parcelas": 1,
+        "installmentVal": 139.8,
+        "subId": 1787270225334
       },
       {
         "id": 1787006485893,
@@ -4547,6 +4958,18 @@
         "installmentVal": 36.99
       },
       {
+        "id": 1787347676596,
+        "card": "nubank",
+        "date": "2026-07-15",
+        "desc": "🔄 Luz",
+        "cat": "Contas",
+        "subcat": "Luz",
+        "total": 295,
+        "parcelas": 1,
+        "installmentVal": 295,
+        "subId": 1779322392668
+      },
+      {
         "id": 1785936776479,
         "card": "nubank",
         "date": "2026-07-13",
@@ -4658,6 +5081,18 @@
         "parcelas": 1,
         "installmentVal": 139.8,
         "subId": 1779321710343
+      },
+      {
+        "id": 1787347679223,
+        "card": "inter",
+        "date": "2026-07-10",
+        "desc": "❤ Academia rafa",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 139.8,
+        "parcelas": 1,
+        "installmentVal": 139.8,
+        "subId": 1787270225334
       },
       {
         "id": 1784209571465,
@@ -5637,102 +6072,6 @@
         "total": 492.48,
         "parcelas": 9,
         "installmentVal": 54.72
-      },
-      {
-        "id": 1787270314150,
-        "card": "inter",
-        "date": "2026-08-10",
-        "desc": "🔄 Condominio",
-        "cat": "Terreno",
-        "subcat": "Condomínio",
-        "total": 59.1,
-        "parcelas": 1,
-        "installmentVal": 59.1,
-        "subId": 1779322500367
-      },
-      {
-        "id": 1787270316492,
-        "card": "nubank",
-        "date": "2026-08-15",
-        "desc": "🔄 Luz",
-        "cat": "Contas",
-        "subcat": "Luz",
-        "total": 295,
-        "parcelas": 1,
-        "installmentVal": 295,
-        "subId": 1779322392668
-      },
-      {
-        "id": 1787347676596,
-        "card": "nubank",
-        "date": "2026-07-15",
-        "desc": "🔄 Luz",
-        "cat": "Contas",
-        "subcat": "Luz",
-        "total": 295,
-        "parcelas": 1,
-        "installmentVal": 295,
-        "subId": 1779322392668
-      },
-      {
-        "id": 1787347679223,
-        "card": "inter",
-        "date": "2026-07-10",
-        "desc": "❤ Academia rafa",
-        "cat": "Saúde",
-        "subcat": "",
-        "total": 139.8,
-        "parcelas": 1,
-        "installmentVal": 139.8,
-        "subId": 1787270225334
-      },
-      {
-        "id": 1788433163909,
-        "card": "nubank",
-        "date": "2026-08-10",
-        "desc": "🔄 Academia(kelvin)",
-        "cat": "Saúde",
-        "subcat": "",
-        "total": 139.8,
-        "parcelas": 1,
-        "installmentVal": 139.8,
-        "subId": 1779321710343
-      },
-      {
-        "id": 1788433167259,
-        "card": "nubank",
-        "date": "2026-08-27",
-        "desc": "☁️ Drive",
-        "cat": "Armazenamento",
-        "subcat": "Drive",
-        "total": 49.99,
-        "parcelas": 1,
-        "installmentVal": 49.99,
-        "subId": 1780338303392
-      },
-      {
-        "id": 1788433168040,
-        "card": "nubank",
-        "date": "2026-08-21",
-        "desc": "❤ Crunchyroll",
-        "cat": "Entretenimento",
-        "subcat": "Crunchirol",
-        "total": 24.9,
-        "parcelas": 1,
-        "installmentVal": 24.9,
-        "subId": 1780338478518
-      },
-      {
-        "id": 1788433170624,
-        "card": "inter",
-        "date": "2026-08-10",
-        "desc": "❤ Academia rafa",
-        "cat": "Saúde",
-        "subcat": "",
-        "total": 139.8,
-        "parcelas": 1,
-        "installmentVal": 139.8,
-        "subId": 1787270225334
       }
     ],
     "fp_invest_boxes": [
