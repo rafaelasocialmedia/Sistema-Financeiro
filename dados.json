@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-09-03T11:22:30.756Z",
+  "savedAt": "2026-09-03T11:24:28.869Z",
   "data": {
     "fp_cats": [
       {
@@ -83,6 +83,10 @@
           {
             "id": "id_1785936440691_63uf3",
             "name": "Padaria"
+          },
+          {
+            "id": "id_1788434618416_fia2w",
+            "name": "Almoço"
           }
         ]
       },
@@ -803,6 +807,19 @@
         "card": "bb",
         "purchaseId": 1788434510194,
         "realDate": "2026-08-28"
+      },
+      {
+        "id": 1788434650843,
+        "type": "expense",
+        "amount": 30.11,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "N.B. Dal Santos & Cia Ltda (🟡 Banco do Brasil)",
+        "date": "2026-10-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1788434650842,
+        "realDate": "2026-09-01"
       },
       {
         "id": 1782165180013,
@@ -4018,6 +4035,17 @@
         "installmentVal": 99.9
       },
       {
+        "id": 1788434650842,
+        "card": "bb",
+        "date": "2026-09-01",
+        "desc": "N.B. Dal Santos & Cia Ltda",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 30.11,
+        "parcelas": 1,
+        "installmentVal": 30.11
+      },
+      {
         "id": 1788433717310,
         "card": "inter",
         "date": "2026-08-29",
@@ -6763,6 +6791,22 @@
       "CXA SBRECXA C P.DORS": {
         "cat": "Alimentação",
         "subcat": "Carne"
+      },
+      "PRATO QUENTE": {
+        "cat": "Alimentação",
+        "subcat": "Mercado"
+      },
+      "MILHO VD FUGINI 170G": {
+        "cat": "Alimentação",
+        "subcat": "Mercado"
+      },
+      "CREM.LEIT.PIRAC.200G": {
+        "cat": "Alimentação",
+        "subcat": "Mercado"
+      },
+      "LING TOSC ASSADA KG": {
+        "cat": "Alimentação",
+        "subcat": "Almoço"
       }
     }
   }
