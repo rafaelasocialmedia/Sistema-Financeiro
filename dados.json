@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-09-03T11:17:49.460Z",
+  "savedAt": "2026-09-03T11:22:23.352Z",
   "data": {
     "fp_cats": [
       {
@@ -777,6 +777,32 @@
         "card": "inter",
         "purchaseId": 1785937332817,
         "realDate": "2026-10-10"
+      },
+      {
+        "id": 1788434421383,
+        "type": "expense",
+        "amount": 239.59,
+        "cat": "Saúde",
+        "subcat": "Remedio",
+        "desc": "Ultra Popular (🟡 Banco do Brasil)",
+        "date": "2026-10-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1788434421382,
+        "realDate": "2026-08-28"
+      },
+      {
+        "id": 1788434510195,
+        "type": "expense",
+        "amount": 40,
+        "cat": "Saúde",
+        "subcat": "Exames",
+        "desc": "Exame - Kelvin (🟡 Banco do Brasil)",
+        "date": "2026-10-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1788434510194,
+        "realDate": "2026-08-28"
       },
       {
         "id": 1782165180013,
@@ -4034,6 +4060,28 @@
         "total": 7.7,
         "parcelas": 1,
         "installmentVal": 7.7
+      },
+      {
+        "id": 1788434421382,
+        "card": "bb",
+        "date": "2026-08-28",
+        "desc": "Ultra Popular",
+        "cat": "Saúde",
+        "subcat": "Remedio",
+        "total": 239.59,
+        "parcelas": 1,
+        "installmentVal": 239.59
+      },
+      {
+        "id": 1788434510194,
+        "card": "bb",
+        "date": "2026-08-28",
+        "desc": "Exame - Kelvin",
+        "cat": "Saúde",
+        "subcat": "Exames",
+        "total": 40,
+        "parcelas": 1,
+        "installmentVal": 40
       },
       {
         "id": 1788433167259,
