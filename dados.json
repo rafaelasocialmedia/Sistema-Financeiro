@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-09-03T11:24:28.869Z",
+  "savedAt": "2026-09-07T21:30:20.446Z",
   "data": {
     "fp_cats": [
       {
@@ -962,6 +962,19 @@
         "subId": 1780338478518
       },
       {
+        "id": 1788816495460,
+        "type": "expense",
+        "amount": 50,
+        "cat": "Entretenimento",
+        "subcat": "",
+        "desc": "☁️ Netflix (💜 Nubank)",
+        "date": "2026-09-17",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1788816495459,
+        "subId": 1788433228417
+      },
+      {
         "id": 1779321938028,
         "type": "expense",
         "amount": 54.72,
@@ -1413,6 +1426,43 @@
         "card": "inter",
         "purchaseId": 1788434011045,
         "realDate": "2026-08-12"
+      },
+      {
+        "id": 1788612270394,
+        "type": "expense",
+        "amount": 8.6,
+        "cat": "Transporte",
+        "subcat": "",
+        "desc": "99 (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1788612270393,
+        "realDate": "2026-09-05"
+      },
+      {
+        "id": 1788612337665,
+        "type": "expense",
+        "amount": 966.84,
+        "cat": "Educação",
+        "subcat": "Ingles",
+        "desc": "Aulaq (🏦 Inter)",
+        "date": "2026-09-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1788612337664,
+        "realDate": "2026-09-05"
+      },
+      {
+        "id": 1788816550852,
+        "type": "expense",
+        "amount": 22.72,
+        "cat": "Alimentação",
+        "subcat": "Padaria",
+        "desc": "N.B. Dal Santos & Cia Ltda",
+        "date": "2026-09-07",
+        "payment": "pix",
+        "paymentAccount": ""
       },
       {
         "id": 1785843905529,
@@ -4035,6 +4085,28 @@
         "installmentVal": 99.9
       },
       {
+        "id": 1788612270393,
+        "card": "inter",
+        "date": "2026-09-05",
+        "desc": "99",
+        "cat": "Transporte",
+        "subcat": "",
+        "total": 8.6,
+        "parcelas": 1,
+        "installmentVal": 8.6
+      },
+      {
+        "id": 1788612337664,
+        "card": "inter",
+        "date": "2026-09-05",
+        "desc": "Aulaq",
+        "cat": "Educação",
+        "subcat": "Ingles",
+        "total": 966.84,
+        "parcelas": 1,
+        "installmentVal": 966.84
+      },
+      {
         "id": 1788434650842,
         "card": "bb",
         "date": "2026-09-01",
@@ -6148,6 +6220,18 @@
         "total": 492.48,
         "parcelas": 9,
         "installmentVal": 54.72
+      },
+      {
+        "id": 1788816495459,
+        "card": "nubank",
+        "date": "2026-09-06",
+        "desc": "☁️ Netflix",
+        "cat": "Entretenimento",
+        "subcat": "",
+        "total": 50,
+        "parcelas": 1,
+        "installmentVal": 50,
+        "subId": 1788433228417
       }
     ],
     "fp_invest_boxes": [
@@ -6710,7 +6794,9 @@
         "subcat": "",
         "card": "nubank",
         "pixAccount": "",
-        "confirmedMonths": [],
+        "confirmedMonths": [
+          "2026-09"
+        ],
         "auto": true,
         "variableValue": false
       },
@@ -6807,6 +6893,18 @@
       "LING TOSC ASSADA KG": {
         "cat": "Alimentação",
         "subcat": "Almoço"
+      },
+      "PAO DOCE KG": {
+        "cat": "Alimentação",
+        "subcat": "Padaria"
+      },
+      "FAROFA KG": {
+        "cat": "Alimentação",
+        "subcat": "Almoço"
+      },
+      "BOLO FORMIG. KG": {
+        "cat": "Alimentação",
+        "subcat": "Padaria"
       }
     }
   }
