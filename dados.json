@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-09-10T00:10:59.663Z",
+  "savedAt": "2026-09-10T00:17:07.490Z",
   "data": {
     "fp_cats": [
       {
@@ -4028,7 +4028,7 @@
       "total": 180,
       "paid": 65,
       "readjustMonth": 9,
-      "notes": "",
+      "notes": "190,0",
       "readjustHistory": [
         {
           "year": 2026,
