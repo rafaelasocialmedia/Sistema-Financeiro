@@ -468,7 +468,7 @@
       <div class="nav-item" id="nav-movimentos" onclick="navigate('movimentos')"><span class="nav-icon">💰</span><span>Movimentos</span></div>
       <div class="nav-item" onclick="navigate('cardmanager')"><span class="nav-icon">🃏</span><span>Cartões</span></div>
       <div class="nav-item" onclick="navigate('budget')"><span class="nav-icon">🎯</span><span>Orçamento</span></div>
-      <div class="nav-item" style="position:relative" onclick="navigate('terreno')"><span class="nav-icon">🏗️</span><span>Terreno</span><span id="nav-terreno-badge" style="display:none;position:absolute;top:4px;right:10px;color:var(--gold);font-size:12px" title="Parcelas confirmadas ainda não contabilizadas aqui">❗</span></div>
+      <div class="nav-item" style="position:relative" onclick="navigate('terreno')"><span class="nav-icon">🏗️</span><span>Terreno</span></div>
       <div class="nav-item" onclick="navigate('anual')"><span class="nav-icon">📅</span><span>Anual</span></div>
       <div class="nav-item" onclick="navigate('categories')"><span class="nav-icon">⚙️</span><span>Config</span></div>
     </div>
@@ -575,7 +575,15 @@
         <div class="card"><div class="card-label">Saldo do Mês</div><div class="card-value" id="d-balance">R$ 0,00</div><div class="card-change">receitas − despesas</div></div>
         <div class="card"><div class="card-label">Receitas</div><div class="card-value pos" id="d-income">R$ 0,00</div><div class="card-change" id="d-income-n">0 lançamentos</div></div>
         <div class="card"><div class="card-label">Despesas</div><div class="card-value neg" id="d-expense">R$ 0,00</div><div class="card-change" id="d-expense-n">0 lançamentos</div></div>
-        <div class="card"><div class="card-label">Parcelas do Mês</div><div class="card-value gold" id="d-debt">R$ 0,00</div><div class="card-change" id="d-debt-n">0 dívidas ativas</div></div>
+        <div class="card">
+          <div class="card-label">Parcelas do Mês</div>
+          <div class="card-value gold" id="d-debt">R$ 0,00</div>
+          <div class="card-change" id="d-debt-n">0 parcelas ativas</div>
+          <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:3px">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted)"><span>🔄 Recorrentes</span><span id="d-debt-recorr" style="font-family:var(--font-num);color:var(--text)">R$ 0,00</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted)"><span>📦 Parceladas</span><span id="d-debt-parc" style="font-family:var(--font-num);color:var(--text)">R$ 0,00</span></div>
+          </div>
+        </div>
       </div>
 
       <!-- Estimativa do mês -->
@@ -1332,8 +1340,6 @@
         </div>
       </div>
 
-      <div id="terreno-sync-alert" style="display:none;margin:16px 0;background:var(--gold-dim);border:1px solid var(--gold);border-radius:var(--radius-sm);padding:12px 16px;font-size:13px;color:var(--gold)"></div>
-
       <!-- Summary cards -->
       <div class="cards-grid">
         <div class="card">
@@ -1480,6 +1486,15 @@
               <input type="number" id="ter-meta-antecip" placeholder="Antecipações" min="0" style="flex:1;min-width:120px">
               <button class="btn btn-primary btn-sm" onclick="saveTerMetaAnual()">Salvar</button>
               <button class="btn btn-danger btn-sm" onclick="deleteTerMetaAnual()" title="Apagar meta">✕</button>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px">
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:10px">📑 Lançamentos do Ano</div>
+          <div id="ter-year-launches">
+            <div class="empty-state" style="padding:16px">
+              <div class="empty-icon" style="font-size:24px">📑</div>
+              Nenhuma parcela lançada ainda.
             </div>
           </div>
         </div>
@@ -2611,6 +2626,23 @@
     </div>
   </div>
 </div>
+<div class="modal-overlay" id="terreno-reminder-modal" style="display:none" onclick="if(event.target===this)closeTerrenoReminderModal()">
+  <div class="modal-box">
+    <div class="modal-title">
+      🏗️ <span id="terreno-reminder-title"></span>
+      <button class="modal-close" onclick="closeTerrenoReminderModal()">×</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-group full" style="font-size:12px;color:var(--text-muted)" id="terreno-reminder-sub"></div>
+      <div class="form-group full" style="font-size:20px;font-weight:700;color:var(--gold)" id="terreno-reminder-value"></div>
+      <div class="form-group full" style="flex-direction:row;gap:8px">
+        <button class="btn btn-success" style="flex:1" onclick="payTerrenoFromReminder(event)">✓ Marcar como paga</button>
+        <button class="btn btn-ghost" onclick="closeTerrenoReminderModal()">Fechar</button>
+      </div>
+      <div class="form-group full" style="font-size:11px;color:var(--text-dim)">Esse aviso volta a aparecer toda vez que você abrir o app, até a parcela ser paga.</div>
+    </div>
+  </div>
+</div>
 <div class="modal-overlay" id="edit-car-modal" style="display:none" onclick="if(event.target===this)closeEditCarModal()">
   <div class="modal-box">
     <div class="modal-title">
@@ -2931,7 +2963,6 @@ function changeMonth(dir) {
 function refreshPage(page) {
   updateMonthLabels();
   updateDollarReminderBadge();
-  updateTerrenoReminderBadge();
   if (page === 'dashboard')    renderDashboard();
   if (page === 'cartoes')      { navigate('transactions'); return; }
   if (page === 'transactions') { setPayMode('dinheiro'); populateTxCatSelect(); populateCarCatSelect(); populateFilterCatSelect(); renderTxTable(); renderCartoes(); renderSubscriptions(); }
@@ -3700,6 +3731,7 @@ function saveEditTx() {
   notify('✓ Transação atualizada!');
   renderTxTable();
   renderDashboard();
+  if (document.getElementById('ter-chart') && typeof renderTerChart === 'function') renderTerChart();
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -4334,6 +4366,7 @@ function doConfirmSubscription(subId, refYear, refMonth) {
   }
   txs.sort(function(a,b){ return b.date.localeCompare(a.date); });
   saveKey('transactions', txs);
+
   return true;
 }
 
@@ -4394,7 +4427,13 @@ function queueVarValueReminders() {
     if (sub.snoozeUntil && todayStr <= sub.snoozeUntil) return false;
     return true;
   }).map(function(s){ return s.id; });
-  showNextVarValueReminder();
+  if (_varValueQueue.length) {
+    showNextVarValueReminder();
+  } else {
+    // Nada da Luz pendente agora — pode checar o aviso do terreno na sequência
+    // (assim os dois nunca aparecem um em cima do outro, sempre um de cada vez).
+    checkTerrenoDueReminder();
+  }
 }
 
 function showNextVarValueReminder() {
@@ -4412,7 +4451,12 @@ function showNextVarValueReminder() {
 function dismissVarValueReminder() {
   document.getElementById('varval-reminder-modal').style.display = 'none';
   _varValueQueue.shift();
-  if (_varValueQueue.length) setTimeout(showNextVarValueReminder, 300);
+  if (_varValueQueue.length) {
+    setTimeout(showNextVarValueReminder, 300);
+  } else {
+    // Última da fila da Luz fechada — agora sim checa o aviso do terreno.
+    setTimeout(checkTerrenoDueReminder, 300);
+  }
 }
 
 function saveVarValueReminder() {
@@ -4477,6 +4521,7 @@ function undoConfirmSubscription(subId) {
       savePurchases(loadPurchases().filter(function(p){ return p.id !== alvo.purchaseId; }));
     }
   }
+
   notify('↩️ "'+sub.name+'" liberado pra lançar de novo.');
   renderSubscriptions();
   renderTxTable();
@@ -4555,22 +4600,31 @@ function deleteTx(id) {
       savePurchases(loadPurchases().filter(function(p){ return p.id !== tx.purchaseId; }));
     }
   }
-  // Se era uma parcela do terreno lançada pelo "Marcar como paga", desconta do contador
-  // automaticamente — evita o contador ficar desincronizado quando uma parcela duplicada é apagada
+  // Se era uma parcela do terreno — lançada pelo "Marcar como paga" OU por uma
+  // recorrente da categoria Terreno já confirmada — desconta do contador
+  // automaticamente, pra ele nunca ficar desincronizado quando a transação for apagada direto daqui.
   var terrenoMsg = null;
-  if (tx && tx.terrenoPaidRef) {
+  if (tx && (tx.terrenoPaidRef || (tx.source === 'recorrente' && tx.cat === 'Terreno'))) {
     var d = loadTerreno();
     if (d.paid > 0) {
       d.paid--;
-      saveTerreno_data(d);
-      terrenoMsg = 'Transação removida — contador de parcelas do terreno ajustado para '+d.paid+'.';
     }
+    // Se foi paga pelo aviso do Dashboard ("Marcar como paga"), libera o mês
+    // de novo em paidMonths — senão o aviso continuaria achando que já foi
+    // pago mesmo com a transação apagada.
+    if (tx.terrenoPaidRef && d.paidMonths) {
+      var mesRef = tx.terrenoPaidMonth || (tx.date ? tx.date.slice(0,7) : null);
+      if (mesRef) d.paidMonths = d.paidMonths.filter(function(m){ return m !== mesRef; });
+    }
+    saveTerreno_data(d);
+    terrenoMsg = 'Transação removida — contador de parcelas do terreno ajustado para '+d.paid+'.';
   }
   notify(terrenoMsg || 'Transação removida.');
   renderTxTable();
   renderSubscriptions();
   renderDashboard();
   if (document.getElementById('ter-paid') && typeof renderTerreno === 'function') renderTerreno();
+  if (document.getElementById('ter-chart') && typeof renderTerChart === 'function') renderTerChart();
 }
 
 var currentTxSourceFilter = '';
@@ -4853,8 +4907,29 @@ function renderDashboard() {
   var income  = txs.filter(function(t){return t.type==='income';}).reduce(function(s,t){return s+t.amount;},0);
   var expense = txs.filter(function(t){return t.type==='expense';}).reduce(function(s,t){return s+t.amount;},0);
   var balance = income - expense;
-  var debts   = loadKey('debts');
-  var debtMo  = debts.reduce(function(s,d){return s+((d.installments-d.paid)>0?d.total/d.installments:0);},0);
+  // "Parcelas do Mês" = tudo que cai na fatura deste mês em forma de parcela,
+  // dividido em dois grupos pra ficar claro de onde vem cada um:
+  //  - Recorrentes: cobranças de assinaturas/recorrentes lançadas no cartão
+  //    (têm subId, sempre 1x — repetem todo mês enquanto a recorrente existir)
+  //  - Parceladas: compras avulsas feitas em mais de 1x (parcelas>1), sem
+  //    ligação com recorrente nenhuma
+  // Dado real, já usado em Cartões (getMonthCharges), em vez da antiga lista
+  // manual "Dívidas" (que não tinha como ser preenchida — sem link no menu).
+  var monthCharges  = getMonthCharges(currentYear, currentMonth);
+  var purchasesById = {};
+  loadPurchases().forEach(function(p){ purchasesById[p.id] = p; });
+
+  var recorrCharges  = monthCharges.filter(function(c){
+    var p = purchasesById[c.purchaseId];
+    return !!(p && p.subId);
+  });
+  var installCharges = monthCharges.filter(function(c){
+    var p = purchasesById[c.purchaseId];
+    return c.parcelas > 1 && !(p && p.subId);
+  });
+  var recorrTotal  = recorrCharges.reduce(function(s,c){ return s + c.installmentVal; }, 0);
+  var installTotal = installCharges.reduce(function(s,c){ return s + c.installmentVal; }, 0);
+  var debtMo        = recorrTotal + installTotal;
 
   var balEl = document.getElementById('d-balance');
   balEl.textContent = fmt(balance);
@@ -4864,7 +4939,10 @@ function renderDashboard() {
   document.getElementById('d-debt').textContent      = fmt(debtMo);
   document.getElementById('d-income-n').textContent  = txs.filter(function(t){return t.type==='income';}).length + ' lançamentos';
   document.getElementById('d-expense-n').textContent = txs.filter(function(t){return t.type==='expense';}).length + ' lançamentos';
-  document.getElementById('d-debt-n').textContent    = debts.filter(function(d){return (d.installments-d.paid)>0;}).length + ' dívidas ativas';
+  var debtCount = recorrCharges.length + installCharges.length;
+  document.getElementById('d-debt-n').textContent    = debtCount + ' parcela' + (debtCount !== 1 ? 's' : '') + ' ativa' + (debtCount !== 1 ? 's' : '');
+  var elDebtRecorr = document.getElementById('d-debt-recorr'); if (elDebtRecorr) elDebtRecorr.textContent = fmt(recorrTotal);
+  var elDebtParc   = document.getElementById('d-debt-parc');   if (elDebtParc)   elDebtParc.textContent   = fmt(installTotal);
 
   renderDashDollarCard();
   renderEstimativa();
@@ -6083,41 +6161,6 @@ function fmtMonthLabel(monthStr) {
   return MONTHS_SHORT[parseInt(parts[1])-1] + '/' + parts[0].slice(2);
 }
 
-// Mostra um "❗" no menu quando o mês REAL (calendário, não o mês navegado no
-// app) ainda não tem registro lançado na aba Dólar — lembrete simples de "está
-// em dia ou não", independente de qual mês você está visualizando.
-// Compara quantas vezes a recorrente "Parcela do terreno" (categoria Terreno)
-// foi confirmada com o contador de parcelas pagas da calculadora do Terreno.
-// Se a recorrente foi confirmada mais vezes do que o contador registra, quer
-// dizer que a aba Terreno ficou pra trás e precisa ser atualizada.
-// Só sincroniza o contador de parcelas pagas com o que a recorrente já
-// confirmou — NÃO lança transação nenhuma (ela já existe, veio da recorrente).
-function syncTerrenoPaidCount() {
-  var d = loadTerreno();
-  var subs = loadSubscriptions().filter(function(s){ return (s.type||'expense')==='expense' && s.cat === 'Terreno'; });
-  var confirmedTotal = subs.reduce(function(s,x){ return s + x.confirmedMonths.length; }, 0);
-  d.paid = confirmedTotal;
-  saveTerreno_data(d);
-  notify('✓ Contador atualizado para '+d.paid+'/'+d.total+'!');
-  renderTerreno();
-  updateTerrenoReminderBadge();
-}
-
-function getTerrenoReminderCount() {
-  var d = loadTerreno();
-  var subs = loadSubscriptions().filter(function(s){ return (s.type||'expense')==='expense' && s.cat === 'Terreno'; });
-  var confirmedTotal = subs.reduce(function(s,x){ return s + x.confirmedMonths.length; }, 0);
-  return Math.max(0, confirmedTotal - (d.paid||0));
-}
-
-function updateTerrenoReminderBadge() {
-  var badge = document.getElementById('nav-terreno-badge');
-  if (!badge) return;
-  var diff = getTerrenoReminderCount();
-  badge.style.display = diff > 0 ? '' : 'none';
-  badge.title = diff > 0 ? diff+' parcela(s) confirmada(s) na recorrente ainda não contabilizada(s) aqui' : '';
-}
-
 function updateDollarReminderBadge() {
   var badge = document.getElementById('nav-dollar-badge');
   if (!badge) return;
@@ -6516,7 +6559,8 @@ var TERRENO_DEFAULT = {
   paid: 42,
   readjustMonth: 9,
   notes: '',
-  readjustHistory: []
+  readjustHistory: [],
+  paidMonths: [] // meses ('YYYY-MM') já pagos pelo aviso do Dashboard — controla quando o aviso soma/desaparece
 };
 
 // ── Gráfico e Meta Anual do Terreno ──
@@ -6573,6 +6617,42 @@ function renderTerChart() {
   var ac = document.getElementById('ter-chart-ant-count');    if (ac) ac.textContent = totalAnt;
   var tv = document.getElementById('ter-chart-total-val');    if (tv) tv.textContent = fmt(totalVal);
   renderTerMetaAnual();
+  renderTerYearLaunches(yearTxs);
+}
+
+// Lista das parcelas do terreno lançadas no ano selecionado (as que contam pro
+// 0/12 e 0/10 da Meta Anual), com editar/excluir em cada linha — reaproveita o
+// modal de edição e a exclusão que já existem em Movimentos.
+function renderTerYearLaunches(yearTxs) {
+  var listEl = document.getElementById('ter-year-launches');
+  if (!listEl) return;
+  if (!yearTxs) {
+    var txs = loadKey('transactions');
+    yearTxs = txs.filter(function(t){
+      return t.date && t.date.startsWith(String(terChartYear)) && t.cat === 'Terreno';
+    });
+  }
+  yearTxs = yearTxs.slice().sort(function(a,b){ return b.date.localeCompare(a.date); });
+
+  if (!yearTxs.length) {
+    listEl.innerHTML = '<div class="empty-state" style="padding:16px"><div class="empty-icon" style="font-size:24px">📑</div>Nenhuma parcela lançada em '+terChartYear+' ainda.</div>';
+    return;
+  }
+
+  listEl.innerHTML = '<table style="width:100%"><thead><tr><th>Data</th><th>Tipo</th><th>Valor</th><th></th></tr></thead><tbody>'
+    + yearTxs.map(function(t){
+        var isAnt      = t.subcat === 'Adiantamento de Parcela';
+        var tipoLabel  = isAnt ? '⚡ Antecipação' : '📅 Normal';
+        var tipoColor  = isAnt ? 'var(--accent)' : 'var(--blue)';
+        var dateLabel  = t.date.split('-').reverse().join('/');
+        return '<tr>'
+          +'<td style="font-family:var(--font-num)">'+dateLabel+'</td>'
+          +'<td style="color:'+tipoColor+'">'+tipoLabel+'</td>'
+          +'<td class="amount-neg">'+fmt(t.amount)+'</td>'
+          +'<td style="white-space:nowrap"><button class="btn btn-ghost btn-sm" onclick="openEditTxModal('+t.id+')" title="Editar">✏️</button> <button class="btn btn-danger btn-sm" onclick="deleteTx('+t.id+')" title="Excluir">✕</button></td>'
+          +'</tr>';
+      }).join('')
+    +'</tbody></table>';
 }
 
 function editTerMetaAnual() {
@@ -6648,7 +6728,7 @@ function saveTerreno() {
   if (!inst || inst <= 0) return notify('Informe o valor da parcela', true);
   if (!total || total < 1) return notify('Informe o total de parcelas', true);
   if (isNaN(paid) || paid < 0) return notify('Informe as parcelas pagas', true);
-  if (paid >= total) return notify('Parcelas pagas não pode ser maior ou igual ao total', true);
+  if (paid > total) return notify('Parcelas pagas não pode ser maior que o total', true);
 
   var d = loadTerreno();
   d.installment   = inst;
@@ -6698,17 +6778,6 @@ function renderTerreno() {
   var paidEst   = d.paid * d.installment;
   var remEst    = remaining * d.installment;
 
-  var syncEl = document.getElementById('terreno-sync-alert');
-  if (syncEl) {
-    var diff = getTerrenoReminderCount();
-    if (diff > 0) {
-      syncEl.style.display = '';
-      syncEl.innerHTML = '⚠️ Você confirmou <strong>'+diff+'</strong> parcela(s) pela recorrente "Parcela do terreno" que ainda '+(diff>1?'não foram':'não foi')+' contabilizada(s) aqui. A transação já existe (não precisa lançar de novo) — só falta atualizar esse contador.'
-        + '<div style="margin-top:8px"><button class="btn btn-sm" style="background:var(--gold);color:var(--bg-dark)" onclick="syncTerrenoPaidCount()">✓ Atualizar contador ('+diff+')</button></div>';
-    } else {
-      syncEl.style.display = 'none';
-    }
-  }
 
   // Cards
   document.getElementById('ter-installment').textContent    = fmt(d.installment);
@@ -8154,12 +8223,12 @@ function renderTerAnt() {
   var d         = loadTerAnt();
   var semEl     = document.getElementById('ter-semaforo');
   var histEl    = document.getElementById('ter-ant-history');
-  if (!semEl)   return;
+  if (!histEl)  return;
 
-  if (document.getElementById('ter-ant-target').value === '')
-    document.getElementById('ter-ant-target').value  = d.target  || '';
-  if (document.getElementById('ter-ant-monthly').value === '')
-    document.getElementById('ter-ant-monthly').value = d.monthly || '';
+  var targetEl  = document.getElementById('ter-ant-target');
+  var monthlyEl = document.getElementById('ter-ant-monthly');
+  if (targetEl  && targetEl.value  === '') targetEl.value  = d.target  || '';
+  if (monthlyEl && monthlyEl.value === '') monthlyEl.value = d.monthly || '';
 
   // Set default date for aporte
   var apDate = document.getElementById('ter-ap-date');
@@ -8195,15 +8264,17 @@ function renderTerAnt() {
     }
   }
 
-  semEl.innerHTML = '<div style="display:flex;align-items:center;gap:16px;padding:16px;background:var(--surface);border:2px solid '+color+';border-radius:var(--radius-sm)">'
-    +'<span style="font-size:40px">'+icon+'</span>'
-    +'<div style="flex:1">'
-      +'<div style="font-size:16px;font-weight:700;color:'+color+';margin-bottom:4px">'+status+'</div>'
-      +'<div style="font-size:13px;color:var(--text-muted)">'+detail+'</div>'
-      +(quotVal&&saved>0?'<div style="margin-top:8px"><div class="progress-bar" style="height:8px"><div class="progress-fill" style="width:'+Math.min(100,(saved/quotVal)*100).toFixed(1)+'%;background:'+color+'"></div></div><div style="font-size:11px;color:var(--text-muted);margin-top:3px">'+((saved/quotVal)*100).toFixed(0)+'% da cotação atual</div></div>':'')
-    +'</div>'
-    +(quotVal?'<div style="text-align:right;flex-shrink:0"><div style="font-size:11px;color:var(--text-muted)">Cotação '+fmtMonthLabel(latest.month)+'</div><div style="font-family:var(--font-num);font-size:18px;font-weight:700;color:'+color+'">'+fmt(quotVal)+'</div><div style="font-size:11px;color:var(--text-muted)">'+quotN+' parcelas</div></div>':'')
-    +'</div>';
+  if (semEl) {
+    semEl.innerHTML = '<div style="display:flex;align-items:center;gap:16px;padding:16px;background:var(--surface);border:2px solid '+color+';border-radius:var(--radius-sm)">'
+      +'<span style="font-size:40px">'+icon+'</span>'
+      +'<div style="flex:1">'
+        +'<div style="font-size:16px;font-weight:700;color:'+color+';margin-bottom:4px">'+status+'</div>'
+        +'<div style="font-size:13px;color:var(--text-muted)">'+detail+'</div>'
+        +(quotVal&&saved>0?'<div style="margin-top:8px"><div class="progress-bar" style="height:8px"><div class="progress-fill" style="width:'+Math.min(100,(saved/quotVal)*100).toFixed(1)+'%;background:'+color+'"></div></div><div style="font-size:11px;color:var(--text-muted);margin-top:3px">'+((saved/quotVal)*100).toFixed(0)+'% da cotação atual</div></div>':'')
+      +'</div>'
+      +(quotVal?'<div style="text-align:right;flex-shrink:0"><div style="font-size:11px;color:var(--text-muted)">Cotação '+fmtMonthLabel(latest.month)+'</div><div style="font-family:var(--font-num);font-size:18px;font-weight:700;color:'+color+'">'+fmt(quotVal)+'</div><div style="font-size:11px;color:var(--text-muted)">'+quotN+' parcelas</div></div>':'')
+      +'</div>';
+  }
 
   // History
   if (!d.quotations || !d.quotations.length) {
@@ -8660,39 +8731,105 @@ function quickLaunch() {
   renderDashboard();
 }
 
+// Calcula o estado do aviso do terreno pro mês real de hoje: se já foi pago
+// (some o aviso), e se não, em qual "estágio" de urgência está — usado tanto
+// pelo banner do Dashboard quanto pelo popup de reforço.
+function getTerrenoAlertState() {
+  var now = new Date();
+  var day = now.getDate();
+  var mk  = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+  var d   = loadTerreno();
+  var paidThisMonth = (d.paidMonths || []).indexOf(mk) !== -1;
+  var stage = 'blue';   // dia 1–14: informativo
+  if (day >= 20)      stage = 'red';    // venceu, atrasada
+  else if (day >= 15) stage = 'gold';   // chegando perto do vencimento (dia 20)
+  return { d: d, mk: mk, day: day, paid: paidThisMonth, stage: stage };
+}
+
 function renderTerrenoAlert() {
   var alertEl = document.getElementById('dash-terreno-alert');
   if (!alertEl) return;
-  var now  = new Date();
-  var day  = now.getDate();
-  var d    = loadTerreno();
-  // Alert between day 17 and 20
-  if (day >= 17 && day <= 20) {
-    var daysLeft = 20 - day;
-    alertEl.style.display = 'block';
-    alertEl.innerHTML = '<div style="background:var(--gold-dim);border:1px solid var(--gold);border-radius:var(--radius-sm);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px">'
-      +'<div style="display:flex;align-items:center;gap:10px">'
-        +'<span style="font-size:22px">🏗️</span>'
-        +'<div>'
-          +'<div style="font-weight:600;color:var(--gold)">Parcela do terreno vence dia 20!</div>'
-          +'<div style="font-size:13px;color:var(--text-muted)">'
-            +(daysLeft===0?'Vence hoje!':'Faltam '+daysLeft+' dia'+(daysLeft>1?'s':''))
-            +' — Parcela: <strong style="color:var(--gold)">'+fmt(d.installment)+'</strong>'
-            +' ('+d.paid+'/'+d.total+' pagas)'
-          +'</div>'
+  var st = getTerrenoAlertState();
+
+  if (st.paid) {
+    alertEl.style.display = 'none';
+    return;
+  }
+
+  var d = st.d;
+  var styles = {
+    blue: { bg:'var(--blue-dim)',  border:'var(--blue)',  text:'var(--blue)' },
+    gold: { bg:'var(--gold-dim)',  border:'var(--gold)',  text:'var(--gold)' },
+    red:  { bg:'var(--red-dim)',   border:'var(--red)',   text:'var(--red)'  }
+  }[st.stage];
+
+  var daysLeft = 20 - st.day; // negativo = dias em atraso
+  var statusLine;
+  if (st.stage === 'red') {
+    statusLine = daysLeft === 0 ? 'Vence hoje!' : 'Atrasada! Venceu há ' + Math.abs(daysLeft) + ' dia' + (Math.abs(daysLeft) > 1 ? 's' : '');
+  } else {
+    statusLine = 'Faltam ' + daysLeft + ' dia' + (daysLeft > 1 ? 's' : '') + ' pro vencimento (dia 20)';
+  }
+  var title = st.stage === 'red' ? 'Parcela do terreno atrasada!' : 'Parcela do terreno vence dia 20';
+
+  alertEl.style.display = 'block';
+  alertEl.innerHTML = '<div style="background:'+styles.bg+';border:1px solid '+styles.border+';border-radius:var(--radius-sm);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px">'
+    +'<div style="display:flex;align-items:center;gap:10px">'
+      +'<span style="font-size:22px">🏗️</span>'
+      +'<div>'
+        +'<div style="font-weight:600;color:'+styles.text+'">'+title+'</div>'
+        +'<div style="font-size:13px;color:var(--text-muted)">'
+          +statusLine
+          +' — Parcela: <strong style="color:'+styles.text+'">'+fmt(d.installment)+'</strong>'
+          +' ('+d.paid+'/'+d.total+' pagas)'
         +'</div>'
       +'</div>'
-      +'<button class="btn btn-success btn-sm" onclick="quickPayTerreno(event)">✓ Marcar como paga</button>'
-      +'</div>';
-  } else {
-    alertEl.style.display = 'none';
-  }
+    +'</div>'
+    +'<button class="btn btn-success btn-sm" onclick="quickPayTerreno(event)">✓ Marcar como paga</button>'
+    +'</div>';
+}
+
+// Reforça o aviso com um popup (igual ao da Luz) quando a parcela do mês
+// ainda não foi paga e já estamos no estágio amarelo ou vermelho — roda uma
+// vez por abertura do app, pra você não deixar passar o vencimento.
+function checkTerrenoDueReminder() {
+  var st = getTerrenoAlertState();
+  if (st.paid || st.stage === 'blue') return;
+
+  var modal = document.getElementById('terreno-reminder-modal');
+  if (!modal) return;
+  var isRed = st.stage === 'red';
+  var daysLeft = 20 - st.day;
+  document.getElementById('terreno-reminder-title').textContent = isRed ? '🔴 Parcela do terreno atrasada!' : '🟡 Parcela do terreno vencendo';
+  document.getElementById('terreno-reminder-sub').textContent = isRed
+    ? 'Venceu há ' + Math.abs(daysLeft) + ' dia' + (Math.abs(daysLeft) > 1 ? 's' : '') + ' e ainda não foi paga.'
+    : 'Faltam ' + daysLeft + ' dia' + (daysLeft > 1 ? 's' : '') + ' pro vencimento (dia 20) e ainda não foi paga.';
+  document.getElementById('terreno-reminder-value').textContent = fmt(st.d.installment);
+  modal.style.display = 'flex';
+}
+
+function closeTerrenoReminderModal() {
+  var modal = document.getElementById('terreno-reminder-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+function payTerrenoFromReminder(ev) {
+  quickPayTerreno(ev);
+  closeTerrenoReminderModal();
 }
 
 function quickPayTerreno(ev) {
-  var d = loadTerreno();
+  var d  = loadTerreno();
+  var now = new Date();
+  var mk  = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+  if (!d.paidMonths) d.paidMonths = [];
+
   if (d.paid >= d.total) return notify('Todas as parcelas já foram pagas!', true);
-  if (!confirm('Confirma o pagamento da parcela '+(d.paid+1)+'/'+d.total+' (R$ '+d.installment.toFixed(2).replace('.',',')+')?\n\nSe já confirmou essa parcela pela assinatura "Parcela do terreno", NÃO clique aqui de novo — senão conta em dobro.')) return;
+  // Trava de verdade contra pagar a mesma parcela 2x no mesmo mês — não depende
+  // só do usuário lembrar de não clicar de novo.
+  if (d.paidMonths.indexOf(mk) !== -1) return notify('Você já marcou a parcela desse mês como paga.', true);
+
+  if (!confirm('Confirma o pagamento da parcela '+(d.paid+1)+'/'+d.total+' (R$ '+d.installment.toFixed(2).replace('.',',')+')?')) return;
 
   // Trava o botão por alguns segundos pra evitar clique duplo acidental
   var btn = ev && ev.target ? ev.target.closest('button') : null;
@@ -8703,12 +8840,12 @@ function quickPayTerreno(ev) {
   }
 
   d.paid++;
+  d.paidMonths.push(mk);
   saveTerreno_data(d);
-  var now     = new Date();
   var todayStr = now.toISOString().split('T')[0];
   var txs = loadKey('transactions');
   var txId = Date.now();
-  txs.push({id:txId, type:'expense', amount:d.installment, cat:'Terreno', subcat:'Parcela', desc:'Parcela terreno '+d.paid+'/'+d.total, date:todayStr, source:'terreno', terrenoPaidRef:true});
+  txs.push({id:txId, type:'expense', amount:d.installment, cat:'Terreno', subcat:'Parcela', desc:'Parcela terreno '+d.paid+'/'+d.total, date:todayStr, source:'terreno', terrenoPaidRef:true, terrenoPaidMonth:mk});
   saveKey('transactions', txs);
   notify('✓ Parcela '+d.paid+'/'+d.total+' paga e lançada nas transações!');
   renderDashboard();
