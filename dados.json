@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-09-10T00:17:07.490Z",
+  "savedAt": "2026-09-17T17:22:23.201Z",
   "data": {
     "fp_cats": [
       {
@@ -758,6 +758,84 @@
         "realDate": "2026-10-17"
       },
       {
+        "id": 1789483845388,
+        "type": "expense",
+        "amount": 33.4,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "❤ Cartao de todos (💜 Nubank)",
+        "date": "2026-10-17",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1789483845387,
+        "subId": 1780338913454
+      },
+      {
+        "id": 1789483846413,
+        "type": "expense",
+        "amount": 24.9,
+        "cat": "Entretenimento",
+        "subcat": "Crunchirol",
+        "desc": "❤ Crunchyroll (💜 Nubank)",
+        "date": "2026-10-17",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1789483846412,
+        "subId": 1780338478518
+      },
+      {
+        "id": 1789483849847,
+        "type": "expense",
+        "amount": 49.99,
+        "cat": "Armazenamento",
+        "subcat": "Drive",
+        "desc": "☁️ Drive (💜 Nubank)",
+        "date": "2026-10-17",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1789483849846,
+        "subId": 1780338303392
+      },
+      {
+        "id": 1789483866970,
+        "type": "expense",
+        "amount": 139.8,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "🔄 Academia(kelvin) (💜 Nubank)",
+        "date": "2026-10-17",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1789483866969,
+        "subId": 1779321710343
+      },
+      {
+        "id": 1789483881407,
+        "type": "expense",
+        "amount": 120,
+        "cat": "Empresa",
+        "subcat": "Investimento",
+        "desc": "🔄 Ia Claude (💜 Nubank)",
+        "date": "2026-10-17",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1789483881406,
+        "subId": 1788433286663
+      },
+      {
+        "id": 1789665703914,
+        "type": "expense",
+        "amount": 208.81,
+        "cat": "Saúde",
+        "subcat": "Remedio",
+        "desc": "REDE SAUDE IMP E COM MED LTDA (💜 Nubank)",
+        "date": "2026-10-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1789665703913,
+        "realDate": "2026-09-17"
+      },
+      {
         "id": 1779321938029,
         "type": "expense",
         "amount": 54.72,
@@ -781,6 +859,19 @@
         "card": "inter",
         "purchaseId": 1785937332817,
         "realDate": "2026-10-10"
+      },
+      {
+        "id": 1789483878578,
+        "type": "expense",
+        "amount": 139.8,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "❤ Academia rafa (🏦 Inter)",
+        "date": "2026-10-10",
+        "source": "recorrente",
+        "card": "inter",
+        "purchaseId": 1789483878577,
+        "subId": 1787270225334
       },
       {
         "id": 1788434421383,
@@ -973,6 +1064,31 @@
         "card": "nubank",
         "purchaseId": 1788816495459,
         "subId": 1788433228417
+      },
+      {
+        "id": 1789471842200,
+        "type": "expense",
+        "amount": 120,
+        "cat": "Empresa",
+        "subcat": "Investimento",
+        "desc": "🔄 Ia Claude (💜 Nubank)",
+        "date": "2026-09-17",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1789471842199,
+        "subId": 1788433286663
+      },
+      {
+        "id": 1789483801449,
+        "type": "expense",
+        "amount": 1216.57,
+        "cat": "Terreno",
+        "subcat": "Parcela",
+        "desc": "Parcela terreno 66/180",
+        "date": "2026-09-15",
+        "source": "terreno",
+        "terrenoPaidRef": true,
+        "terrenoPaidMonth": "2026-09"
       },
       {
         "id": 1779321938028,
@@ -4026,7 +4142,7 @@
     "fp_terreno": {
       "installment": 1216.57,
       "total": 180,
-      "paid": 65,
+      "paid": 66,
       "readjustMonth": 9,
       "notes": "190,0",
       "readjustHistory": [
@@ -4035,6 +4151,9 @@
           "ipca": null,
           "value": 1216.57
         }
+      ],
+      "paidMonths": [
+        "2026-09"
       ]
     },
     "fp_ter_ant": {
@@ -4083,6 +4202,101 @@
         "total": 99.9,
         "parcelas": 1,
         "installmentVal": 99.9
+      },
+      {
+        "id": 1789483849846,
+        "card": "nubank",
+        "date": "2026-09-27",
+        "desc": "☁️ Drive",
+        "cat": "Armazenamento",
+        "subcat": "Drive",
+        "total": 49.99,
+        "parcelas": 1,
+        "installmentVal": 49.99,
+        "subId": 1780338303392
+      },
+      {
+        "id": 1789483846412,
+        "card": "nubank",
+        "date": "2026-09-21",
+        "desc": "❤ Crunchyroll",
+        "cat": "Entretenimento",
+        "subcat": "Crunchirol",
+        "total": 24.9,
+        "parcelas": 1,
+        "installmentVal": 24.9,
+        "subId": 1780338478518
+      },
+      {
+        "id": 1789665703913,
+        "card": "nubank",
+        "date": "2026-09-17",
+        "desc": "REDE SAUDE IMP E COM MED LTDA",
+        "cat": "Saúde",
+        "subcat": "Remedio",
+        "total": 208.81,
+        "parcelas": 1,
+        "installmentVal": 208.81
+      },
+      {
+        "id": 1789483881406,
+        "card": "nubank",
+        "date": "2026-09-15",
+        "desc": "🔄 Ia Claude",
+        "cat": "Empresa",
+        "subcat": "Investimento",
+        "total": 120,
+        "parcelas": 1,
+        "installmentVal": 120,
+        "subId": 1788433286663
+      },
+      {
+        "id": 1789483845387,
+        "card": "nubank",
+        "date": "2026-09-10",
+        "desc": "❤ Cartao de todos",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 33.4,
+        "parcelas": 1,
+        "installmentVal": 33.4,
+        "subId": 1780338913454
+      },
+      {
+        "id": 1789483866969,
+        "card": "nubank",
+        "date": "2026-09-10",
+        "desc": "🔄 Academia(kelvin)",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 139.8,
+        "parcelas": 1,
+        "installmentVal": 139.8,
+        "subId": 1779321710343
+      },
+      {
+        "id": 1789483878577,
+        "card": "inter",
+        "date": "2026-09-10",
+        "desc": "❤ Academia rafa",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 139.8,
+        "parcelas": 1,
+        "installmentVal": 139.8,
+        "subId": 1787270225334
+      },
+      {
+        "id": 1788816495459,
+        "card": "nubank",
+        "date": "2026-09-06",
+        "desc": "☁️ Netflix",
+        "cat": "Entretenimento",
+        "subcat": "",
+        "total": 50,
+        "parcelas": 1,
+        "installmentVal": 50,
+        "subId": 1788433228417
       },
       {
         "id": 1788612270393,
@@ -4317,6 +4531,18 @@
         "total": 10.6,
         "parcelas": 1,
         "installmentVal": 10.6
+      },
+      {
+        "id": 1789471842199,
+        "card": "nubank",
+        "date": "2026-08-15",
+        "desc": "🔄 Ia Claude",
+        "cat": "Empresa",
+        "subcat": "Investimento",
+        "total": 120,
+        "parcelas": 1,
+        "installmentVal": 120,
+        "subId": 1788433286663
       },
       {
         "id": 1786737937189,
@@ -6220,18 +6446,6 @@
         "total": 492.48,
         "parcelas": 9,
         "installmentVal": 54.72
-      },
-      {
-        "id": 1788816495459,
-        "card": "nubank",
-        "date": "2026-09-06",
-        "desc": "☁️ Netflix",
-        "cat": "Entretenimento",
-        "subcat": "",
-        "total": 50,
-        "parcelas": 1,
-        "installmentVal": 50,
-        "subId": 1788433228417
       }
     ],
     "fp_invest_boxes": [
@@ -6295,6 +6509,28 @@
       }
     ],
     "fp_invest_aportes": [
+      {
+        "id": 1788999572856,
+        "boxId": "ib_id_1787347734374_dq3mi",
+        "val": 449,
+        "date": "2026-09-10",
+        "rate": 0,
+        "institution": "",
+        "origin": "salario_marido",
+        "notes": "",
+        "tipo": "real"
+      },
+      {
+        "id": 1789068761719,
+        "boxId": "ib3",
+        "val": 21.58,
+        "date": "2026-09-10",
+        "rate": 0,
+        "institution": "",
+        "origin": "salario_dela",
+        "notes": "",
+        "tipo": "rendimento"
+      },
       {
         "id": 1786751642290,
         "boxId": "ib_id_1783089690987_x68ue",
@@ -6622,7 +6858,8 @@
           "2026-06",
           "2026-07",
           "2026-08",
-          "2026-09"
+          "2026-09",
+          "2026-10"
         ]
       },
       {
@@ -6701,7 +6938,8 @@
         "confirmedMonths": [
           "2026-07",
           "2026-08",
-          "2026-09"
+          "2026-09",
+          "2026-10"
         ]
       },
       {
@@ -6717,7 +6955,8 @@
         "confirmedMonths": [
           "2026-07",
           "2026-08",
-          "2026-09"
+          "2026-09",
+          "2026-10"
         ]
       },
       {
@@ -6733,7 +6972,8 @@
         "confirmedMonths": [
           "2026-07",
           "2026-08",
-          "2026-09"
+          "2026-09",
+          "2026-10"
         ]
       },
       {
@@ -6780,7 +7020,8 @@
         "pixAccount": "",
         "confirmedMonths": [
           "2026-08",
-          "2026-09"
+          "2026-09",
+          "2026-10"
         ]
       },
       {
@@ -6811,7 +7052,10 @@
         "subcat": "Investimento",
         "card": "nubank",
         "pixAccount": "",
-        "confirmedMonths": [],
+        "confirmedMonths": [
+          "2026-09",
+          "2026-10"
+        ],
         "auto": true,
         "variableValue": false
       }
@@ -6905,6 +7149,14 @@
       "BOLO FORMIG. KG": {
         "cat": "Alimentação",
         "subcat": "Padaria"
+      },
+      "OXALATO DE ESCITALOPRAM 10MG 30CP REV": {
+        "cat": "Saúde",
+        "subcat": "Remedio"
+      },
+      "PREDNISONA 20MG 10CP": {
+        "cat": "Saúde",
+        "subcat": "Remedio"
       }
     }
   }
