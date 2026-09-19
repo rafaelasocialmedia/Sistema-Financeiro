@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-09-17T17:22:23.201Z",
+  "savedAt": "2026-09-19T18:56:52.406Z",
   "data": {
     "fp_cats": [
       {
@@ -303,6 +303,10 @@
           {
             "id": "id_1779315337366_op7vi",
             "name": "Ajuda"
+          },
+          {
+            "id": "id_1789844150523_5vl9t",
+            "name": "Bebidas"
           }
         ]
       },
@@ -911,6 +915,17 @@
         "card": "bb",
         "purchaseId": 1788434650842,
         "realDate": "2026-09-01"
+      },
+      {
+        "id": 1789844181200,
+        "type": "expense",
+        "amount": 47.89,
+        "cat": "Espiritualidade",
+        "subcat": "Bebidas",
+        "desc": "N.B. Dal Santos & Cia Ltda",
+        "date": "2026-09-19",
+        "payment": "pix",
+        "paymentAccount": "nubank"
       },
       {
         "id": 1782165180013,
@@ -6489,7 +6504,7 @@
       },
       {
         "id": "ib_id_1783089690987_x68ue",
-        "name": "Computador",
+        "name": "Impressora 3d",
         "emoji": "💻",
         "color": "red",
         "goal": 6000,
@@ -6509,6 +6524,17 @@
       }
     ],
     "fp_invest_aportes": [
+      {
+        "id": 1789844098445,
+        "boxId": "ib_id_1783089690987_x68ue",
+        "val": 500,
+        "date": "2026-09-19",
+        "rate": 13.75,
+        "institution": "Nubank",
+        "origin": "extra_marido",
+        "notes": "",
+        "tipo": "real"
+      },
       {
         "id": 1788999572856,
         "boxId": "ib_id_1787347734374_dq3mi",
@@ -7157,6 +7183,18 @@
       "PREDNISONA 20MG 10CP": {
         "cat": "Saúde",
         "subcat": "Remedio"
+      },
+      "COQ.COCO 900ML": {
+        "cat": "Espiritualidade",
+        "subcat": "Bebidas"
+      },
+      "BISC.ZAP.300G BJ MEL": {
+        "cat": "Alimentação",
+        "subcat": "Mercado"
+      },
+      "PAO DE QUEIJO KG": {
+        "cat": "Alimentação",
+        "subcat": "Padaria"
       }
     }
   }
