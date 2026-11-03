@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-11-03T19:37:32.041Z",
+  "savedAt": "2026-11-03T19:40:09.610Z",
   "data": {
     "fp_cats": [
       {
@@ -6304,6 +6304,28 @@
         "val": 549,
         "date": "2026-11-03",
         "rate": 14,
+        "institution": "",
+        "origin": "salario_marido",
+        "notes": "",
+        "tipo": "real"
+      },
+      {
+        "id": 1793734749842,
+        "boxId": "ib3",
+        "val": 5142.24,
+        "date": "2026-09-30",
+        "rate": 0,
+        "institution": "",
+        "origin": "salario_marido",
+        "notes": "",
+        "tipo": "resgate"
+      },
+      {
+        "id": 1793734797922,
+        "boxId": "ib3",
+        "val": 3500,
+        "date": "2026-09-30",
+        "rate": 15.7,
         "institution": "",
         "origin": "salario_marido",
         "notes": "",
