@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-11-03T19:35:26.290Z",
+  "savedAt": "2026-11-03T19:36:39.142Z",
   "data": {
     "fp_cats": [
       {
@@ -6286,6 +6286,17 @@
       }
     ],
     "fp_invest_aportes": [
+      {
+        "id": 1793734593960,
+        "boxId": "ib_id_1780860540856_9culq",
+        "val": 549,
+        "date": "2026-11-03",
+        "rate": 14,
+        "institution": "",
+        "origin": "salario_marido",
+        "notes": "",
+        "tipo": "real"
+      },
       {
         "id": 1789844098445,
         "boxId": "ib_id_1783089690987_x68ue",
