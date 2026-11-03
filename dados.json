@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-11-03T19:36:39.142Z",
+  "savedAt": "2026-11-03T19:37:32.041Z",
   "data": {
     "fp_cats": [
       {
@@ -567,6 +567,18 @@
         "source": "recorrente",
         "card": "inter",
         "purchaseId": 1785963505733
+      },
+      {
+        "id": 1793734635340,
+        "type": "income",
+        "amount": 5234.89,
+        "cat": "Salário",
+        "subcat": "Finance",
+        "desc": "💚 FInance(Unity)",
+        "date": "2026-11-10",
+        "payment": "dinheiro",
+        "source": "recorrente",
+        "subId": 1779314562920
       },
       {
         "id": 1793734521257,
@@ -6640,7 +6652,8 @@
         "confirmedMonths": [
           "2026-06",
           "2026-07",
-          "2026-08"
+          "2026-08",
+          "2026-11"
         ]
       },
       {
@@ -6713,7 +6726,7 @@
         "name": "InsightZ",
         "emoji": "💚",
         "type": "income",
-        "value": 125,
+        "value": 100,
         "day": 10,
         "cat": "Freelance",
         "subcat": "",
@@ -6722,7 +6735,9 @@
           "2026-06",
           "2026-07",
           "2026-08"
-        ]
+        ],
+        "auto": false,
+        "variableValue": false
       },
       {
         "id": 1780338303392,
