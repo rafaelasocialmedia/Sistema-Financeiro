@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-09-30T17:56:54.242Z",
+  "savedAt": "2026-11-03T19:35:26.290Z",
   "data": {
     "fp_cats": [
       {
@@ -418,30 +418,6 @@
         "realDate": "2027-05-17"
       },
       {
-        "id": 1782165180020,
-        "type": "expense",
-        "amount": 19.9,
-        "cat": "Roupas",
-        "subcat": "Calçados",
-        "desc": "Calçado (💜 Nubank 10/10)",
-        "date": "2027-04-17",
-        "source": "cartao",
-        "card": "nubank",
-        "purchaseId": 1782165180010
-      },
-      {
-        "id": 1782165404300,
-        "type": "expense",
-        "amount": 19.9,
-        "cat": "Roupas",
-        "subcat": "Calçados",
-        "desc": "Serale (💜 Nubank 10/10)",
-        "date": "2027-04-17",
-        "source": "cartao",
-        "card": "nubank",
-        "purchaseId": 1782165404290
-      },
-      {
         "id": 1786474449955,
         "type": "expense",
         "amount": 440,
@@ -453,30 +429,6 @@
         "card": "nubank",
         "purchaseId": 1786474449947,
         "realDate": "2027-04-17"
-      },
-      {
-        "id": 1782165180019,
-        "type": "expense",
-        "amount": 19.9,
-        "cat": "Roupas",
-        "subcat": "Calçados",
-        "desc": "Calçado (💜 Nubank 9/10)",
-        "date": "2027-03-17",
-        "source": "cartao",
-        "card": "nubank",
-        "purchaseId": 1782165180010
-      },
-      {
-        "id": 1782165404299,
-        "type": "expense",
-        "amount": 19.9,
-        "cat": "Roupas",
-        "subcat": "Calçados",
-        "desc": "Serale (💜 Nubank 9/10)",
-        "date": "2027-03-17",
-        "source": "cartao",
-        "card": "nubank",
-        "purchaseId": 1782165404290
       },
       {
         "id": 1786474449954,
@@ -492,30 +444,6 @@
         "realDate": "2027-03-17"
       },
       {
-        "id": 1782165180018,
-        "type": "expense",
-        "amount": 19.9,
-        "cat": "Roupas",
-        "subcat": "Calçados",
-        "desc": "Calçado (💜 Nubank 8/10)",
-        "date": "2027-02-17",
-        "source": "cartao",
-        "card": "nubank",
-        "purchaseId": 1782165180010
-      },
-      {
-        "id": 1782165404298,
-        "type": "expense",
-        "amount": 19.9,
-        "cat": "Roupas",
-        "subcat": "Calçados",
-        "desc": "Serale (💜 Nubank 8/10)",
-        "date": "2027-02-17",
-        "source": "cartao",
-        "card": "nubank",
-        "purchaseId": 1782165404290
-      },
-      {
         "id": 1786474449953,
         "type": "expense",
         "amount": 440,
@@ -527,30 +455,6 @@
         "card": "nubank",
         "purchaseId": 1786474449947,
         "realDate": "2027-02-17"
-      },
-      {
-        "id": 1782165180017,
-        "type": "expense",
-        "amount": 19.9,
-        "cat": "Roupas",
-        "subcat": "Calçados",
-        "desc": "Calçado (💜 Nubank 7/10)",
-        "date": "2027-01-17",
-        "source": "cartao",
-        "card": "nubank",
-        "purchaseId": 1782165180010
-      },
-      {
-        "id": 1782165404297,
-        "type": "expense",
-        "amount": 19.9,
-        "cat": "Roupas",
-        "subcat": "Calçados",
-        "desc": "Serale (💜 Nubank 7/10)",
-        "date": "2027-01-17",
-        "source": "cartao",
-        "card": "nubank",
-        "purchaseId": 1782165404290
       },
       {
         "id": 1786474449952,
@@ -578,30 +482,6 @@
         "purchaseId": 1779321938023
       },
       {
-        "id": 1782165180016,
-        "type": "expense",
-        "amount": 19.9,
-        "cat": "Roupas",
-        "subcat": "Calçados",
-        "desc": "Calçado (💜 Nubank 6/10)",
-        "date": "2026-12-17",
-        "source": "cartao",
-        "card": "nubank",
-        "purchaseId": 1782165180010
-      },
-      {
-        "id": 1782165404296,
-        "type": "expense",
-        "amount": 19.9,
-        "cat": "Roupas",
-        "subcat": "Calçados",
-        "desc": "Serale (💜 Nubank 6/10)",
-        "date": "2026-12-17",
-        "source": "cartao",
-        "card": "nubank",
-        "purchaseId": 1782165404290
-      },
-      {
         "id": 1786474449951,
         "type": "expense",
         "amount": 440,
@@ -625,30 +505,6 @@
         "source": "cartao",
         "card": "inter",
         "purchaseId": 1779321938023
-      },
-      {
-        "id": 1782165180015,
-        "type": "expense",
-        "amount": 19.9,
-        "cat": "Roupas",
-        "subcat": "Calçados",
-        "desc": "Calçado (💜 Nubank 5/10)",
-        "date": "2026-11-17",
-        "source": "cartao",
-        "card": "nubank",
-        "purchaseId": 1782165180010
-      },
-      {
-        "id": 1782165404295,
-        "type": "expense",
-        "amount": 19.9,
-        "cat": "Roupas",
-        "subcat": "Calçados",
-        "desc": "Serale (💜 Nubank 5/10)",
-        "date": "2026-11-17",
-        "source": "cartao",
-        "card": "nubank",
-        "purchaseId": 1782165404290
       },
       {
         "id": 1786474449950,
@@ -713,28 +569,16 @@
         "purchaseId": 1785963505733
       },
       {
-        "id": 1782165180014,
-        "type": "expense",
-        "amount": 19.9,
-        "cat": "Roupas",
-        "subcat": "Calçados",
-        "desc": "Calçado (💜 Nubank 4/10)",
-        "date": "2026-10-17",
-        "source": "cartao",
-        "card": "nubank",
-        "purchaseId": 1782165180010
-      },
-      {
-        "id": 1782165404294,
-        "type": "expense",
-        "amount": 19.9,
-        "cat": "Roupas",
-        "subcat": "Calçados",
-        "desc": "Serale (💜 Nubank 4/10)",
-        "date": "2026-10-17",
-        "source": "cartao",
-        "card": "nubank",
-        "purchaseId": 1782165404290
+        "id": 1793734521257,
+        "type": "income",
+        "amount": 5449,
+        "cat": "Salário",
+        "subcat": "",
+        "desc": "💵 Salário Dólar",
+        "date": "2026-11-05",
+        "payment": "dinheiro",
+        "source": "dollar",
+        "dollarEntryId": 1793734521256
       },
       {
         "id": 1782165434739,
@@ -926,30 +770,6 @@
         "date": "2026-09-19",
         "payment": "pix",
         "paymentAccount": "nubank"
-      },
-      {
-        "id": 1782165180013,
-        "type": "expense",
-        "amount": 19.9,
-        "cat": "Roupas",
-        "subcat": "Calçados",
-        "desc": "Calçado (💜 Nubank 3/10)",
-        "date": "2026-09-17",
-        "source": "cartao",
-        "card": "nubank",
-        "purchaseId": 1782165180010
-      },
-      {
-        "id": 1782165404293,
-        "type": "expense",
-        "amount": 19.9,
-        "cat": "Roupas",
-        "subcat": "Calçados",
-        "desc": "Serale (💜 Nubank 3/10)",
-        "date": "2026-09-17",
-        "source": "cartao",
-        "card": "nubank",
-        "purchaseId": 1782165404290
       },
       {
         "id": 1782165434738,
@@ -1933,30 +1753,6 @@
         "dollarEntryId": 1788433354592
       },
       {
-        "id": 1782165180012,
-        "type": "expense",
-        "amount": 19.9,
-        "cat": "Roupas",
-        "subcat": "Calçados",
-        "desc": "Calçado (💜 Nubank 2/10)",
-        "date": "2026-08-17",
-        "source": "cartao",
-        "card": "nubank",
-        "purchaseId": 1782165180010
-      },
-      {
-        "id": 1782165404292,
-        "type": "expense",
-        "amount": 19.9,
-        "cat": "Roupas",
-        "subcat": "Calçados",
-        "desc": "Serale (💜 Nubank 2/10)",
-        "date": "2026-08-17",
-        "source": "cartao",
-        "card": "nubank",
-        "purchaseId": 1782165404290
-      },
-      {
         "id": 1782165434737,
         "type": "expense",
         "amount": 89.975,
@@ -2872,30 +2668,6 @@
         "source": "cartao",
         "card": "nubank",
         "purchaseId": 1782165094955
-      },
-      {
-        "id": 1782165180011,
-        "type": "expense",
-        "amount": 19.9,
-        "cat": "Roupas",
-        "subcat": "Calçados",
-        "desc": "Calçado (💜 Nubank 1/10)",
-        "date": "2026-07-17",
-        "source": "cartao",
-        "card": "nubank",
-        "purchaseId": 1782165180010
-      },
-      {
-        "id": 1782165404291,
-        "type": "expense",
-        "amount": 19.9,
-        "cat": "Roupas",
-        "subcat": "Calçados",
-        "desc": "Serale (💜 Nubank 1/10)",
-        "date": "2026-07-17",
-        "source": "cartao",
-        "card": "nubank",
-        "purchaseId": 1782165404290
       },
       {
         "id": 1782165434736,
@@ -4152,6 +3924,18 @@
         "rate": 5.08,
         "diff": 31.22900000000027,
         "notes": "Dólar baixo"
+      },
+      {
+        "id": 1793734521256,
+        "month": "2026-11",
+        "usd": 1000,
+        "ptax": 5.49,
+        "brl": 5449,
+        "gross": 5490,
+        "estimated": 5445.531,
+        "rate": 5.449,
+        "diff": 3.469000000000051,
+        "notes": ""
       }
     ],
     "fp_terreno": {
@@ -5680,28 +5464,6 @@
         "total": 145.88,
         "parcelas": 1,
         "installmentVal": 145.88
-      },
-      {
-        "id": 1782165180010,
-        "card": "nubank",
-        "date": "2026-06-17",
-        "desc": "Calçado",
-        "cat": "Roupas",
-        "subcat": "Calçados",
-        "total": 199,
-        "parcelas": 10,
-        "installmentVal": 19.9
-      },
-      {
-        "id": 1782165404290,
-        "card": "nubank",
-        "date": "2026-06-17",
-        "desc": "Serale",
-        "cat": "Roupas",
-        "subcat": "Calçados",
-        "total": 199,
-        "parcelas": 10,
-        "installmentVal": 19.9
       },
       {
         "id": 1782165434735,
