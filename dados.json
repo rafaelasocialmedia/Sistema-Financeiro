@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-11-04T01:05:59.767Z",
+  "savedAt": "2026-11-04T18:40:25.087Z",
   "data": {
     "fp_cats": [
       {
@@ -87,6 +87,10 @@
           {
             "id": "id_1788434618416_fia2w",
             "name": "Almoço"
+          },
+          {
+            "id": "id_1793817570237_3rvay",
+            "name": "Higiene pessoal"
           }
         ]
       },
@@ -674,6 +678,19 @@
         "card": "bb",
         "purchaseId": 1793735423489,
         "realDate": "2026-11-01"
+      },
+      {
+        "id": 1793817604334,
+        "type": "expense",
+        "amount": 72.24,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "N.B. Dal Santos & Cia Ltda (🟡 Banco do Brasil)",
+        "date": "2026-12-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1793817604333,
+        "realDate": "2026-11-04"
       },
       {
         "id": 1786474449950,
@@ -4188,6 +4205,17 @@
     ],
     "fp_car_purchases": [
       {
+        "id": 1793817604333,
+        "card": "bb",
+        "date": "2026-11-04",
+        "desc": "N.B. Dal Santos & Cia Ltda",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 72.24,
+        "parcelas": 1,
+        "installmentVal": 72.24
+      },
+      {
         "id": 1793735221434,
         "card": "bb",
         "date": "2026-11-01",
@@ -7288,6 +7316,18 @@
       "PAO DE QUEIJO KG": {
         "cat": "Alimentação",
         "subcat": "Padaria"
+      },
+      "AG.M.MILAGRE 10L": {
+        "cat": "Alimentação",
+        "subcat": "Mercado"
+      },
+      "REQUEIJAO TIROL 400G": {
+        "cat": "Alimentação",
+        "subcat": "Mercado"
+      },
+      "B.LAC.CAROL. 1,250": {
+        "cat": "Alimentação",
+        "subcat": "Mercado"
       }
     }
   }
