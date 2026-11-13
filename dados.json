@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-11-04T18:40:25.087Z",
+  "savedAt": "2026-11-13T22:32:28.199Z",
   "data": {
     "fp_cats": [
       {
@@ -34,6 +34,10 @@
           {
             "id": "id_1779314159969_9vi17",
             "name": "Insight"
+          },
+          {
+            "id": "id_1794567710803_ebj6j",
+            "name": "Projetos"
           }
         ]
       },
@@ -233,7 +237,12 @@
         "emoji": "🎮",
         "type": "expense",
         "isDefault": true,
-        "subcategories": []
+        "subcategories": [
+          {
+            "id": "id_1793908983828_e3hj6",
+            "name": "Lanches"
+          }
+        ]
       },
       {
         "id": "dc13",
@@ -396,6 +405,19 @@
     ],
     "fp_transactions": [
       {
+        "id": 1794609053575,
+        "type": "expense",
+        "amount": 500,
+        "cat": "Moradia",
+        "subcat": "Itens para a casa",
+        "desc": "Camaq (💜 Nubank 8/8)",
+        "date": "2027-07-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1794609053567,
+        "realDate": "2027-07-17"
+      },
+      {
         "id": 1786474449957,
         "type": "expense",
         "amount": 440,
@@ -406,6 +428,19 @@
         "source": "cartao",
         "card": "nubank",
         "purchaseId": 1786474449947,
+        "realDate": "2027-06-17"
+      },
+      {
+        "id": 1794609053574,
+        "type": "expense",
+        "amount": 500,
+        "cat": "Moradia",
+        "subcat": "Itens para a casa",
+        "desc": "Camaq (💜 Nubank 7/8)",
+        "date": "2027-06-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1794609053567,
         "realDate": "2027-06-17"
       },
       {
@@ -422,6 +457,19 @@
         "realDate": "2027-05-17"
       },
       {
+        "id": 1794609053573,
+        "type": "expense",
+        "amount": 500,
+        "cat": "Moradia",
+        "subcat": "Itens para a casa",
+        "desc": "Camaq (💜 Nubank 6/8)",
+        "date": "2027-05-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1794609053567,
+        "realDate": "2027-05-17"
+      },
+      {
         "id": 1786474449955,
         "type": "expense",
         "amount": 440,
@@ -435,6 +483,19 @@
         "realDate": "2027-04-17"
       },
       {
+        "id": 1794609053572,
+        "type": "expense",
+        "amount": 500,
+        "cat": "Moradia",
+        "subcat": "Itens para a casa",
+        "desc": "Camaq (💜 Nubank 5/8)",
+        "date": "2027-04-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1794609053567,
+        "realDate": "2027-04-17"
+      },
+      {
         "id": 1786474449954,
         "type": "expense",
         "amount": 440,
@@ -445,6 +506,19 @@
         "source": "cartao",
         "card": "nubank",
         "purchaseId": 1786474449947,
+        "realDate": "2027-03-17"
+      },
+      {
+        "id": 1794609053571,
+        "type": "expense",
+        "amount": 500,
+        "cat": "Moradia",
+        "subcat": "Itens para a casa",
+        "desc": "Camaq (💜 Nubank 4/8)",
+        "date": "2027-03-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1794609053567,
         "realDate": "2027-03-17"
       },
       {
@@ -471,6 +545,19 @@
         "source": "cartao",
         "card": "nubank",
         "purchaseId": 1786474449947,
+        "realDate": "2027-02-17"
+      },
+      {
+        "id": 1794609053570,
+        "type": "expense",
+        "amount": 500,
+        "cat": "Moradia",
+        "subcat": "Itens para a casa",
+        "desc": "Camaq (💜 Nubank 3/8)",
+        "date": "2027-02-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1794609053567,
         "realDate": "2027-02-17"
       },
       {
@@ -510,6 +597,19 @@
         "source": "cartao",
         "card": "nubank",
         "purchaseId": 1786474449947,
+        "realDate": "2027-01-17"
+      },
+      {
+        "id": 1794609053569,
+        "type": "expense",
+        "amount": 500,
+        "cat": "Moradia",
+        "subcat": "Itens para a casa",
+        "desc": "Camaq (💜 Nubank 2/8)",
+        "date": "2027-01-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1794609053567,
         "realDate": "2027-01-17"
       },
       {
@@ -577,6 +677,97 @@
         "realDate": "2026-12-17"
       },
       {
+        "id": 1794567613535,
+        "type": "expense",
+        "amount": 139.8,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "🔄 Academia(kelvin) (💜 Nubank)",
+        "date": "2026-12-17",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1794567613534,
+        "subId": 1779321710343
+      },
+      {
+        "id": 1794567625430,
+        "type": "expense",
+        "amount": 24.9,
+        "cat": "Entretenimento",
+        "subcat": "Crunchirol",
+        "desc": "❤ Crunchyroll (💜 Nubank)",
+        "date": "2026-12-17",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1794567625429,
+        "subId": 1780338478518
+      },
+      {
+        "id": 1794567626942,
+        "type": "expense",
+        "amount": 49.99,
+        "cat": "Armazenamento",
+        "subcat": "Drive",
+        "desc": "☁️ Drive (💜 Nubank)",
+        "date": "2026-12-17",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1794567626941,
+        "subId": 1780338303392
+      },
+      {
+        "id": 1794567634999,
+        "type": "expense",
+        "amount": 50,
+        "cat": "Entretenimento",
+        "subcat": "",
+        "desc": "☁️ Netflix (💜 Nubank)",
+        "date": "2026-12-17",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1794567634998,
+        "subId": 1788433228417
+      },
+      {
+        "id": 1794567636888,
+        "type": "expense",
+        "amount": 120,
+        "cat": "Empresa",
+        "subcat": "Investimento",
+        "desc": "🔄 Ia Claude (💜 Nubank)",
+        "date": "2026-12-17",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1794567636887,
+        "subId": 1788433286663
+      },
+      {
+        "id": 1794567642258,
+        "type": "expense",
+        "amount": 33.4,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "❤ Cartao de todos (💜 Nubank)",
+        "date": "2026-12-17",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1794567642257,
+        "subId": 1780338913454
+      },
+      {
+        "id": 1794609053568,
+        "type": "expense",
+        "amount": 500,
+        "cat": "Moradia",
+        "subcat": "Itens para a casa",
+        "desc": "Camaq (💜 Nubank 1/8)",
+        "date": "2026-12-17",
+        "source": "cartao",
+        "card": "nubank",
+        "purchaseId": 1794609053567,
+        "realDate": "2026-12-17"
+      },
+      {
         "id": 1779321938031,
         "type": "expense",
         "amount": 54.72,
@@ -613,6 +804,70 @@
         "card": "inter",
         "purchaseId": 1793735015915,
         "realDate": "2026-12-10"
+      },
+      {
+        "id": 1794567610109,
+        "type": "expense",
+        "amount": 59.1,
+        "cat": "Terreno",
+        "subcat": "Condomínio",
+        "desc": "🔄 Condominio (🏦 Inter)",
+        "date": "2026-12-10",
+        "source": "recorrente",
+        "card": "inter",
+        "purchaseId": 1794567610108,
+        "subId": 1779322500367
+      },
+      {
+        "id": 1794567612588,
+        "type": "expense",
+        "amount": 99.9,
+        "cat": "Contas",
+        "subcat": "Internet",
+        "desc": "🔄 Internet",
+        "date": "2026-12-10",
+        "payment": "pix",
+        "source": "recorrente",
+        "subId": 1779322047640
+      },
+      {
+        "id": 1794567630909,
+        "type": "expense",
+        "amount": 1216.56,
+        "cat": "Terreno",
+        "subcat": "Parcela",
+        "desc": "☁️ Parcela do terreno",
+        "date": "2026-12-10",
+        "payment": "pix",
+        "source": "recorrente",
+        "subId": 1786019977358,
+        "paymentAccount": "inter",
+        "paymentLabel": "Pix 🏦 Inter"
+      },
+      {
+        "id": 1794567638128,
+        "type": "expense",
+        "amount": 139.8,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "❤ Academia rafa (🏦 Inter)",
+        "date": "2026-12-10",
+        "source": "recorrente",
+        "card": "inter",
+        "purchaseId": 1794567638127,
+        "subId": 1787270225334
+      },
+      {
+        "id": 1794567683787,
+        "type": "income",
+        "amount": 2500,
+        "cat": "Salário",
+        "subcat": "Okeo",
+        "desc": "💚 Okeo",
+        "date": "2026-12-10",
+        "payment": "dinheiro",
+        "source": "recorrente",
+        "subId": 1779314520057
       },
       {
         "id": 1793735084878,
@@ -693,6 +948,58 @@
         "realDate": "2026-11-04"
       },
       {
+        "id": 1793909022924,
+        "type": "expense",
+        "amount": 49.91,
+        "cat": "Lazer",
+        "subcat": "Lanches",
+        "desc": "N.B. Dal Santos & Cia Ltda (🟡 Banco do Brasil)",
+        "date": "2026-12-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1793909022923,
+        "realDate": "2026-11-05"
+      },
+      {
+        "id": 1794567500428,
+        "type": "expense",
+        "amount": 4.3,
+        "cat": "Alimentação",
+        "subcat": "Padaria",
+        "desc": "N.B. Dal Santos & Cia Ltda (🟡 Banco do Brasil)",
+        "date": "2026-12-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1794567500427,
+        "realDate": "2026-11-10"
+      },
+      {
+        "id": 1794567535909,
+        "type": "expense",
+        "amount": 85.88,
+        "cat": "Alimentação",
+        "subcat": "Restaurante",
+        "desc": "N.B. Dal Santos & Cia Ltda (🟡 Banco do Brasil)",
+        "date": "2026-12-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1794567535908,
+        "realDate": "2026-11-10"
+      },
+      {
+        "id": 1794567572618,
+        "type": "expense",
+        "amount": 56.56999999999999,
+        "cat": "Alimentação",
+        "subcat": "Carne",
+        "desc": "N.B. Dal Santos & Cia Ltda (🟡 Banco do Brasil)",
+        "date": "2026-12-06",
+        "source": "cartao",
+        "card": "bb",
+        "purchaseId": 1794567572617,
+        "realDate": "2026-11-08"
+      },
+      {
         "id": 1786474449950,
         "type": "expense",
         "amount": 440,
@@ -704,6 +1011,66 @@
         "card": "nubank",
         "purchaseId": 1786474449947,
         "realDate": "2026-11-17"
+      },
+      {
+        "id": 1794567472968,
+        "type": "expense",
+        "amount": 50,
+        "cat": "Entretenimento",
+        "subcat": "",
+        "desc": "☁️ Netflix (💜 Nubank)",
+        "date": "2026-11-17",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1794567472967,
+        "subId": 1788433228417
+      },
+      {
+        "id": 1794567591234,
+        "type": "expense",
+        "amount": 139.8,
+        "cat": "Saúde",
+        "subcat": "",
+        "desc": "🔄 Academia(kelvin) (💜 Nubank)",
+        "date": "2026-11-17",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1794567591233,
+        "subId": 1779321710343
+      },
+      {
+        "id": 1794567478943,
+        "type": "expense",
+        "amount": 1216.57,
+        "cat": "Terreno",
+        "subcat": "Parcela",
+        "desc": "Parcela terreno 67/180",
+        "date": "2026-11-13",
+        "source": "terreno",
+        "terrenoPaidRef": true,
+        "terrenoPaidMonth": "2026-11"
+      },
+      {
+        "id": 1794567723330,
+        "type": "income",
+        "amount": 1100,
+        "cat": "Freelance",
+        "subcat": "Projetos",
+        "desc": "",
+        "date": "2026-11-13",
+        "payment": "dinheiro",
+        "paymentAccount": ""
+      },
+      {
+        "id": 1794567736075,
+        "type": "income",
+        "amount": 1100,
+        "cat": "Freelance",
+        "subcat": "Projetos",
+        "desc": "",
+        "date": "2026-11-13",
+        "payment": "pix",
+        "paymentAccount": "inter"
       },
       {
         "id": 1779321938030,
@@ -791,6 +1158,19 @@
         "card": "inter",
         "purchaseId": 1793735015915,
         "realDate": "2026-11-10"
+      },
+      {
+        "id": 1794567595397,
+        "type": "expense",
+        "amount": 59.1,
+        "cat": "Terreno",
+        "subcat": "Condomínio",
+        "desc": "🔄 Condominio (🏦 Inter)",
+        "date": "2026-11-10",
+        "source": "recorrente",
+        "card": "inter",
+        "purchaseId": 1794567595396,
+        "subId": 1779322500367
       },
       {
         "id": 1793734521257,
@@ -4165,7 +4545,7 @@
     "fp_terreno": {
       "installment": 1216.57,
       "total": 180,
-      "paid": 66,
+      "paid": 67,
       "readjustMonth": 9,
       "notes": "190,0",
       "readjustHistory": [
@@ -4176,7 +4556,8 @@
         }
       ],
       "paidMonths": [
-        "2026-09"
+        "2026-09",
+        "2026-11"
       ]
     },
     "fp_ter_ant": {
@@ -4204,6 +4585,169 @@
       }
     ],
     "fp_car_purchases": [
+      {
+        "id": 1794567634998,
+        "card": "nubank",
+        "date": "2026-12-06",
+        "desc": "☁️ Netflix",
+        "cat": "Entretenimento",
+        "subcat": "",
+        "total": 50,
+        "parcelas": 1,
+        "installmentVal": 50,
+        "subId": 1788433228417
+      },
+      {
+        "id": 1794567626941,
+        "card": "nubank",
+        "date": "2026-11-27",
+        "desc": "☁️ Drive",
+        "cat": "Armazenamento",
+        "subcat": "Drive",
+        "total": 49.99,
+        "parcelas": 1,
+        "installmentVal": 49.99,
+        "subId": 1780338303392
+      },
+      {
+        "id": 1794567625429,
+        "card": "nubank",
+        "date": "2026-11-21",
+        "desc": "❤ Crunchyroll",
+        "cat": "Entretenimento",
+        "subcat": "Crunchirol",
+        "total": 24.9,
+        "parcelas": 1,
+        "installmentVal": 24.9,
+        "subId": 1780338478518
+      },
+      {
+        "id": 1794567636887,
+        "card": "nubank",
+        "date": "2026-11-15",
+        "desc": "🔄 Ia Claude",
+        "cat": "Empresa",
+        "subcat": "Investimento",
+        "total": 120,
+        "parcelas": 1,
+        "installmentVal": 120,
+        "subId": 1788433286663
+      },
+      {
+        "id": 1794609053567,
+        "card": "nubank",
+        "date": "2026-11-13",
+        "desc": "Camaq",
+        "cat": "Moradia",
+        "subcat": "Itens para a casa",
+        "total": 4000,
+        "parcelas": 8,
+        "installmentVal": 500
+      },
+      {
+        "id": 1794567500427,
+        "card": "bb",
+        "date": "2026-11-10",
+        "desc": "N.B. Dal Santos & Cia Ltda",
+        "cat": "Alimentação",
+        "subcat": "Padaria",
+        "total": 4.3,
+        "parcelas": 1,
+        "installmentVal": 4.3
+      },
+      {
+        "id": 1794567535908,
+        "card": "bb",
+        "date": "2026-11-10",
+        "desc": "N.B. Dal Santos & Cia Ltda",
+        "cat": "Alimentação",
+        "subcat": "Restaurante",
+        "total": 85.88,
+        "parcelas": 1,
+        "installmentVal": 85.88
+      },
+      {
+        "id": 1794567610108,
+        "card": "inter",
+        "date": "2026-11-10",
+        "desc": "🔄 Condominio",
+        "cat": "Terreno",
+        "subcat": "Condomínio",
+        "total": 59.1,
+        "parcelas": 1,
+        "installmentVal": 59.1,
+        "subId": 1779322500367
+      },
+      {
+        "id": 1794567613534,
+        "card": "nubank",
+        "date": "2026-11-10",
+        "desc": "🔄 Academia(kelvin)",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 139.8,
+        "parcelas": 1,
+        "installmentVal": 139.8,
+        "subId": 1779321710343
+      },
+      {
+        "id": 1794567638127,
+        "card": "inter",
+        "date": "2026-11-10",
+        "desc": "❤ Academia rafa",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 139.8,
+        "parcelas": 1,
+        "installmentVal": 139.8,
+        "subId": 1787270225334
+      },
+      {
+        "id": 1794567642257,
+        "card": "nubank",
+        "date": "2026-11-10",
+        "desc": "❤ Cartao de todos",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 33.4,
+        "parcelas": 1,
+        "installmentVal": 33.4,
+        "subId": 1780338913454
+      },
+      {
+        "id": 1794567572617,
+        "card": "bb",
+        "date": "2026-11-08",
+        "desc": "N.B. Dal Santos & Cia Ltda",
+        "cat": "Alimentação",
+        "subcat": "Carne",
+        "total": 56.56999999999999,
+        "parcelas": 1,
+        "installmentVal": 56.56999999999999
+      },
+      {
+        "id": 1794567472967,
+        "card": "nubank",
+        "date": "2026-11-06",
+        "desc": "☁️ Netflix",
+        "cat": "Entretenimento",
+        "subcat": "",
+        "total": 50,
+        "parcelas": 1,
+        "installmentVal": 50,
+        "subId": 1788433228417
+      },
+      {
+        "id": 1793909022923,
+        "card": "bb",
+        "date": "2026-11-05",
+        "desc": "N.B. Dal Santos & Cia Ltda",
+        "cat": "Lazer",
+        "subcat": "Lanches",
+        "total": 49.91,
+        "parcelas": 1,
+        "installmentVal": 49.91
+      },
       {
         "id": 1793817604333,
         "card": "bb",
@@ -4302,6 +4846,30 @@
         "total": 99.9,
         "parcelas": 1,
         "installmentVal": 99.9
+      },
+      {
+        "id": 1794567591233,
+        "card": "nubank",
+        "date": "2026-10-10",
+        "desc": "🔄 Academia(kelvin)",
+        "cat": "Saúde",
+        "subcat": "",
+        "total": 139.8,
+        "parcelas": 1,
+        "installmentVal": 139.8,
+        "subId": 1779321710343
+      },
+      {
+        "id": 1794567595396,
+        "card": "inter",
+        "date": "2026-10-10",
+        "desc": "🔄 Condominio",
+        "cat": "Terreno",
+        "subcat": "Condomínio",
+        "total": 59.1,
+        "parcelas": 1,
+        "installmentVal": 59.1,
+        "subId": 1779322500367
       },
       {
         "id": 1793734984914,
@@ -6610,6 +7178,17 @@
     ],
     "fp_invest_aportes": [
       {
+        "id": 1794567814850,
+        "boxId": "ib_id_1783089690987_x68ue",
+        "val": 500,
+        "date": "2026-11-13",
+        "rate": 13.75,
+        "institution": "",
+        "origin": "extra_marido",
+        "notes": "",
+        "tipo": "real"
+      },
+      {
         "id": 1793734593960,
         "boxId": "ib_id_1780860540856_9culq",
         "val": 549,
@@ -6969,7 +7548,8 @@
         "confirmedMonths": [
           "2026-06",
           "2026-07",
-          "2026-08"
+          "2026-08",
+          "2026-12"
         ]
       },
       {
@@ -7004,7 +7584,9 @@
           "2026-07",
           "2026-08",
           "2026-09",
-          "2026-10"
+          "2026-10",
+          "2026-11",
+          "2026-12"
         ]
       },
       {
@@ -7020,7 +7602,8 @@
         "confirmedMonths": [
           "2026-06",
           "2026-08",
-          "2026-09"
+          "2026-09",
+          "2026-12"
         ]
       },
       {
@@ -7051,7 +7634,9 @@
         "card": "inter",
         "confirmedMonths": [
           "2026-08",
-          "2026-09"
+          "2026-09",
+          "2026-11",
+          "2026-12"
         ]
       },
       {
@@ -7086,7 +7671,8 @@
           "2026-07",
           "2026-08",
           "2026-09",
-          "2026-10"
+          "2026-10",
+          "2026-12"
         ]
       },
       {
@@ -7103,7 +7689,8 @@
           "2026-07",
           "2026-08",
           "2026-09",
-          "2026-10"
+          "2026-10",
+          "2026-12"
         ]
       },
       {
@@ -7120,7 +7707,8 @@
           "2026-07",
           "2026-08",
           "2026-09",
-          "2026-10"
+          "2026-10",
+          "2026-12"
         ]
       },
       {
@@ -7151,7 +7739,8 @@
         "pixAccount": "inter",
         "confirmedMonths": [
           "2026-08",
-          "2026-09"
+          "2026-09",
+          "2026-12"
         ]
       },
       {
@@ -7168,7 +7757,8 @@
         "confirmedMonths": [
           "2026-08",
           "2026-09",
-          "2026-10"
+          "2026-10",
+          "2026-12"
         ]
       },
       {
@@ -7183,7 +7773,9 @@
         "card": "nubank",
         "pixAccount": "",
         "confirmedMonths": [
-          "2026-09"
+          "2026-09",
+          "2026-11",
+          "2026-12"
         ],
         "auto": true,
         "variableValue": false
@@ -7201,7 +7793,8 @@
         "pixAccount": "",
         "confirmedMonths": [
           "2026-09",
-          "2026-10"
+          "2026-10",
+          "2026-12"
         ],
         "auto": true,
         "variableValue": false
@@ -7326,6 +7919,22 @@
         "subcat": "Mercado"
       },
       "B.LAC.CAROL. 1,250": {
+        "cat": "Alimentação",
+        "subcat": "Mercado"
+      },
+      "SAND.CHEESE SALADA": {
+        "cat": "Lazer",
+        "subcat": "Lanches"
+      },
+      "BOLINHA DE QUEIJO UN": {
+        "cat": "Lazer",
+        "subcat": "Lanches"
+      },
+      "REFEICAO BUFFET KG": {
+        "cat": "Alimentação",
+        "subcat": "Restaurante"
+      },
+      "COCO RAL.M.COCO 100U": {
         "cat": "Alimentação",
         "subcat": "Mercado"
       }
