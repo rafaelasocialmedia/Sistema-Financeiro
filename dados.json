@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "savedAt": "2026-11-14T02:14:39.237Z",
+  "savedAt": "2026-11-16T21:42:57.146Z",
   "data": {
     "fp_cats": [
       {
@@ -870,6 +870,19 @@
         "subId": 1779314520057
       },
       {
+        "id": 1794865367412,
+        "type": "expense",
+        "amount": 32.85,
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "desc": "N.B. Dal Santos & Cia Ltda (🏦 Inter)",
+        "date": "2026-12-10",
+        "source": "cartao",
+        "card": "inter",
+        "purchaseId": 1794865367411,
+        "realDate": "2026-11-16"
+      },
+      {
         "id": 1793735084878,
         "type": "expense",
         "amount": 108.9,
@@ -1037,6 +1050,19 @@
         "card": "nubank",
         "purchaseId": 1794567591233,
         "subId": 1779321710343
+      },
+      {
+        "id": 1794865331186,
+        "type": "expense",
+        "amount": 120,
+        "cat": "Empresa",
+        "subcat": "Investimento",
+        "desc": "🔄 Ia Claude (💜 Nubank)",
+        "date": "2026-11-17",
+        "source": "recorrente",
+        "card": "nubank",
+        "purchaseId": 1794865331185,
+        "subId": 1788433286663
       },
       {
         "id": 1794567478943,
@@ -4622,6 +4648,17 @@
         "subId": 1780338478518
       },
       {
+        "id": 1794865367411,
+        "card": "inter",
+        "date": "2026-11-16",
+        "desc": "N.B. Dal Santos & Cia Ltda",
+        "cat": "Alimentação",
+        "subcat": "Mercado",
+        "total": 32.85,
+        "parcelas": 1,
+        "installmentVal": 32.85
+      },
+      {
         "id": 1794567636887,
         "card": "nubank",
         "date": "2026-11-15",
@@ -4824,6 +4861,18 @@
         "total": 108.9,
         "parcelas": 1,
         "installmentVal": 108.9
+      },
+      {
+        "id": 1794865331185,
+        "card": "nubank",
+        "date": "2026-10-15",
+        "desc": "🔄 Ia Claude",
+        "cat": "Empresa",
+        "subcat": "Investimento",
+        "total": 120,
+        "parcelas": 1,
+        "installmentVal": 120,
+        "subId": 1788433286663
       },
       {
         "id": 1785963445554,
@@ -7794,7 +7843,8 @@
         "confirmedMonths": [
           "2026-09",
           "2026-10",
-          "2026-12"
+          "2026-12",
+          "2026-11"
         ],
         "auto": true,
         "variableValue": false
@@ -7935,6 +7985,14 @@
         "subcat": "Restaurante"
       },
       "COCO RAL.M.COCO 100U": {
+        "cat": "Alimentação",
+        "subcat": "Mercado"
+      },
+      "CARNE MOIDA 2 KG": {
+        "cat": "Alimentação",
+        "subcat": "Mercado"
+      },
+      "COXA SOBREC.FRANG.KG": {
         "cat": "Alimentação",
         "subcat": "Mercado"
       }
